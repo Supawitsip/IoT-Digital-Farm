@@ -1,3 +1,4 @@
+  
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -27,22 +28,39 @@
   </head>
 
   <body>
-    <h1>IoT Digital Farm</h1>
+    </h1>IoT Digital Farm<h1>
 
-    <p>Now we can deployed</p>
+    </p>Now we can deployed<p>
     <p>Alpha has came</p>
+    <div class="container">
+      <h1>Devices</h1>
+      <ul id="deviceList">
 
-
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="/__/firebase/8.4.3/firebase-app.js"></script>
-
+      </ul>
+    </div>
     <!-- TODO: Add SDKs for Firebase products that you want to use
-        https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="/__/firebase/8.4.3/firebase-analytics.js"></script>
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+      <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-analytics.js"></script>
 
-    <!-- Initialize Firebase -->
-    <script src="/__/firebase/init.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      var firebaseConfig = {
+        apiKey: "AIzaSyB5zraDdpuRbVhHC0pekc9hKrKfteX0ncE",
+        authDomain: "digital-farming-52edb.firebaseapp.com",
+        projectId: "digital-farming-52edb",
+        storageBucket: "digital-farming-52edb.appspot.com",
+        messagingSenderId: "1054001690174",
+        appId: "1:1054001690174:web:8a665041773bc078c1436f",
+        measurementId: "G-WYRKFCRBYV"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+      const db = firebase.firestore();
+    </script>
 
+    <script src="js/index.js"></script>
 
   </body>
 </html>
