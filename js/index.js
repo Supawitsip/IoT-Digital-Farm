@@ -46,15 +46,20 @@
 
 // displayDevices();
 // handleShowBtn();
-let pDev = document.getElementById('devices');
+//let pDev = document.getElementById('devices_srt');
+var devObj;
 const dbRef = firebase.database().ref();
-dbRef.child("devices").get().then((snapshot) => {
+dbRef.child("devices_srt").get().then((snapshot) => {
   if (snapshot.exists()) {
-    console.log(snapshot.val());
-    pDev.innerText = JSON.stringify((snapshot.val()), null, 1);
+    devObj = snapshot.val();
+    console.log(devObj.D01);
+    for (x in devObj.D01) {
+      console.log(devObj.D01[x]);
+    }
   } else {
     console.log("No data available");
   }
 }).catch((error) => {
   console.error(error);
 });
+
