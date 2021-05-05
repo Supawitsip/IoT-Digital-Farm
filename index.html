@@ -7,11 +7,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Carousel Template for Bootstrap</title>
+    <title>Digital Farming</title>
 
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="css/navbar.css" rel="stylesheet">
+    <link href="css/monitoring.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="ie10-viewport-bug-workaround.css" rel="stylesheet">
 
 
@@ -19,47 +21,102 @@
 
  
     <link href="carousel.css" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/b5b314d8c8.js" crossorigin="anonymous"></script>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
 
     
   </head>
 
   <body>
-    </h1>IoT Digital Farm<h1>
-
-    </p>Now we can deployed<p>
-    <p>Alpha has came</p>
-    <div class="container">
-      <h1>Devices</h1>
-      <ul id="deviceList">
-
-      </ul>
+    <div class="topnav" id="myTopnav">
+      <a href="#logo" id="logoLink"><img src="img/aerog-logo.png" alt="Aero Group 1992 Logo" id="logo"></a>
+      <a href="#home" id="digiFarming">IoT Digital Farming</a>
+      <a href="#monitor" id="monitoring" class="active">Monitoring</a>
+      <a href="#" class="angleLeft" style="float: right; margin: 26px 0;"><i class="fas fa-angle-left"></i></a>
+      <a href="#device" id="device">All Devices</a>
+      <a href="javascript:void(0);" class="icon" onclick="resNavBar()">
+        <i class="fa fa-bars"></i>
+      </a>
     </div>
+    
+    <div class="container">
+      <div class="head-con">
+        <div class="head-con-text" style="padding-left: 0;">3 Devices</div>
+        <div style="float: left; padding: 20px 0;">
+          <i class="fas fa-clock" style="color: rgb(126, 126, 126); font-size: 14px;"></i>
+        </div>
+        <div class="head-con-text">11:36, 05/05/2021</div>
+        <a class="refresh">
+          <i class="fas fa-sync-alt" style="font-size: 22px;"></i>
+        </a>
+      </div>
+
+      <div class="devices-con">
+        <div class="devi-head">
+          <i class="fas fa-laptop-code"></i>
+          <div>IOT_001</div>
+        </div>
+        <div class="temp-con">
+          <div class="temp-text">
+            <p>Temperature</p>
+            <div class="temp-value-box">
+              <i class="fas fa-thermometer-half"></i>
+              <div>32.5 C</div>
+            </div>
+          </div>
+        </div>
+        <div class="humi-con">
+          <div class="humi-text">
+            <p>Humidity</p>
+            <div class="humi-value-box">
+              <i class="fas fa-tint"></i>
+              <div>36.7 %</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+
     <!-- TODO: Add SDKs for Firebase products that you want to use
       https://firebase.google.com/docs/web/setup#available-libraries -->
       <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-analytics.js"></script>
 
     <script>
-      // Your web app's Firebase configuration
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-      var firebaseConfig = {
-        apiKey: "AIzaSyB5zraDdpuRbVhHC0pekc9hKrKfteX0ncE",
-        authDomain: "digital-farming-52edb.firebaseapp.com",
-        projectId: "digital-farming-52edb",
-        storageBucket: "digital-farming-52edb.appspot.com",
-        messagingSenderId: "1054001690174",
-        appId: "1:1054001690174:web:8a665041773bc078c1436f",
-        measurementId: "G-WYRKFCRBYV"
-      };
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyB5zraDdpuRbVhHC0pekc9hKrKfteX0ncE",
+      authDomain: "digital-farming-52edb.firebaseapp.com",
+      databaseURL: "https://digital-farming-52edb-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "digital-farming-52edb",
+      storageBucket: "digital-farming-52edb.appspot.com",
+      messagingSenderId: "1054001690174",
+      appId: "1:1054001690174:web:8a665041773bc078c1436f",
+      measurementId: "G-WYRKFCRBYV"
+    };
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       firebase.analytics();
-      const db = firebase.firestore();
+      const db = firebase.database();
     </script>
 
     <script src="js/index.js"></script>
-
+    <script>
+      function resNavBar() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+          x.className += " responsive";
+        } else {
+          x.className = "topnav";
+        }
+      }
+    </script>
   </body>
 </html>
