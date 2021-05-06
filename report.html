@@ -1,0 +1,103 @@
+  
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Digital Farming</title>
+
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/navbar.css" rel="stylesheet">
+    <link href="css/report.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+
+    <script src="ie-emulation-modes-warning.js"></script>
+
+ 
+    <link href="carousel.css" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/b5b314d8c8.js" crossorigin="anonymous"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
+
+    <!-- Auto Refresh Webpage Script -->
+    <script type = "text/JavaScript">
+         function AutoRefresh( t ) {
+            setTimeout("location.reload(true);", t);
+         }
+   </script>
+  </head>
+
+  <body onload = "JavaScript:AutoRefresh(45000);">
+    <!-- Navigation Bar -->
+    <div class="topnav" id="myTopnav">
+      <a href="https://www.aerogroup1992.com/" target="_blank" id="logoLink"><img src="img/aerog-logo.png" alt="Aero Group 1992 Logo" id="logo"></a>
+      <a href="/" id="digiFarming">IoT Digital Farming</a>
+      <a href="#monitor" id="monitoring" class="active">Monitoring</a>
+      <a href="#" class="angleLeft" style="float: right; margin: 26px 0;"><i class="fas fa-angle-left"></i></a>
+      <a href="#device" id="device">D02</a>
+      <a href="javascript:void(0);" class="icon" onclick="resNavBar()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="container">
+      <div class="head-con">
+        <div style="float: left;">
+          <i class="fas fa-laptop-code" style="color: rgb(126, 126, 126); font-size: 40px; padding: 12px;"></i>
+        </div>
+        <div class="head-con-text" id="dName">D02</div>
+        <div style="float: left; padding: 20px 0;">
+          <i class="fas fa-clock" style="color: rgb(126, 126, 126); font-size: 14px;padding-left: 10px;"></i>
+        </div>
+        <div class="head-con-text" id="lastTime">Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</div>
+        <a class="refresh" href="/report.html">
+          <i class="fas fa-sync-alt" style="font-size: 22px;"></i>
+        </a>
+      </div>
+
+      <div class="devi-block">
+        <div class="temp-con">
+          <div class="temp-text">
+            <p class="temp"><i class="fas fa-thermometer-half"></i>32.5 °C</p>
+          </div>
+        </div>
+        <div class="humi-con">
+          <div class="humi-text">
+            <p class="humi"><i class="fas fa-tint"></i>36.7 %</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Temperature Graph -->
+
+
+      <!-- Humidity Graph -->
+
+
+      <!-- Export to Excel -->
+
+    </div>
+
+    <script src="js/index.js"></script>
+    <script>
+      function resNavBar() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+          x.className += " responsive";
+        } else {
+          x.className = "topnav";
+        }
+      }
+    </script>
+  </body>
+</html>
