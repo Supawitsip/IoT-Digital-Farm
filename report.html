@@ -62,7 +62,7 @@
           <i class="fas fa-clock" style="color: rgb(126, 126, 126); font-size: 14px;padding-left: 10px;"></i>
         </div>
         <div class="head-con-text" id="lastTime">Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</div>
-        <a class="refresh" href="/report.html">
+        <a class="refresh" href="../report.html">
           <i class="fas fa-sync-alt" style="font-size: 22px;"></i>
         </a>
       </div>
@@ -81,14 +81,14 @@
       </div>
 
       <!-- Temperature Graph -->
-      
-      
       <div>
-        <canvas id="myChart"></canvas>
+        <canvas id="temperatureChart"></canvas>
       </div>
 
       <!-- Humidity Graph -->
-
+      <div>
+        <canvas id="humidityChart"></canvas>
+      </div>
 
       <!-- Export to Excel -->
       <div class="export-con">
@@ -180,16 +180,7 @@
         }
       }
     </script>
-    <div>
-      <canvas id="temperatureChart"></canvas>
-    </div>
     
-    <!-- Humidity Graph -->
-    <div>
-      <canvas id="humidityChart"></canvas>
-    </div>
-    <script src="js/chart.js"></script>
-    <!-- Export to Excel -->
     <script src="js/chart.js"></script>
 
     <!-- Export HTML Table to Excel Script -->
