@@ -92,12 +92,62 @@
       <div class="export-con">
         <i class="far fa-file-excel excel-icon"></i>
         <div class="ex-title">3 Months Data Collection Table</div>
-        <button class="ex-btn">Excel</button>
+        <button class="ex-btn" onclick="exportToExcel('table2excel')">Excel</button>
+        <table class="table2excel" id="table2excel" style="display: none;">
+          <tr>
+            <th>Device Name</th>
+            <th>Date and Time</th>
+            <th>Temperature (°C)</th>
+            <th>Humidity (%RH)</th>
+          </tr>
+          <tr>
+            <td>D02</td>
+            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
+            <td>31.2</td>
+            <td>61.8</td>
+          </tr>
+          <tr>
+            <td>D02</td>
+            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
+            <td>31.2</td>
+            <td>61.8</td>
+          </tr>
+          <tr>
+            <td>D02</td>
+            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
+            <td>31.2</td>
+            <td>61.8</td>
+          </tr>
+          <tr>
+            <td>D02</td>
+            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
+            <td>31.2</td>
+            <td>61.8</td>
+          </tr>
+          <tr>
+            <td>D02</td>
+            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
+            <td>31.2</td>
+            <td>61.8</td>
+          </tr>
+          <tr>
+            <td>D02</td>
+            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
+            <td>31.2</td>
+            <td>61.8</td>
+          </tr>
+          <tr>
+            <td>D02</td>
+            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
+            <td>31.2</td>
+            <td>61.8</td>
+          </tr>
+        </table>
       </div>
 
     </div>
 
-    
+
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-analytics.js"></script>
     <script>
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -130,5 +180,39 @@
     </script>
     <script src="js/chart.js"></script>
 
+    <!-- Export to Excel Script -->
+    <script type="text/javascript">
+      function exportToExcel(tableID, filename = ''){
+          var downloadurl;
+          var dataFileType = 'application/vnd.ms-excel';
+          var tableSelect = document.getElementById(tableID);
+          var tableHTMLData = tableSelect.outerHTML.replace(/ /g, '%20');
+          
+          // Specify file name
+          filename = filename?filename+'.xls':'3months-data-coolection.xls';
+          
+          // Create download link element
+          downloadurl = document.createElement("a");
+          
+          document.body.appendChild(downloadurl);
+          
+          if(navigator.msSaveOrOpenBlob){
+              var blob = new Blob(['\ufeff', tableHTMLData], {
+                  type: dataFileType
+              });
+              navigator.msSaveOrOpenBlob( blob, filename);
+          }else{
+              // Create a link to the file
+              downloadurl.href = 'data:' + dataFileType + ', ' + tableHTMLData;
+          
+              // Setting the file name
+              downloadurl.download = filename;
+              
+              //triggering the function
+              downloadurl.click();
+          }
+      }
+      </script>
+      
   </body>
 </html>
