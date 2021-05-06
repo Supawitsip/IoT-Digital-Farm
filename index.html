@@ -34,8 +34,8 @@
   <body>
     <!-- Navigation Bar -->
     <div class="topnav" id="myTopnav">
-      <a href="#logo" id="logoLink"><img src="img/aerog-logo.png" alt="Aero Group 1992 Logo" id="logo"></a>
-      <a href="#home" id="digiFarming">IoT Digital Farming</a>
+      <a href="https://www.aerogroup1992.com/" target="_blank" id="logoLink"><img src="img/aerog-logo.png" alt="Aero Group 1992 Logo" id="logo"></a>
+      <a href="/" id="digiFarming">IoT Digital Farming</a>
       <a href="#monitor" id="monitoring" class="active">Monitoring</a>
       <a href="#" class="angleLeft" style="float: right; margin: 26px 0;"><i class="fas fa-angle-left"></i></a>
       <a href="#device" id="device">All Devices</a>
@@ -47,35 +47,42 @@
     <!-- Main Container -->
     <div class="container">
       <div class="head-con">
-        <div class="head-con-text" style="padding-left: 0;">3 Devices</div>
+        <div class="head-con-text" style="padding-left: 0;" id="allDevices"></div>
         <div style="float: left; padding: 20px 0;">
           <i class="fas fa-clock" style="color: rgb(126, 126, 126); font-size: 14px;"></i>
         </div>
-        <div class="head-con-text">11:36, 05/05/2021</div>
-        <a class="refresh">
+        <div class="head-con-text" id="lastTime"></div>
+        <a class="refresh" href="/">
           <i class="fas fa-sync-alt" style="font-size: 22px;"></i>
         </a>
       </div>
 
-      <div class="devices-con">
-        <div class="devi-head">
-          <i class="fas fa-laptop-code"></i>
-          <div>IOT_001</div>
-        </div>
-        <div class="temp-con">
-          <div class="temp-text">
-            <p class="temp-title">Temperature</p>
-            <p class="temp"><i class="fas fa-thermometer-half"></i>32.5 °C</p>
+      <!-- Devices Container -->
+      <div class="devices-con" id="devices-con">
+
+        <!-- <div class="devi-block">
+          <div class="devi-head">
+            <i class="fas fa-laptop-code"></i>
+            <div>IOT_001</div>
           </div>
-        </div>
-        <div class="humi-con">
-          <div class="humi-text">
-            <p class="humi-title">Humidity</p>
-            <p class="humi"><i class="fas fa-tint"></i>36.7 %</p>
+          <div class="temp-con">
+            <div class="temp-text">
+              <p class="temp-title">Temperature</p>
+              <p class="temp"><i class="fas fa-thermometer-half"></i>32.5 °C</p>
+            </div>
           </div>
-        </div>
+          <div class="humi-con">
+            <div class="humi-text">
+              <p class="humi-title">Humidity</p>
+              <p class="humi"><i class="fas fa-tint"></i>36.7 %</p>
+            </div>
+          </div>
+        </div> -->
+        
       </div>
+
     </div>
+  </div>
 
 
 

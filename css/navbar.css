@@ -25,12 +25,18 @@ body {
     float: right;
     margin-right: 28px;
 }
-#device {
-    float: right;
+#monitoring:hover {cursor: default;}
+#device:hover {
+    cursor: default;
+    color: #f2f2f2;
+    background-color: #E35F43;
 }
-.angleLeft {
-    float: right;
+.angleLeft:hover {
+    cursor: default;
 }
+
+#device {float: right;}
+.angleLeft {float: right;}
 
 .topnav a:hover {
     background-color: rgb(255, 255, 255);
