@@ -80,8 +80,10 @@
 
       <!-- Temperature Graph -->
       
-    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-analytics.js"></script>
-
+      
+      <div>
+        <canvas id="myChart"></canvas>
+      </div>
 
       <!-- Humidity Graph -->
 
@@ -95,6 +97,8 @@
 
     </div>
 
+    
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-analytics.js"></script>
     <script>
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
@@ -124,15 +128,7 @@
         }
       }
     </script>
-    <div>
-      <canvas id="myChart"></canvas>
-    </div>
     <script src="js/chart.js"></script>
-    <!-- Humidity Graph -->
 
-
-    <!-- Export to Excel -->
-
-  </div>
   </body>
 </html>
