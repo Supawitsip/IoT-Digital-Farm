@@ -145,7 +145,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
        },
        title: {
         display: true,
-          text: 'Temperature Chart'
+          text: 'Humidity Chart'
        }
     }
   });
