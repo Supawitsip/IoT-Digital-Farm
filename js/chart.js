@@ -90,8 +90,8 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
             yAxes: [{
               display: true,
               ticks: {
-                suggestedMin: 0, 
-                suggestedMax: 40,
+                suggestedMin: 20, 
+                suggestedMax: 50,
               }
             }],
             xAxes: [{
