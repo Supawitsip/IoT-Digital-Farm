@@ -30,6 +30,18 @@
     margin: 18px 0;
     display: inline-block;
 }
+.devi-block {
+    width: 100%;
+    margin: 14px 0;
+    display: inline-block;
+    box-shadow: 5px 5px 11px -2px #616161;
+}
+.devi-block:hover {
+    opacity: 0.9;
+    cursor: pointer;
+    /* box-shadow: 5px 5px 34px 1px #616161; */
+}
+
 .fa-laptop-code {
     float: left; 
     font-size: 34px;
@@ -55,12 +67,11 @@
 .humi-con {
     background-color: #232344;
 }
-
-.devices-con p {
+.temp-text, .humi-text {
     text-align: center;
-    margin: 5px 0 0 0;
 }
 .temp-title {
+    margin-top: 10px;
     font-size: 18px;
     color: #F3AE9F;
 }
@@ -74,6 +85,7 @@
     margin-right: 18px;
 }
 .humi-title {
+    margin-top: 10px;
     font-size: 18px;
     color: #AEB0FF;
 }

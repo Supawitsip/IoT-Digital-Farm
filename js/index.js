@@ -1,61 +1,52 @@
-// let deviceList = document.querySelector('#deviceList');
-// let showBtn;
-
-// function renderDevice(doc) {
-//     let li = document.createElement('li');
-//     let name = document.createElement('span');
-//     let id = document.createElement('span');
-//     let btn = document.createElement('button');
-
-//     li.setAttribute('data-id', doc.id);
-//     btn.setAttribute('data-id', doc.id);
-//     btn.setAttribute('class', 'showBtn');
-
-    
-//     id.innerHTML = " --- ID: <strong>" + doc.data().id + "</strong>";
-//     name.innerHTML = "Name: <strong>" + doc.data().name + "</strong>";
-//     btn.innerHTML = "Show"
-
-//     li.appendChild(name);
-//     li.appendChild(id);
-//     li.appendChild(btn);
-
-//     deviceList.appendChild(li);
-// };
-
-// function displayDevices() {
-//     db.collection("devices").orderBy("id", "asc").get().then(device => {
-//         device.docs.forEach(doc => {
-//             console.log(doc.data());
-//             renderDevice(doc);
-//         });
-//     });
-// };
-
-// function handleShowBtn() {
-//     setTimeout(function() {
-//         showBtn = document.querySelectorAll('.showBtn');
-//         for (var i = 0; i < showBtn.length; i++) {
-//             showBtn[i].onclick = function() {
-//                 var index = this.getAttribute('data-id');
-//                 window.location = '/player_detail?username=' + index;
-//             };
-//         };
-//     }, 1000);
-// };
-
-// displayDevices();
-// handleShowBtn();
-//let pDev = document.getElementById('devices_srt');
-var devObj;
 const dbRef = firebase.database().ref();
-dbRef.child("devices_srt").get().then((snapshot) => {
+dbRef.child("devices_sensor").get().then((snapshot) => {
   if (snapshot.exists()) {
-    devObj = snapshot.val();
-    console.log(devObj.D01);
-    for (x in devObj.D01) {
-      console.log(devObj.D01[x]);
+    let deviObj = snapshot.val();
+    let num_of_devi;
+
+    // Get Number of device connected
+    num_of_devi = Object.keys(deviObj).length;
+    console.log('All Devices:' + num_of_devi);
+    document.getElementById('allDevices').innerText = num_of_devi + " devices";
+
+    // Get the lastest time (of D02)
+    n = Object.keys(deviObj.D02).length;
+    last_element = Object.keys(deviObj.D02)[n-1];
+    last_time = deviObj.D02[last_element].timeUpdate.timestamp;
+    document.getElementById('lastTime').innerText = last_time;
+
+    // Get all devices info and display it
+    for (d in deviObj) {
+      n_sampling = Object.keys(deviObj[d]).length;
+      last_samp = Object.keys(deviObj[d])[n_sampling-1];
+      console.log(n_sampling);
+      let d_name = deviObj[d][last_samp].deviceNameID;
+      let humi = deviObj[d][last_samp].humidity;
+      let temp = deviObj[d][last_samp].temperature;
+      console.log(d_name + ': ' + humi + ', ' + temp);
+
+      let devi_info = document.createElement('div');
+      devi_info.setAttribute('class', 'devi-block');
+      devi_info.innerHTML = 
+                          `<div class="devi-head">
+                            <i class="fas fa-laptop-code"></i>
+                            <div>${d_name}</div>
+                          </div>
+                          <div class="temp-con">
+                            <div class="temp-text">
+                              <p class="temp-title">Temperature</p>
+                              <p class="temp"><i class="fas fa-thermometer-half"></i>${temp} °C</p>
+                            </div>
+                          </div>
+                          <div class="humi-con">
+                            <div class="humi-text">
+                              <p class="humi-title">Humidity</p>
+                              <p class="humi"><i class="fas fa-tint"></i>${humi} %</p>
+                            </div>
+                          </div>`
+      document.getElementById("devices-con").appendChild(devi_info);
     }
+
   } else {
     console.log("No data available");
   }
