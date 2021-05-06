@@ -47,19 +47,41 @@
 // displayDevices();
 // handleShowBtn();
 //let pDev = document.getElementById('devices_srt');
-var devObj;
+/*var devObj;
 const dbRef = firebase.database().ref();
-dbRef.child("devices_srt").get().then((snapshot) => {
+dbRef.child("devices_sensor").get().then((snapshot) => {
   if (snapshot.exists()) {
     devObj = snapshot.val();
-    console.log(devObj.D01);
-    for (x in devObj.D01) {
-      console.log(devObj.D01[x]);
-    }
+    //console.log(devObj);
+    snapshot.forEach(function(D01){
+          var val = D01.val();
+          console.log(D01.val());
+          console.log(val.tempereture);           
+    });
+    //for (x in devObj.D01) {
+      //console.log(devObj);
+	//console.log(snapshot.val().humidity[x]);
+        //console.log("title",snapshot.key);
+    //}
   } else {
     console.log("No data available");
   }
 }).catch((error) => {
   console.error(error);
-});
+});*/
 
+var database = firebase.database();
+database.ref("devices_sensor").once('child_added', function(snapshot){
+      if(snapshot.exists()){
+          
+          //console.log(snapshot.val().D01); 
+          snapshot.forEach(function(D01){
+              var val = D01.val();
+              //console.log("row",D01.val());
+              console.log(val.humidity);       
+          });
+          //var theDiv = document.getElementById("ex-table");
+          //theDiv.innerHTML += content; 
+          //$('#ex-table').append(content);
+      }
+});
