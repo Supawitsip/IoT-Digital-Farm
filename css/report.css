@@ -1,0 +1,97 @@
+.head-con {
+    margin: 14px 0;
+    width: 100%;
+    height: fit-content;
+    background-color: aqua;
+    color: #E35F43;
+}
+.head-con div {
+    font-size: 20px;
+}
+.head-con-text {
+    padding: 20px;
+    float: left;
+}
+.refresh {
+    color: #E35F43;
+    float: right;
+    padding: 16px 28px;
+    background-color: rgb(230, 228, 228);
+}
+.refresh:hover {
+    color: #E35F43;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.devi-block {
+    width: 100%;
+    margin: 14px 0;
+    display: inline-block;
+}
+.devi-block:hover {
+    opacity: 0.9;
+    cursor: pointer;
+    /* box-shadow: 5px 5px 34px 1px #616161; */
+}
+
+.fa-laptop-code {
+    float: left; 
+    font-size: 34px;
+    padding: 20px 20px;
+}
+.devi-head div {
+    font-size: 30px;
+    color: #E35F43;
+    padding: 16px;
+}
+.devi-head {
+    background-color: rgb(236, 236, 236);
+    height: fit-content;
+}
+
+.temp-con, .humi-con {
+    float: left;
+    width: 48%;
+    border-radius: 8px;
+} 
+.temp-con {
+    background-color: #4E0000;
+}
+.humi-con {
+    background-color: #232344;
+    float: right;
+}
+.temp-text, .humi-text {
+    text-align: center;
+}
+
+.temp {
+    font-size: 60px;
+    color: #F9EEEB;
+}
+.fa-thermometer-half {
+    font-size: 48px;
+    color: #F3AE9F;
+    margin-right: 18px;
+}
+.fa-tint {
+    font-size: 48px;
+    color: #AEB0FF;
+    margin-right: 18px;
+}
+.humi {
+    font-size: 60px;
+    color: #EBECFB;
+}
+
+.temp, .humi {
+    margin: 6px auto;
+}
+
+
+#dName {
+    font-size: 34px;
+    padding: 8px 16px;
+    font-weight: bold;
+}
