@@ -28,6 +28,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
+
     <!-- Auto Refresh Webpage Script -->
     <script type = "text/JavaScript">
          function AutoRefresh( t ) {
@@ -92,7 +94,7 @@
       <div class="export-con">
         <i class="far fa-file-excel excel-icon"></i>
         <div class="ex-title">3 Months Data Collection Table</div>
-        <button class="ex-btn" onclick="exportToExcel('table2excel')">Excel</button>
+        <button class="ex-btn" id="ex-btn">Excel</button>
         <table class="table2excel" id="table2excel" style="display: none;">
           <tr>
             <th>Device Name</th>
@@ -180,39 +182,19 @@
     </script>
     <script src="js/chart.js"></script>
 
-    <!-- Export to Excel Script -->
-    <script type="text/javascript">
-      function exportToExcel(tableID, filename = ''){
-          var downloadurl;
-          var dataFileType = 'application/vnd.ms-excel';
-          var tableSelect = document.getElementById(tableID);
-          var tableHTMLData = tableSelect.outerHTML.replace(/ /g, '%20');
-          
-          // Specify file name
-          filename = filename?filename+'.xls':'3months-data-coolection.xls';
-          
-          // Create download link element
-          downloadurl = document.createElement("a");
-          
-          document.body.appendChild(downloadurl);
-          
-          if(navigator.msSaveOrOpenBlob){
-              var blob = new Blob(['\ufeff', tableHTMLData], {
-                  type: dataFileType
-              });
-              navigator.msSaveOrOpenBlob( blob, filename);
-          }else{
-              // Create a link to the file
-              downloadurl.href = 'data:' + dataFileType + ', ' + tableHTMLData;
-          
-              // Setting the file name
-              downloadurl.download = filename;
-              
-              //triggering the function
-              downloadurl.click();
+    <!-- Export HTML Table to Excel Script -->
+    <script>
+      let button = document.querySelector("#ex-btn");
+
+      button.addEventListener("click", e => {
+        let table = document.querySelector("#table2excel");
+        TableToExcel.convert(table, {
+          name: "3months-report.xlsx",
+          sheet: {
+            name: "Sheet 1"
           }
-      }
-      </script>
-      
+        });
+      });
+    </script>
   </body>
 </html>
