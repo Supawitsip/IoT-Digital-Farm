@@ -18,7 +18,18 @@ dbRef.child(db_devices).child(device).get().then((snapshot) => {
         // Display device info
         document.getElementById("device").innerText = deviObj[last_samp].deviceNameID;
         document.getElementById("dName").innerText = deviObj[last_samp].deviceNameID;
-        document.getElementById("lastTime").innerText = deviObj[last_samp].timestamp;
+
+        // Convert timestamp to readable
+        let timestamp = (deviObj[last_samp].timestamp)/1000;
+        let date = new Date(timestamp * 1000);
+        let currentDateTime = date.getDate()+
+          "/"+(date.getMonth()+1)+
+          "/"+date.getFullYear()+
+          " "+date.getHours()+
+          ":"+date.getMinutes()+
+          ":"+date.getSeconds();
+        document.getElementById("lastTime").innerText = currentDateTime;
+
         document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviObj[last_samp].temperature} °C`;
         document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviObj[last_samp].humidity} %`;
 

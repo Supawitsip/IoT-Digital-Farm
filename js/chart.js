@@ -1,4 +1,6 @@
+//Get url parameter (the device name)
 
+console.log('name: ' + device);
 
 dbRef.child("devices_sensor").get().then((snapshot) => {
   if (snapshot.exists()) {
@@ -23,13 +25,13 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     let time_aryD01 = [];
     let time_aryD02 = [];
     let i = 0;
-    for (d in deviObj.D01) {
-      n_sampling = Object.keys(deviObj.D01).length;
-      all_samp = Object.keys(deviObj.D01)[i];
+    for (d in deviObj[device]) {
+      n_sampling = Object.keys(deviObj[device]).length;
+      all_samp = Object.keys(deviObj[device])[i];
       i += 1
-      tem_aryD01.push(deviObj.D01[all_samp].temperature);
-      time_aryD01.push(deviObj.D01[all_samp].timestamp);
-      humi_aryD01.push(deviObj.D01[all_samp].humidity);
+      tem_aryD01.push(deviObj[device][all_samp].temperature);
+      time_aryD01.push(deviObj[device][all_samp].timestamp);
+      humi_aryD01.push(deviObj[device][all_samp].humidity);
     }
    /* i = 0;
     for (d in deviObj.D02) {
@@ -167,7 +169,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         labels: labels,
         datasets: [{ 
             data: temp_data30_D01,
-            label: "temperature_D01",
+            label: `temperature_${device}`,
             borderColor: "#3e95cd",
             backgroundColor: "#7bb6dd",
             fill: false,
@@ -176,7 +178,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
             borderWidth: 1
           }, { 
             data: humi_data30_D01,
-            label: "humidity_D01",
+            label: `humidity_${device}`,
             borderColor: "#3cba9f",
             backgroundColor: "#71d1bd",
             fill: false,
@@ -201,7 +203,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
               type: 'linear',
               position: 'left',
               ticks: {
-                suggestedMin: 20,
+                suggestedMin: 0,
                 suggestedMax: 50, 
               },
               scaleLabel: {

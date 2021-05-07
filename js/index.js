@@ -10,9 +10,15 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     document.getElementById('allDevices').innerText = num_of_devi + " devices";
 
     // Get the lastest time (of D02)
-    let current = new Date();
-    console.log(current.toLocaleString());
-    document.getElementById('lastTime').innerText = current.toLocaleString();
+    let date = new Date();
+    let currentDateTime = date.getDate()+
+          "/"+(date.getMonth()+1)+
+          "/"+date.getFullYear()+
+          " "+date.getHours()+
+          ":"+date.getMinutes()+
+          ":"+date.getSeconds();
+    console.log(currentDateTime);
+    document.getElementById('lastTime').innerText = currentDateTime;
 
     // Get all devices info and display it
     for (d in deviObj) {
