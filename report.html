@@ -37,8 +37,8 @@
          }
    </script>
   </head>
-  <!-- <body onload = "JavaScript:AutoRefresh(45000);"> -->
-  <body>
+
+  <body onload = "JavaScript:AutoRefresh(45000);">
     <!-- Navigation Bar -->
     <div class="topnav" id="myTopnav">
       <a href="https://www.aerogroup1992.com/" target="_blank" id="logoLink"><img src="img/aerog-logo.png" alt="Aero Group 1992 Logo" id="logo"></a>
@@ -54,9 +54,6 @@
     <!-- Main Container -->
     <div class="container">
       <div class="head-con">
-        <a class="goBack" href="./">
-          <i class="fas fa-arrow-left" style="font-size: 22px;"></i>
-        </a>
         <div style="float: left;">
           <i class="fas fa-laptop-code" style="color: rgb(126, 126, 126); font-size: 40px; padding: 12px;"></i>
         </div>
@@ -68,7 +65,6 @@
         <a class="refresh" onclick="location.reload(true)">
           <i class="fas fa-sync-alt" style="font-size: 22px;"></i>
         </a>
-        
       </div>
 
       <div class="devi-block">
@@ -84,10 +80,13 @@
         </div>
       </div>
 
-      <!-- Temperature & Humidity Graph -->
+      <!-- Temperature Graph -->
       <div>
-        <canvas id="temperatureChart"></canvas>
+        <canvas id="temperatureChart"  width="800px" height="400px"></canvas>
       </div>
+
+      <!-- Humidity Graph -->
+      
 
       <!-- Export to Excel -->
       <div class="export-con">
@@ -104,7 +103,9 @@
           </tr>
         </table>
       </div>
-
+      <button onclick="dayData()">Day Data</button> 
+      <button onclick="weekData()">Week Data</button> 
+      <button onclick="monthData()">Month Data</button> 
     </div>
 
 
@@ -156,5 +157,6 @@
         });
       });
     </script>
+    
   </body>
 </html>
