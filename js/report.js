@@ -1,6 +1,12 @@
 const dbRef = firebase.database().ref();
-let db_devices = "devices_sensor"
-let device = "D02";
+
+const db_devices = "devices_sensor"
+
+//Get url parameter (the device name)
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const device = urlParams.get('device');
+
 dbRef.child(db_devices).child(device).get().then((snapshot) => {
     if (snapshot.exists()) {
         let deviObj = snapshot.val();

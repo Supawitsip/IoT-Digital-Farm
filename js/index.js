@@ -12,7 +12,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     // Get the lastest time (of D02)
     n = Object.keys(deviObj.D02).length;
     last_element = Object.keys(deviObj.D02)[n-1];
-    last_time = deviObj.D02[last_element].timeUpdate.timestamp;
+    last_time = deviObj.D02[last_element].timestamp;
     document.getElementById('lastTime').innerText = last_time;
 
     // Get all devices info and display it
@@ -23,10 +23,11 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
       let d_name = deviObj[d][last_samp].deviceNameID;
       let humi = deviObj[d][last_samp].humidity;
       let temp = deviObj[d][last_samp].temperature;
-      console.log(d_name + ': ' + humi + ', ' + temp);
+      console.log(d_name + ': ' + temp + ', ' + humi);
 
       let devi_info = document.createElement('div');
       devi_info.setAttribute('class', 'devi-block');
+      devi_info.setAttribute('name', d_name);
       devi_info.innerHTML = 
                           `<div class="devi-head">
                             <i class="fas fa-laptop-code"></i>
@@ -45,7 +46,26 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
                             </div>
                           </div>`
       document.getElementById("devices-con").appendChild(devi_info);
-    }
+      
+    };
+
+    // Add event listener
+
+    var deviBlock = document.querySelectorAll('.devi-block');
+    console.log(deviBlock);
+    for (clicked of deviBlock) {
+      clicked.addEventListener('click', function() {
+          let thisName = this.getAttribute("name");
+          location.href=`/report.html?device=${thisName}`;
+      });
+  };
+    // for ( var i = 0; i < num_of_devi; i++ ) {
+    //   click_devi.addEventListener("click", e => {
+    //       //window.location.href = `/report.html?${Object.keys(deviObj)[i]}`;
+    //       console.log('add event listener');
+    //       console.log(`/report.html?${Object.keys(deviObj)[i]}`);
+    //   });
+    // };
 
   } else {
     console.log("No data available");
