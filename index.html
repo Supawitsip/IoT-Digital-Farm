@@ -7,9 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script> 
     <title>Digital Farming</title>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/navbar.css" rel="stylesheet">
@@ -57,7 +58,7 @@
           <i class="fas fa-clock" style="color: rgb(126, 126, 126); font-size: 14px;"></i>
         </div>
         <div class="head-con-text" id="lastTime"></div>
-        <a class="refresh" href="../">
+        <a class="refresh" href="/">
           <i class="fas fa-sync-alt" style="font-size: 22px;"></i>
         </a>
       </div>
@@ -87,15 +88,15 @@
       </div>
 
     </div>
+    
+    
   </div>
-
-
 
 
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
       https://firebase.google.com/docs/web/setup#available-libraries -->
-      <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-analytics.js"></script>
 
     <script>
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -114,7 +115,7 @@
       firebase.analytics();
       const db = firebase.database();
     </script>
-
+    
     <script src="js/index.js"></script>
     <script>
       function resNavBar() {
@@ -126,11 +127,12 @@
         }
       }
     </script>
-    <script>
-      let device = document.querySelector('#devices-con')
-      device.addEventListener("click", e => {
-        window.location.href = "../report.html";
-      });
-    </script>
+<!--
+    <div>
+      <canvas id="myChart"></canvas>
+    </div>
+    <script src="js/chart.js"></script>-->
+
+
   </body>
 </html>

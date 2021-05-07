@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <title>Digital Farming</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script> 
 
@@ -27,8 +28,6 @@
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
 
     <!-- Auto Refresh Webpage Script -->
     <script type = "text/JavaScript">
@@ -62,7 +61,7 @@
           <i class="fas fa-clock" style="color: rgb(126, 126, 126); font-size: 14px;padding-left: 10px;"></i>
         </div>
         <div class="head-con-text" id="lastTime">Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</div>
-        <a class="refresh" href="../report.html">
+        <a class="refresh" href="/report.html">
           <i class="fas fa-sync-alt" style="font-size: 22px;"></i>
         </a>
       </div>
@@ -81,76 +80,9 @@
       </div>
 
       <!-- Temperature Graph -->
-      <div>
-        <canvas id="temperatureChart"></canvas>
-      </div>
-
-      <!-- Humidity Graph -->
-      <div>
-        <canvas id="humidityChart"></canvas>
-      </div>
-
-      <!-- Export to Excel -->
-      <div class="export-con">
-        <i class="far fa-file-excel excel-icon"></i>
-        <div class="ex-title">3 Months Data Collection Table</div>
-        <button class="ex-btn" id="ex-btn">Excel</button>
-        <table class="table2excel" id="table2excel" style="display: none;" data-cols-width="20,50,20,20">
-          <tr>
-            <th>Device Name</th>
-            <th>Date and Time</th>
-            <th>Temperature (°C)</th>
-            <th>Humidity (%RH)</th>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
-          </tr>
-        </table>
-      </div>
-
-    </div>
-
-
+      
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-analytics.js"></script>
+
     <script>
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
@@ -180,22 +112,17 @@
         }
       }
     </script>
+    <div>
+      <canvas id="temperatureChart"></canvas>
+    </div>
     
+    <!-- Humidity Graph -->
+    <div>
+      <canvas id="humidityChart"></canvas>
+    </div>
     <script src="js/chart.js"></script>
+    <!-- Export to Excel -->
 
-    <!-- Export HTML Table to Excel Script -->
-    <script>
-      let button = document.querySelector("#ex-btn");
-
-      button.addEventListener("click", e => {
-        let table = document.querySelector("#table2excel");
-        TableToExcel.convert(table, {
-          name: "3months-report.xlsx",
-          sheet: {
-            name: "Sheet 1"
-          }
-        });
-      });
-    </script>
+  </div>
   </body>
 </html>
