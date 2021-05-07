@@ -201,7 +201,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
               type: 'linear',
               position: 'left',
               ticks: {
-                suggestedMin: 20,
+                suggestedMin: 0,
                 suggestedMax: 50, 
               },
               scaleLabel: {
