@@ -45,7 +45,7 @@
       <a href="/" id="digiFarming">IoT Digital Farming</a>
       <a href="#monitor" id="monitoring" class="active">Monitoring</a>
       <a href="#" class="angleLeft" style="float: right; margin: 26px 0;"><i class="fas fa-angle-left"></i></a>
-      <a href="#device" id="device">D02</a>
+      <a href="#device" id="device"></a>
       <a href="javascript:void(0);" class="icon" onclick="resNavBar()">
         <i class="fa fa-bars"></i>
       </a>
@@ -57,11 +57,11 @@
         <div style="float: left;">
           <i class="fas fa-laptop-code" style="color: rgb(126, 126, 126); font-size: 40px; padding: 12px;"></i>
         </div>
-        <div class="head-con-text" id="dName">D02</div>
+        <div class="head-con-text" id="dName"></div>
         <div style="float: left; padding: 20px 0;">
           <i class="fas fa-clock" style="color: rgb(126, 126, 126); font-size: 14px;padding-left: 10px;"></i>
         </div>
-        <div class="head-con-text" id="lastTime">Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</div>
+        <div class="head-con-text" id="lastTime"></div>
         <a class="refresh" href="../report.html">
           <i class="fas fa-sync-alt" style="font-size: 22px;"></i>
         </a>
@@ -70,12 +70,12 @@
       <div class="devi-block">
         <div class="temp-con">
           <div class="temp-text">
-            <p class="temp"><i class="fas fa-thermometer-half"></i>32.5 °C</p>
+            <p class="temp"><i class="fas fa-thermometer-half"></i></p>
           </div>
         </div>
         <div class="humi-con">
           <div class="humi-text">
-            <p class="humi"><i class="fas fa-tint"></i>36.7 %</p>
+            <p class="humi"><i class="fas fa-tint"></i></p>
           </div>
         </div>
       </div>
@@ -95,54 +95,13 @@
         <i class="far fa-file-excel excel-icon"></i>
         <div class="ex-title">3 Months Data Collection Table</div>
         <button class="ex-btn" id="ex-btn">Excel</button>
-        <table class="table2excel" id="table2excel" style="display: none;" data-cols-width="20,50,20,20">
+        <table class="table2excel" id="table2excel" style="display: none;" data-cols-width="10,20,50,20,20">
           <tr>
+            <th>No.</th>
             <th>Device Name</th>
             <th>Date and Time</th>
             <th>Temperature (°C)</th>
             <th>Humidity (%RH)</th>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
-          </tr>
-          <tr>
-            <td>D02</td>
-            <td>Thu May 06 2021 13:10:30 GMT+0700 (Indochina Time)</td>
-            <td>31.2</td>
-            <td>61.8</td>
           </tr>
         </table>
       </div>
@@ -169,7 +128,8 @@
       const db = firebase.database();
     </script>
     
-    <script src="js/index.js"></script>
+    <!-- <script src="js/index.js"></script> -->
+    <script src="js/report.js"></script>
     <script>
       function resNavBar() {
         var x = document.getElementById("myTopnav");
