@@ -41,7 +41,14 @@ dbRef.child(db_devices).child(device).get().then((snapshot) => {
             let dname = deviObj[element].deviceNameID;
             let dtemp = deviObj[element].temperature;
             let dhumi = deviObj[element].humidity;
-            let dtime = deviObj[element].timestamp;
+            let dtime = (deviObj[element].timestamp)/1000;
+            let samp_date = new Date(dtime * 1000);
+            dtime = samp_date.getDate()+
+            "/"+(samp_date.getMonth()+1)+
+            "/"+samp_date.getFullYear()+
+            " "+samp_date.getHours()+
+            ":"+samp_date.getMinutes()+
+            ":"+samp_date.getSeconds();
             let row = document.createElement('tr');
             let num = document.createElement('td');
             num.innerText = no;
