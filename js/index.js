@@ -10,10 +10,9 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     document.getElementById('allDevices').innerText = num_of_devi + " devices";
 
     // Get the lastest time (of D02)
-    n = Object.keys(deviObj.D02).length;
-    last_element = Object.keys(deviObj.D02)[n-1];
-    last_time = deviObj.D02[last_element].timestamp;
-    document.getElementById('lastTime').innerText = last_time;
+    let current = new Date();
+    console.log(current.toLocaleString());
+    document.getElementById('lastTime').innerText = current.toLocaleString();
 
     // Get all devices info and display it
     for (d in deviObj) {
@@ -49,8 +48,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
       
     };
 
-    // Add event listener
-
+    // Add event listener to device-block
     var deviBlock = document.querySelectorAll('.devi-block');
     console.log(deviBlock);
     for (clicked of deviBlock) {
@@ -59,13 +57,6 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
           location.href=`/report.html?device=${thisName}`;
       });
   };
-    // for ( var i = 0; i < num_of_devi; i++ ) {
-    //   click_devi.addEventListener("click", e => {
-    //       //window.location.href = `/report.html?${Object.keys(deviObj)[i]}`;
-    //       console.log('add event listener');
-    //       console.log(`/report.html?${Object.keys(deviObj)[i]}`);
-    //   });
-    // };
 
   } else {
     console.log("No data available");
