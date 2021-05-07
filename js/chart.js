@@ -87,7 +87,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     }
     
     labels = date_data1_D;
-    tem_data = temp_data7_D;
+    tem_data = temp_data1_D;
     humi_data = humi_data1_D;
     // D01
     var ctx = document.getElementById('temperatureChart').getContext('2d');
