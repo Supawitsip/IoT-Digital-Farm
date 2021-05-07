@@ -12,6 +12,21 @@
     padding: 20px;
     float: left;
 }
+#allDevices {
+    font-size: 22px;
+    font-weight: bold;
+    padding: 18px 16px;
+}
+.connectedIcon {
+    color: #757575;
+    font-size: 42px;
+    float: left;
+    padding: 12px 0;
+}
+.clockIcon {
+    float: left; 
+    padding: 20px 0;
+}
 .refresh {
     color: #E35F43;
     float: right;
@@ -39,7 +54,7 @@
 .devi-block:hover {
     opacity: 0.9;
     cursor: pointer;
-    /* box-shadow: 5px 5px 34px 1px #616161; */
+    box-shadow: 5px 5px 34px 1px #646464;
 }
 
 .fa-laptop-code {

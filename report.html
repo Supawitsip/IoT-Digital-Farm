@@ -30,15 +30,9 @@
 
     <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
 
-    <!-- Auto Refresh Webpage Script -->
-    <script type = "text/JavaScript">
-         function AutoRefresh( t ) {
-            setTimeout("location.reload(true);", t);
-         }
-   </script>
   </head>
 
-  <body onload = "JavaScript:AutoRefresh(45000);">
+  <body>
     <!-- Navigation Bar -->
     <div class="topnav" id="myTopnav">
       <a href="https://www.aerogroup1992.com/" target="_blank" id="logoLink"><img src="img/aerog-logo.png" alt="Aero Group 1992 Logo" id="logo"></a>
@@ -79,17 +73,14 @@
           </div>
         </div>
       </div>
-      <div>
-        <button onclick="dayData()">Day Data</button> 
-        <button onclick="weekData()">Week Data</button> 
-        <button onclick="monthData()">Month Data</button>
-      </div>
-      <!-- Temperature Graph -->
+
+      <!-- Analytics Graph -->
+      <button onclick="dayData()">Day Data</button> 
+      <button onclick="weekData()">Week Data</button> 
+      <button onclick="monthData()">Month Data</button> 
       <div>
         <canvas id="temperatureChart"  width="800px" height="400px"></canvas>
       </div>
-
-      <!-- Humidity Graph -->
       
 
       <!-- Export to Excel -->
@@ -107,8 +98,6 @@
           </tr>
         </table>
       </div>
-      
-      
     </div>
 
 
