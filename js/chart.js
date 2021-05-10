@@ -45,7 +45,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
           " "+date.getHours()+
           ":"+date.getMinutes()+
           ":"+date.getSeconds();
-          i += 1
+      i += 1;
       if (i >= day_samling) {
         temp_data1_D.push(deviObj[device][all_samp].temperature);
         date_data1_D.push(currentDateTimeDevice);
@@ -67,6 +67,11 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         temp_data30_D.push(deviObj[device][all_samp].temperature);
         date_data30_D.push(currentDateTimeDevice);
         humi_data30_D.push(deviObj[device][all_samp].humidity);
+      }
+
+      if (i > 129600) {
+        console.log("Some of the data was older than 3 months, so it has been deleted.");
+        dbRef.child("devices_sensor").child(device).child(d).remove();
       }
     }
    // console.log(temp_data1_D.length + " length");
