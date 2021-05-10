@@ -75,15 +75,17 @@
       </div>
 
       <!-- Analytics Graph -->
-        <button onclick="dayData()">Day Data</button> 
-        <button onclick="weekData()">Week Data</button> 
-        <button onclick="monthData()">Month Data</button> 
-
-        Date:<input id="date" type="date" name="task_date" />
+      <div class="timeSet">
+        <button id="calc" class="getTimeBtn">Get Time</button>
+        <input id="date" type="date" name="task_date" /><label for="date">Date:</label>
         <!--Time:<input id="time" type="time" name="task_time" /> -->
-        <button id="calc">Get Time</button>
-      <div>
+        
+        <button onclick="monthData()" class="timeDuration" id="monthDuration">Month Data</button>
+        <button onclick="weekData()" class="timeDuration" id="weekDuration">Week Data</button> 
+        <button onclick="dayData()" class="timeDuration" id="dayDuration">Day Data</button> 
+      </div>
 
+      <div>
         <canvas id="temperatureChart"  width="800px" height="400px"></canvas>
       </div>
       

@@ -147,7 +147,7 @@
     color: white;
 }
 
-.timeDuration {
+.timeDuration, .getTimeBtn {
     float: right;
     font-size: 16px;
     padding: 4px 12px;
@@ -156,6 +156,29 @@
     background-color: white;
     border: 1px solid #E35F43;
     border-radius: 3px;
+}
+.timeSet input {
+    float: right;
+    font-size: 16px;
+    padding: 3px 10px;
+    margin: 12px 4px;
+    color: #E35F43;
+    border: 1px solid #E35F43;
+    border-radius: 3px;
+} 
+.timeSet label {
+    float: right;
+    font-size: 16px;
+    padding: 2px 2px;
+    margin: 14px 4px 14px 18px;
+    color: #E35F43;
+} 
+.getTime {
+    width: fit-content;
+}
+.getTimeBtn:hover {
+    color: white;
+    background-color: #E35F43;
 }
 
 #dayDuration {
@@ -214,7 +237,13 @@
     .timeDuration {
         font-size: 14px;
         width: 30%;
-        margin: 8px 4px;
-        color: #E35F43;
+        margin: 6px 4px 10px 4px;
+    }
+    .timeSet label {
+        display: none;
+    }
+    .timeSet input, #calc {
+        font-size: 14px;
+        margin: 6px 4px;
     }
 }
