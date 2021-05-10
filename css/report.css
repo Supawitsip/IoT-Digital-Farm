@@ -153,7 +153,7 @@
 }
 .btnTime {
     width: fit-content;
-    float: right;
+    float: left;
 }
 .timeDuration, .getTimeBtn {
     font-size: 16px;
@@ -244,4 +244,5 @@
         font-size: 14px;
         margin: 6px 4px;
     }
+    .timeSet input {background-color: white;}
 }
