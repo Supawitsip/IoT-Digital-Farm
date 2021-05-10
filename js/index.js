@@ -24,19 +24,19 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     for (d in deviObj) {
       n_sampling = Object.keys(deviObj[d]).length;
       last_samp = Object.keys(deviObj[d])[n_sampling-1];
-      console.log(n_sampling);
       let d_name = deviObj[d][last_samp].deviceNameID;
       let humi = deviObj[d][last_samp].humidity;
       let temp = deviObj[d][last_samp].temperature;
+      console.log(d_name + ' sampling: ' + n_sampling);
       console.log(d_name + ': ' + temp + ', ' + humi);
 
       let devi_info = document.createElement('div');
       devi_info.setAttribute('class', 'devi-block');
-      devi_info.setAttribute('name', d_name);
       devi_info.innerHTML = 
                           `<div class="devi-head">
                             <i class="fas fa-laptop-code"></i>
-                            <div>${d_name}</div>
+                            <div class="device-name">${d_name}</div>
+                            <i class="fas fa-trash-alt delBtn" dname="${d_name}"></i>
                           </div>
                           <div class="temp-con">
                             <div class="temp-text">
@@ -55,14 +55,28 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     };
 
     // Add event listener to device-block
-    var deviBlock = document.querySelectorAll('.devi-block');
-    console.log(deviBlock);
-    for (clicked of deviBlock) {
+    var deviName = document.querySelectorAll('.device-name');
+    for (clicked of deviName) {
       clicked.addEventListener('click', function() {
           let thisName = this.getAttribute("name");
           location.href=`/report.html?device=${thisName}`;
       });
-  };
+    };
+    // Delete device
+    var delBtn = document.querySelectorAll('.delBtn');
+    for (clicked of delBtn) {
+      clicked.addEventListener('click', function() {
+          let dname = this.getAttribute("dname");
+          let conf = confirm(`Are you sure you want to remove ${dname}?`);
+          if (conf == true) {
+            dbRef.child("devices_sensor").child(dname).remove().catch((error) => {
+              console.error(error);
+            });
+            alert(`Remove ${dname} successfully`);
+            location.reload(true);;
+          }
+      });
+    };
 
   } else {
     console.log("No data available");
