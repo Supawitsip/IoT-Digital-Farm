@@ -72,7 +72,7 @@
     display: inline-block;
     font-size: 30px;
     color: #E35F43;
-    padding: 16px;
+    padding: 16px 30px 16px 20px;
 }
 .device-name:hover {
     opacity: 0.9;

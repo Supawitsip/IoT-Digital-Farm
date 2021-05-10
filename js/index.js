@@ -35,7 +35,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
       devi_info.innerHTML = 
                           `<div class="devi-head">
                             <i class="fas fa-laptop-code"></i>
-                            <div class="device-name">${d_name}</div>
+                            <div class="device-name" dname="${d_name}">${d_name}</div>
                             <i class="fas fa-trash-alt delBtn" dname="${d_name}"></i>
                           </div>
                           <div class="temp-con">
@@ -58,7 +58,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     var deviName = document.querySelectorAll('.device-name');
     for (clicked of deviName) {
       clicked.addEventListener('click', function() {
-          let thisName = this.getAttribute("name");
+          let thisName = this.getAttribute("dname");
           location.href=`/report.html?device=${thisName}`;
       });
     };
