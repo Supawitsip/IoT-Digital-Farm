@@ -62,7 +62,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
           " "+date.getHours()+
           ":"+date.getMinutes()+
           ":"+date.getSeconds();
-          i += 1
+      i += 1;
       if (i >= day_samling) {
         temp_data1_D.push(deviObj[device][all_samp].temperature);
         date_data1_D.push(currentDateTimeDevice);
@@ -85,8 +85,55 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         date_data30_D.push(currentDateTimeDevice);
         humi_data30_D.push(deviObj[device][all_samp].humidity);
       }
-    } 
+
+      if (i > 129600) {
+        console.log("Some of the data was older than 3 months, so it has been deleted.");
+        dbRef.child("devices_sensor").child(device).child(d).remove();
+      }
+    }
+   // console.log(temp_data1_D.length + " length");
+    //console.log(time_aryD01);
+    /*temp_data30_D = [];
+    date_data30_D = []; 
+    humi_data30_D = [];
+    temp_data1_D = [];
+    date_data1_D = [];
+    humi_data1_D = [];
+    temp_data7_D = [];
+    date_data7_D = [];
+    humi_data7_D = [];
+    let sample = 43200;
     
+
+    if (tem_aryD01.length > 0 ) {
+      for(let j = 0; j <= sample; j++){
+        
+        //console.log(timestamp);
+        
+        if(j <= 1440){
+          temp_data30_D.push(tem_aryD01[tem_aryD01.length-sample+j-1]);
+          date_data30_D.push(time_aryD01[time_aryD01.length-sample+j-1]);
+          humi_data30_D.push(humi_aryD01[tem_aryD01.length-sample+j-1]);
+         c
+          temp_data7_D.push(tem_aryD01[tem_aryD01.length-sample+j-1+33120]);
+          date_data7_D.push(time_aryD01[time_aryD01.length-sample+j-1+33120]);
+          humi_data7_D.push(humi_aryD01[tem_aryD01.length-sample+j-1+33120]);
+        } else if (j <= 10080) {
+          temp_data30_D.push(tem_aryD01[tem_aryD01.length-sample+j-1]);
+          date_data30_D.push(time_aryD01[time_aryD01.length-sample+j-1]);
+          humi_data30_D.push(humi_aryD01[tem_aryD01.length-sample+j-1]);
+          temp_data7_D.push(tem_aryD01[tem_aryD01.length-sample+j-1+33120]);
+          date_data7_D.push(time_aryD01[time_aryD01.length-sample+j-1+33120]);
+          humi_data7_D.push(humi_aryD01[tem_aryD01.length-sample+j-1+33120]);
+        }else if (j <= 43200) {
+          temp_data30_D.push(tem_aryD01[tem_aryD01.length-sample+j-1]);
+          date_data30_D.push(time_aryD01[time_aryD01.length-sample+j-1]);
+          humi_data30_D.push(humi_aryD01[tem_aryD01.length-sample+j-1]);
+        }
+        
+      }
+    }*/
+
     labels = date_data1_D;
     tem_data = temp_data1_D;
     humi_data = humi_data1_D;
