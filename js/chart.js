@@ -29,7 +29,25 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     temp_data30_D = [];
     date_data30_D = []; 
     humi_data30_D = [];
-
+    // when data not enought
+    console.log(n_sampling);
+    if (n_sampling < 43200) {
+      for (; n_sampling < 43200; n_sampling++) {
+        if (n_sampling < 10080) { //week
+          temp_data7_D.push(NaN);
+          date_data7_D.push(NaN);
+          humi_data7_D.push(NaN);
+          temp_data30_D.push(NaN);
+          date_data30_D.push(NaN);
+          humi_data30_D.push(NaN);
+        } else {
+          temp_data30_D.push(NaN);
+          date_data30_D.push(NaN);
+          humi_data30_D.push(NaN);
+        }  
+      }   
+    }
+    
     let i = 0;
     for (d in deviObj[device]) {
       n_sampling = Object.keys(deviObj[device]).length;
@@ -68,7 +86,9 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         date_data30_D.push(currentDateTimeDevice);
         humi_data30_D.push(deviObj[device][all_samp].humidity);
       }
-    }
+    } 
+    
+    
    // console.log(temp_data1_D.length + " length");
     //console.log(time_aryD01);
     /*temp_data30_D = [];
