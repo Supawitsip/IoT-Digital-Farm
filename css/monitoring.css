@@ -169,4 +169,8 @@
     .temp i, .humi i {
         font-size: 30px;
     }
+    .fa-trash-alt {
+        font-size: 20px;
+        padding: 16px 20px;
+    }
 }
