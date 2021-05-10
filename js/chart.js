@@ -220,3 +220,12 @@ function monthData(){
   myChart.data.labels = date_data30_D;
   myChart.update();
 }
+
+var calc = document.getElementById("calc")
+
+calc.addEventListener("click", function() {
+    var date = document.getElementById("date").value;
+        //time = document.getElementById("time").value
+
+    console.log(new Date(date));
+})
