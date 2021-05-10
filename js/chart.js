@@ -21,7 +21,7 @@ if (document.documentElement.clientWidth < 900) {
   //myChart.options.scales.yAxes[1].ticks.maxTicksLimit = 6;
   //console.log("yees");
   maxTicksLimitX = 10;
-  maxTicksLimitY = 6;
+  maxTicksLimitY = 5;
   font_x_size = 10;
   font_y_size = 10;
 }
