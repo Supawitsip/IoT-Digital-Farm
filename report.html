@@ -49,11 +49,11 @@
     <div class="container">
       <div class="head-con">
         <div style="float: left;">
-          <i class="fas fa-laptop-code" style="color: rgb(126, 126, 126); font-size: 40px; padding: 12px;"></i>
+          <i class="fas fa-laptop-code" style="color: rgb(126, 126, 126);"></i>
         </div>
         <div class="head-con-text" id="dName"></div>
-        <div style="float: left; padding: 20px 0;">
-          <i class="fas fa-clock" style="color: rgb(126, 126, 126); font-size: 14px;padding-left: 10px;"></i>
+        <div style="float: left;" class="clockIcon">
+          <i class="fas fa-clock" style="color: rgb(126, 126, 126);"></i>
         </div>
         <div class="head-con-text" id="lastTime"></div>
         <a class="refresh" onclick="location.reload(true)">
@@ -75,9 +75,9 @@
       </div>
 
       <!-- Analytics Graph -->
-      <button onclick="dayData()">Day Data</button> 
-      <button onclick="weekData()">Week Data</button> 
-      <button onclick="monthData()">Month Data</button> 
+      <button onclick="weekData()" class="timeDuration" id="weekDuration">Week Data</button> 
+      <button onclick="monthData()" class="timeDuration" id="monthDuration">Month Data</button> 
+      <button onclick="dayData()" class="timeDuration" id="dayDuration">Day Data</button> 
       <div>
         <canvas id="temperatureChart"  width="800px" height="400px"></canvas>
       </div>

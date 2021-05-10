@@ -113,3 +113,47 @@
     font-size: 54px;
     color: #EBECFB;
 }
+
+@media screen and (max-width: 600px) {
+    .head-con {
+        margin: 4px 0;
+    }
+    #allDevices {
+        padding: 18px 10px;
+        font-size: 18px;
+    }
+    #lastTime {
+        padding: 18px 10px;
+        font-size: 18px;
+    }
+    .clockIcon {
+        padding: 14px 0;
+    }
+    .connectedIcon {
+        padding: 8px 0;
+    }
+    .refresh {
+        padding: 10px 20px;
+    }
+    .devices-con {
+        margin: 12px 0;
+    }
+    .fa-laptop-code {
+        font-size: 22px;
+        padding: 16px;
+    }
+    .devi-head div {
+        font-size: 22px;
+        color: #E35F43;
+        padding: 12px;
+    }
+    .temp-title, .humi-title {
+        font-size: 12px;
+    }
+    .temp, .humi {
+        font-size: 30px;
+    }
+    .temp i, .humi i {
+        font-size: 30px;
+    }
+}
