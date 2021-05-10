@@ -201,6 +201,16 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
 
 
 function dayData(){
+  let dayBtn = document.getElementById("dayDuration");
+  let weekBtn = document.getElementById("weekDuration");
+  let monthBtn = document.getElementById("monthDuration");
+  dayBtn.style.backgroundColor = "#E35F43";
+  dayBtn.style.color = "white";
+  weekBtn.style.backgroundColor = "white";
+  weekBtn.style.color = "#E35F43";
+  monthBtn.style.backgroundColor = "white";
+  monthBtn.style.color = "#E35F43";
+
   myChart.data.datasets[0].data = temp_data1_D;
   myChart.data.datasets[1].data = humi_data1_D;
   myChart.data.labels = date_data1_D;
@@ -208,6 +218,16 @@ function dayData(){
 }
 
 function weekData(){
+  let dayBtn = document.getElementById("dayDuration");
+  let weekBtn = document.getElementById("weekDuration");
+  let monthBtn = document.getElementById("monthDuration");
+  weekBtn.style.backgroundColor = "#E35F43";
+  weekBtn.style.color = "white";
+  dayBtn.style.backgroundColor = "white";
+  dayBtn.style.color = "#E35F43";
+  monthBtn.style.backgroundColor = "white";
+  monthBtn.style.color = "#E35F43";
+
   myChart.data.datasets[0].data = temp_data7_D;
   myChart.data.datasets[1].data = humi_data7_D;
   myChart.data.labels = date_data7_D;
@@ -215,6 +235,16 @@ function weekData(){
 }
 
 function monthData(){
+  let dayBtn = document.getElementById("dayDuration");
+  let weekBtn = document.getElementById("weekDuration");
+  let monthBtn = document.getElementById("monthDuration");
+  monthBtn.style.backgroundColor = "#E35F43";
+  monthBtn.style.color = "white";
+  weekBtn.style.backgroundColor = "white";
+  weekBtn.style.color = "#E35F43";
+  dayBtn.style.backgroundColor = "white";
+  dayBtn.style.color = "#E35F43";
+
   myChart.data.datasets[0].data = temp_data30_D;
   myChart.data.datasets[1].data = humi_data30_D;
   myChart.data.labels = date_data30_D;
