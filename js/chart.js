@@ -11,8 +11,18 @@ var date_data30_D;
 var humi_data30_D;
 var humi_data;
 var tem_data;
+var maxTicksLimit = 20;
+var font_x_size = 16;
+var font_y_size = 16;
 //console.log('name: ' + device);
-
+if (document.documentElement.clientWidth < 900) {
+  //myChart.options.scales.yAxes[0].ticks.maxTicksLimit = 6;
+  //myChart.options.scales.yAxes[1].ticks.maxTicksLimit = 6;
+  //console.log("yees");
+  maxTicksLimit = 10;
+  font_x_size = 10;
+  font_y_size = 10;
+}
 dbRef.child("devices_sensor").get().then((snapshot) => {
   if (snapshot.exists()) {
     let deviObj = snapshot.val();
@@ -104,10 +114,11 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         datasets: [{ 
             data: tem_data,
             label: `Temperature_${device}`,
+            indexLabelFontSize: 10,
             borderColor: "#ec7777",
             backgroundColor: "#7bb6dd",
             fill: false,
-            yAxisID: 'A',
+            yAxisID: 'A', 
             pointRadius: 0,
             borderWidth: 2
           }, { 
@@ -137,37 +148,50 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
               type: 'linear',
               position: 'left',
               ticks: {
-                suggestedMin: 15,
-                suggestedMax: 45, 
+                suggestedMin: 10,
+                suggestedMax: 50, 
+                //maxTicksLimit: 6,
+                fontSize: font_y_size //10
               },
               scaleLabel: {
                 display: true,
-                labelString: 'Temperature(°C)'
+                labelString: 'Temperature (°C)',
+                fontSize: font_y_size
               },
             }, {
               id: 'B',
               type: 'linear',
               position: 'right',
               ticks: {
-                suggestedMin: 30,
-                suggestedMax: 80, 
+                suggestedMin: 20,
+                suggestedMax: 100, 
+                //maxTicksLimit: 6,
+                fontSize: font_y_size
               },
               scaleLabel: {
                 display: true,
-                labelString: 'Humidity(%RH)'
+                labelString: 'Humidity (%RH)',
+                fontSize: font_y_size
               }          
             }],
             xAxes: [{
               //type: 'time',
               ticks: {
                 autoSkip: true,
-                maxTicksLimit: 20
-              }
+                maxTicksLimit: maxTicksLimit,
+                fontSize: font_x_size
+              },
             }]
           },
         }
     });
-
+    /*if (document.documentElement.clientWidth < 900) {
+      myChart.options.scales.yAxes[0].ticks.maxTicksLimit = 6;
+      myChart.options.scales.yAxes[1].ticks.maxTicksLimit = 6;
+      myChart.update();
+      //console.log("yees");
+      
+    }*/
 
   } else {
     console.log("No data available");
