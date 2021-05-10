@@ -147,8 +147,15 @@
     color: white;
 }
 
-.timeDuration {
+.calendarTime {
+    width: fit-content;
     float: right;
+}
+.btnTime {
+    width: fit-content;
+    float: right;
+}
+.timeDuration, .getTimeBtn {
     font-size: 16px;
     padding: 4px 12px;
     margin: 12px 4px;
@@ -156,6 +163,24 @@
     background-color: white;
     border: 1px solid #E35F43;
     border-radius: 3px;
+}
+.timeSet input {
+    font-size: 16px;
+    padding: 3px 10px;
+    margin: 12px 4px;
+    color: #E35F43;
+    border: 1px solid #E35F43;
+    border-radius: 3px;
+} 
+.timeSet label {
+    font-size: 16px;
+    padding: 2px 2px;
+    margin: 14px 4px 14px 18px;
+    color: #E35F43;
+} 
+.getTimeBtn:hover {
+    color: white;
+    background-color: #E35F43;
 }
 
 #dayDuration {
@@ -213,8 +238,10 @@
     }
     .timeDuration {
         font-size: 14px;
-        width: 30%;
-        margin: 8px 4px;
-        color: #E35F43;
+        margin: 6px 4px 10px 4px;
+    }
+    .timeSet input, .timeSet label, #calc {
+        font-size: 14px;
+        margin: 6px 4px;
     }
 }
