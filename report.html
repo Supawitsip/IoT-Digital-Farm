@@ -19,17 +19,17 @@
 
 
     <script src="ie-emulation-modes-warning.js"></script>
-
- 
     <link href="carousel.css" rel="stylesheet">
-
     <script src="https://kit.fontawesome.com/b5b314d8c8.js" crossorigin="anonymous"></script>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
-
     <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
+    <script src="path/to/chartjs/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="path/to/chartjs-plugin-zoom/dist/chartjs-plugin-zoom.min.js"></script>
 
+    
   </head>
 
   <body>
@@ -83,9 +83,9 @@
           <button id="calc" class="getTimeBtn">Get Time</button>
         </div>
         <div class="btnTime">
-          <button onclick="monthData()" class="timeDuration" id="monthDuration">Month Data</button>
-          <button onclick="weekData()" class="timeDuration" id="weekDuration">Week Data</button> 
-          <button onclick="dayData()" class="timeDuration" id="dayDuration">Day Data</button> 
+          <button onclick="monthData()" class="timeDuration" id="monthDuration">1 m</button>
+          <button onclick="weekData()" class="timeDuration" id="weekDuration">1 w</button> 
+          <button onclick="dayData()" class="timeDuration" id="dayDuration">1 d</button> 
         </div>
       </div>
 
