@@ -1,51 +1,79 @@
 var labels;
 var myChart;
-var temp_data30_D01;
-var date_data30_D01;
-var humi_data30_D01;
 var temp_data1_D;
 var date_data1_D; 
 var humi_data1_D;
 var temp_data7_D;
 var date_data7_D;
 var humi_data7_D;
+var temp_data30_D;
+var date_data30_D; 
+var humi_data30_D;
 var humi_data;
 var tem_data;
-console.log('name: ' + device);
+//console.log('name: ' + device);
 
 dbRef.child("devices_sensor").get().then((snapshot) => {
   if (snapshot.exists()) {
     let deviObj = snapshot.val();
-    var tem_aryD01 = [];
-    //let tem_aryD02 = [];
-    var humi_aryD01 = [];
-   //let humi_aryD02 = [];
-    var time_aryD01 = [];
-    //let time_aryD02 = [];
+    //let tem_aryD01 = [];
+    //let humi_aryD01 = [];
+    //let time_aryD01 = [];
+    
+    temp_data1_D = [];
+    date_data1_D = [];
+    humi_data1_D = [];
+    temp_data7_D = [];
+    date_data7_D = [];
+    humi_data7_D = [];
+    temp_data30_D = [];
+    date_data30_D = []; 
+    humi_data30_D = [];
+
     let i = 0;
     for (d in deviObj[device]) {
       n_sampling = Object.keys(deviObj[device]).length;
+      let day_samling = n_sampling - 1440;
+      let week_sampling = n_sampling - 10080;
+      let month_sampling = n_sampling - 43200;
       all_samp = Object.keys(deviObj[device])[i];
-
-      let timestamp = deviObj[device][all_samp].timestamp/1000;
-      
+      let timestamp = deviObj[device][all_samp].timestamp/1000;   
       let date = new Date(timestamp * 1000);
-      let currentDateTimeD01 = date.getDate()+
+      let currentDateTimeDevice = date.getDate()+
           "/"+(date.getMonth()+1)+
           "/"+date.getFullYear()+
           " "+date.getHours()+
           ":"+date.getMinutes()+
           ":"+date.getSeconds();
-      i += 1
-     // console.log(currentDateTimeD01);
-      tem_aryD01.push(deviObj[device][all_samp].temperature);
-      time_aryD01.push(currentDateTimeD01);
-      humi_aryD01.push(deviObj[device][all_samp].humidity);
+          i += 1
+      if (i >= day_samling) {
+        temp_data1_D.push(deviObj[device][all_samp].temperature);
+        date_data1_D.push(currentDateTimeDevice);
+        humi_data1_D.push(deviObj[device][all_samp].humidity);
+        temp_data7_D.push(deviObj[device][all_samp].temperature);
+        date_data7_D.push(currentDateTimeDevice);
+        humi_data7_D.push(deviObj[device][all_samp].humidity);
+        temp_data30_D.push(deviObj[device][all_samp].temperature);
+        date_data30_D.push(currentDateTimeDevice);
+        humi_data30_D.push(deviObj[device][all_samp].humidity);
+      } else if (i >= week_sampling) {
+        temp_data7_D.push(deviObj[device][all_samp].temperature);
+        date_data7_D.push(currentDateTimeDevice);
+        humi_data7_D.push(deviObj[device][all_samp].humidity);
+        temp_data30_D.push(deviObj[device][all_samp].temperature);
+        date_data30_D.push(currentDateTimeDevice);
+        humi_data30_D.push(deviObj[device][all_samp].humidity);
+      } else if (i >= month_sampling){
+        temp_data30_D.push(deviObj[device][all_samp].temperature);
+        date_data30_D.push(currentDateTimeDevice);
+        humi_data30_D.push(deviObj[device][all_samp].humidity);
+      }
     }
+   // console.log(temp_data1_D.length + " length");
     //console.log(time_aryD01);
-    temp_data30_D01 = [];
-    date_data30_D01 = [];
-    humi_data30_D01 = [];
+    /*temp_data30_D = [];
+    date_data30_D = []; 
+    humi_data30_D = [];
     temp_data1_D = [];
     date_data1_D = [];
     humi_data1_D = [];
@@ -61,30 +89,28 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         //console.log(timestamp);
         
         if(j <= 1440){
-          temp_data30_D01.push(tem_aryD01[tem_aryD01.length-sample+j-1]);
-          date_data30_D01.push(time_aryD01[time_aryD01.length-sample+j-1]);
-          humi_data30_D01.push(humi_aryD01[tem_aryD01.length-sample+j-1]);
-          temp_data1_D.push(tem_aryD01[tem_aryD01.length-sample+j-1+41760]);
-          date_data1_D.push(time_aryD01[time_aryD01.length-sample+j-1+41760]);
-          humi_data1_D.push(humi_aryD01[tem_aryD01.length-sample+j-1+41760]);
+          temp_data30_D.push(tem_aryD01[tem_aryD01.length-sample+j-1]);
+          date_data30_D.push(time_aryD01[time_aryD01.length-sample+j-1]);
+          humi_data30_D.push(humi_aryD01[tem_aryD01.length-sample+j-1]);
+         c
           temp_data7_D.push(tem_aryD01[tem_aryD01.length-sample+j-1+33120]);
           date_data7_D.push(time_aryD01[time_aryD01.length-sample+j-1+33120]);
           humi_data7_D.push(humi_aryD01[tem_aryD01.length-sample+j-1+33120]);
         } else if (j <= 10080) {
-          temp_data30_D01.push(tem_aryD01[tem_aryD01.length-sample+j-1]);
-          date_data30_D01.push(time_aryD01[time_aryD01.length-sample+j-1]);
-          humi_data30_D01.push(humi_aryD01[tem_aryD01.length-sample+j-1]);
+          temp_data30_D.push(tem_aryD01[tem_aryD01.length-sample+j-1]);
+          date_data30_D.push(time_aryD01[time_aryD01.length-sample+j-1]);
+          humi_data30_D.push(humi_aryD01[tem_aryD01.length-sample+j-1]);
           temp_data7_D.push(tem_aryD01[tem_aryD01.length-sample+j-1+33120]);
           date_data7_D.push(time_aryD01[time_aryD01.length-sample+j-1+33120]);
           humi_data7_D.push(humi_aryD01[tem_aryD01.length-sample+j-1+33120]);
         }else if (j <= 43200) {
-          temp_data30_D01.push(tem_aryD01[tem_aryD01.length-sample+j-1]);
-          date_data30_D01.push(time_aryD01[time_aryD01.length-sample+j-1]);
-          humi_data30_D01.push(humi_aryD01[tem_aryD01.length-sample+j-1]);
+          temp_data30_D.push(tem_aryD01[tem_aryD01.length-sample+j-1]);
+          date_data30_D.push(time_aryD01[time_aryD01.length-sample+j-1]);
+          humi_data30_D.push(humi_aryD01[tem_aryD01.length-sample+j-1]);
         }
         
       }
-    }
+    }*/
     
     labels = date_data1_D;
     tem_data = temp_data1_D;
@@ -186,8 +212,8 @@ function weekData(){
 }
 
 function monthData(){
-  myChart.data.datasets[0].data = temp_data30_D01;
-  myChart.data.datasets[1].data = humi_data30_D01;
-  myChart.data.labels = date_data30_D01;
+  myChart.data.datasets[0].data = temp_data30_D;
+  myChart.data.datasets[1].data = humi_data30_D;
+  myChart.data.labels = date_data30_D;
   myChart.update();
 }
