@@ -14,7 +14,7 @@ var humi_carlendar_D;
 var temp_carlendar_D;
 var humi_data;
 var tem_data;
-var maxTicksLimitX = 20;
+var maxTicksLimitX = 24;
 var maxTicksLimitY = 12;
 var font_x_size = 16;
 var font_y_size = 16;
@@ -23,7 +23,7 @@ if (document.documentElement.clientWidth < 900) {
   //myChart.options.scales.yAxes[0].ticks.maxTicksLimit = 6;
   //myChart.options.scales.yAxes[1].ticks.maxTicksLimit = 6;
   //console.log("yees");
-  maxTicksLimitX = 10;
+  maxTicksLimitX = 12;
   maxTicksLimitY = 5;
   font_x_size = 10;
   font_y_size = 10;
@@ -71,9 +71,9 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
       let currentDateTimeDevice = date.getDate().toString().padStart(2, "0")+
           "/"+((date.getMonth()+1).toString().padStart(2, "0"))+
           "/"+date.getFullYear()+
-          " "+date.getHours()+
-          ":"+date.getMinutes()+
-          ":"+date.getSeconds();
+          " "+date.getHours().toString().padStart(2, "0")+
+          ":"+date.getMinutes().toString().padStart(2, "0")+
+          ":"+date.getSeconds().toString().padStart(2, "0");
       i += 1;
       if (i >= day_samling) {
         temp_data1_D.push(deviObj[device][all_samp].temperature);
@@ -120,7 +120,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
             label: 'Temperature',
             indexLabelFontSize: 10,
             borderColor: "#ec7777",
-            backgroundColor: "#7bb6dd",
+            backgroundColor: "#ec7777",
             fill: false,
             yAxisID: 'A', 
             pointRadius: 0,
@@ -129,7 +129,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
             data: humi_data,
             label: 'Humidity',
             borderColor: "#5f5ff1",
-            backgroundColor: "#71d1bd",
+            backgroundColor: "#5f5ff1",
             fill: false,
             yAxisID: 'B',
             pointRadius: 0,
@@ -138,12 +138,14 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
           }]
         },
         options: {
-          plugins: {
-            legend: {
-              labels: {
-                usePointStyle: true,
-              },
-            }
+          
+          tooltips: {
+            mode: 'index',
+            intersect: false
+          },
+          hover: {
+            mode: 'index',
+            intersect: false
           },
           responsive: true,
           scales: {
@@ -271,13 +273,10 @@ calc.addEventListener("click", function() {
       
       if (date_data30_D[i] == NaN) {
         continue;
-        //console.log(i);
       } else if (dateNow == date_data30_D[i].toString().substring(0, 10)) {
-        date_carlendar_D.push(date_data30_D[i]);
+        date_carlendar_D.push(date_data30_D[i].toString().substring(11, 19));
         humi_carlendar_D.push(humi_data30_D[i]);
         temp_carlendar_D.push(temp_data30_D[i]);
-        //console.log(42000 + "art");
-      //console.log(i + "art");
       }
     }
   console.log(temp_carlendar_D.legend);
