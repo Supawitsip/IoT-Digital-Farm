@@ -29,39 +29,8 @@ dbRef.child(db_devices).child(device).get().then((snapshot) => {
           ":"+date.getMinutes()+
           ":"+date.getSeconds();
         document.getElementById("lastTime").innerText = currentDateTime;
-
         document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviObj[last_samp].temperature} °C`;
         document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviObj[last_samp].humidity} %`;
-
-        // Create data collection table
-        let no = 0; //for count No. in the table
-        Object.keys(deviObj).forEach(element => {
-            no++;
-            let col = 4; //column head number
-            let dname = deviObj[element].deviceNameID;
-            let dtemp = deviObj[element].temperature;
-            let dhumi = deviObj[element].humidity;
-            let dtime = (deviObj[element].timestamp)/1000;
-            let samp_date = new Date(dtime * 1000);
-            dtime = samp_date.getDate()+
-            "/"+(samp_date.getMonth()+1)+
-            "/"+samp_date.getFullYear()+
-            " "+samp_date.getHours()+
-            ":"+samp_date.getMinutes()+
-            ":"+samp_date.getSeconds();
-            let row = document.createElement('tr');
-            let num = document.createElement('td');
-            num.innerText = no;
-            row.appendChild(num);
-            let td_list = [dname, dtime, dtemp, dhumi]
-            for (i = 0; i < col; i++) {
-                let td = document.createElement('td');
-                td.innerText = td_list[i];
-                row.appendChild(td);
-            }
-            document.getElementById('table2excel').appendChild(row);
-        });
-
 
     } else {
         console.log("No data available")
@@ -69,3 +38,54 @@ dbRef.child(db_devices).child(device).get().then((snapshot) => {
 }).catch((error) => {
   console.error(error);
 });
+
+
+function export2excel() {
+    dbRef.child(db_devices).child(device).get().then((snapshot) => {
+        if (snapshot.exists()) {
+            let deviObj = snapshot.val();
+            let no = 0; //for count No. in the table
+            Object.keys(deviObj).forEach(element => {
+                no++;
+                let col = 4; //column head number
+                let dname = deviObj[element].deviceNameID;
+                let dtemp = deviObj[element].temperature;
+                let dhumi = deviObj[element].humidity;
+                let dtime = (deviObj[element].timestamp)/1000;
+                let samp_date = new Date(dtime * 1000);
+                dtime = samp_date.getDate()+
+                "/"+(samp_date.getMonth()+1)+
+                "/"+samp_date.getFullYear()+
+                " "+samp_date.getHours()+
+                ":"+samp_date.getMinutes()+
+                ":"+samp_date.getSeconds();
+                let row = document.createElement('tr');
+                let num = document.createElement('td');
+                num.innerText = no;
+                row.appendChild(num);
+                let td_list = [dname, dtime, dtemp, dhumi]
+                for (i = 0; i < col; i++) {
+                    let td = document.createElement('td');
+                    td.innerText = td_list[i];
+                    row.appendChild(td);
+                }
+                document.getElementById('table2excel').appendChild(row);
+            });
+
+            let table = document.querySelector("#table2excel");
+            TableToExcel.convert(table, {
+            name: "3months-report.xlsx",
+            sheet: {
+                name: "Sheet 1"
+            }
+            });
+
+        } else {
+            console.log("Can't create data table")
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+};
+
+    

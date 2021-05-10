@@ -138,15 +138,8 @@
     <!-- Export HTML Table to Excel Script -->
     <script>
       let button = document.querySelector("#ex-btn");
-
       button.addEventListener("click", e => {
-        let table = document.querySelector("#table2excel");
-        TableToExcel.convert(table, {
-          name: "3months-report.xlsx",
-          sheet: {
-            name: "Sheet 1"
-          }
-        });
+        export2excel();
       });
     </script>
     
