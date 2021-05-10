@@ -12,7 +12,7 @@ var humi_data30_D;
 var humi_data;
 var tem_data;
 var maxTicksLimitX = 20;
-var maxTicksLimitY = 9;
+var maxTicksLimitY = 12;
 var font_x_size = 16;
 var font_y_size = 16;
 //console.log('name: ' + device);
@@ -103,7 +103,9 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         dbRef.child("devices_sensor").child(device).child(d).remove();
       }
     }
- 
+   // console.log(date_data30_D.length);
+   // console.log(temp_data30_D.length);
+    //console.log(humi_data30_D.length);
     labels = date_data1_D;
     tem_data = temp_data1_D;
     humi_data = humi_data1_D;
@@ -151,9 +153,10 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
               position: 'left',
               ticks: {
                 suggestedMin: 10,
-                suggestedMax: 50, 
+                suggestedMax: 45, 
                 maxTicksLimit: maxTicksLimitY,
-                fontSize: font_y_size //10
+                fontSize: font_y_size, //10
+                min: 10
               },
               scaleLabel: {
                 display: true,
@@ -166,9 +169,10 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
               position: 'right',
               ticks: {
                 suggestedMin: 20,
-                suggestedMax: 100, 
+                suggestedMax: 90, 
                 maxTicksLimit: maxTicksLimitY,
-                fontSize: font_y_size
+                fontSize: font_y_size,
+                min: 20
               },
               scaleLabel: {
                 display: true,
