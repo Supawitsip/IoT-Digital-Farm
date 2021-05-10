@@ -11,7 +11,8 @@ var date_data30_D;
 var humi_data30_D;
 var humi_data;
 var tem_data;
-var maxTicksLimit = 20;
+var maxTicksLimitX = 20;
+var maxTicksLimitY = 9;
 var font_x_size = 16;
 var font_y_size = 16;
 //console.log('name: ' + device);
@@ -19,7 +20,8 @@ if (document.documentElement.clientWidth < 900) {
   //myChart.options.scales.yAxes[0].ticks.maxTicksLimit = 6;
   //myChart.options.scales.yAxes[1].ticks.maxTicksLimit = 6;
   //console.log("yees");
-  maxTicksLimit = 10;
+  maxTicksLimitX = 10;
+  maxTicksLimitY = 6;
   font_x_size = 10;
   font_y_size = 10;
 }
@@ -150,7 +152,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
               ticks: {
                 suggestedMin: 10,
                 suggestedMax: 50, 
-                //maxTicksLimit: 6,
+                maxTicksLimit: maxTicksLimitY,
                 fontSize: font_y_size //10
               },
               scaleLabel: {
@@ -165,7 +167,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
               ticks: {
                 suggestedMin: 20,
                 suggestedMax: 100, 
-                //maxTicksLimit: 6,
+                maxTicksLimit: maxTicksLimitY,
                 fontSize: font_y_size
               },
               scaleLabel: {
@@ -178,20 +180,13 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
               //type: 'time',
               ticks: {
                 autoSkip: true,
-                maxTicksLimit: maxTicksLimit,
+                maxTicksLimit: maxTicksLimitX,
                 fontSize: font_x_size
               },
             }]
           },
         }
     });
-    /*if (document.documentElement.clientWidth < 900) {
-      myChart.options.scales.yAxes[0].ticks.maxTicksLimit = 6;
-      myChart.options.scales.yAxes[1].ticks.maxTicksLimit = 6;
-      myChart.update();
-      //console.log("yees");
-      
-    }*/
 
   } else {
     console.log("No data available");
