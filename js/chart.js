@@ -138,7 +138,18 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
           }]
         },
         options: {
-          
+          pan: {
+            enabled: true,
+            mode: 'x',
+            speed: 20,
+          },
+          zoom: {
+              enabled: true,                      
+              mode: 'x',
+              speed: 1,
+              threshold: 2,
+              sensitivity: 0.001,
+          },
           tooltips: {
             mode: 'index',
             intersect: false
