@@ -76,13 +76,17 @@
 
       <!-- Analytics Graph -->
       <div class="timeSet">
-        <button id="calc" class="getTimeBtn">Get Time</button>
-        <input id="date" type="date" name="task_date" /><label for="date">Date:</label>
-        <!--Time:<input id="time" type="time" name="task_time" /> -->
-        
-        <button onclick="monthData()" class="timeDuration" id="monthDuration">Month Data</button>
-        <button onclick="weekData()" class="timeDuration" id="weekDuration">Week Data</button> 
-        <button onclick="dayData()" class="timeDuration" id="dayDuration">Day Data</button> 
+        <div class="calendarTime">
+          <label for="date">Date:</label>
+          <input id="date" type="date" name="task_date" />
+          <!--Time:<input id="time" type="time" name="task_time" /> -->
+          <button id="calc" class="getTimeBtn">Get Time</button>
+        </div>
+        <div class="btnTime">
+          <button onclick="monthData()" class="timeDuration" id="monthDuration">Month Data</button>
+          <button onclick="weekData()" class="timeDuration" id="weekDuration">Week Data</button> 
+          <button onclick="dayData()" class="timeDuration" id="dayDuration">Day Data</button> 
+        </div>
       </div>
 
       <div>
