@@ -9,6 +9,9 @@ var humi_data7_D;
 var temp_data30_D;
 var date_data30_D; 
 var humi_data30_D;
+var date_carlendar_D; 
+var humi_carlendar_D;
+var temp_carlendar_D;
 var humi_data;
 var tem_data;
 var maxTicksLimitX = 20;
@@ -25,13 +28,10 @@ if (document.documentElement.clientWidth < 900) {
   font_x_size = 10;
   font_y_size = 10;
 }
+
 dbRef.child("devices_sensor").get().then((snapshot) => {
   if (snapshot.exists()) {
     let deviObj = snapshot.val();
-    //let tem_aryD01 = [];
-    //let humi_aryD01 = [];
-    //let time_aryD01 = [];
-    
     temp_data1_D = [];
     date_data1_D = [];
     humi_data1_D = [];
@@ -68,8 +68,8 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
       all_samp = Object.keys(deviObj[device])[i];
       let timestamp = deviObj[device][all_samp].timestamp/1000;   
       let date = new Date(timestamp * 1000);
-      let currentDateTimeDevice = date.getDate()+
-          "/"+(date.getMonth()+1)+
+      let currentDateTimeDevice = date.getDate().toString().padStart(2, "0")+
+          "/"+((date.getMonth()+1).toString().padStart(2, "0"))+
           "/"+date.getFullYear()+
           " "+date.getHours()+
           ":"+date.getMinutes()+
@@ -199,7 +199,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
   console.error(error);
 });
 
-
+//click for change grapt
 function dayData(){
   let dayBtn = document.getElementById("dayDuration");
   let weekBtn = document.getElementById("weekDuration");
@@ -251,11 +251,45 @@ function monthData(){
   myChart.update();
 }
 
+//date grapt  
+document.getElementById('date').value = new Date().toLocaleDateString('en-CA');
 var calc = document.getElementById("calc")
 
 calc.addEventListener("click", function() {
     var date = document.getElementById("date").value;
-        //time = document.getElementById("time").value
-
-    console.log(new Date(date));
+    //time = document.getElementById("time").value
+    date_carlendar_D = []; 
+    humi_carlendar_D = [];
+    temp_carlendar_D = [];
+    //console.log(ChangeFormateDate(date));
+    dateNow = ChangeFormateDate(date);
+    console.log(dateNow);
+    
+    console.log(date_data30_D[42000].substring(0, 10));
+    
+    for (let i = 0;i < 43200; i++) {
+      
+      if (date_data30_D[i] == NaN) {
+        continue;
+        //console.log(i);
+      } else if (dateNow == date_data30_D[i].toString().substring(0, 10)) {
+        date_carlendar_D.push(date_data30_D[i]);
+        humi_carlendar_D.push(humi_data30_D[i]);
+        temp_carlendar_D.push(temp_data30_D[i]);
+        //console.log(42000 + "art");
+      //console.log(i + "art");
+      }
+    }
+  console.log(temp_carlendar_D.legend);
+  myChart.data.datasets[0].data = temp_carlendar_D;
+  myChart.data.datasets[1].data = humi_carlendar_D;
+  myChart.data.labels = date_carlendar_D;
+  myChart.update();
+  console.log(date_carlendar_D);
 })
+
+function ChangeFormateDate(oldDate)
+{
+   return oldDate.toString().split("-").reverse().join("/");
+}
+
