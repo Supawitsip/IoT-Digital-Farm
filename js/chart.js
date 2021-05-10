@@ -117,23 +117,23 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         labels: labels,
         datasets: [{ 
             data: tem_data,
-            label: `Temperature_${device}`,
+            label: 'Temperature',
             indexLabelFontSize: 10,
             borderColor: "#ec7777",
             backgroundColor: "#7bb6dd",
             fill: false,
             yAxisID: 'A', 
             pointRadius: 0,
-            borderWidth: 2
+            borderWidth: 3
           }, { 
             data: humi_data,
-            label: `Humidity_${device}`,
+            label: 'Humidity',
             borderColor: "#5f5ff1",
             backgroundColor: "#71d1bd",
             fill: false,
             yAxisID: 'B',
             pointRadius: 0,
-            borderWidth: 2
+            borderWidth: 3
             //borderWidth: .00001
           }]
         },
