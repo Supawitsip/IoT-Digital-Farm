@@ -141,6 +141,9 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     tem_data = temp_data1_D;
     humi_data = humi_data1_D;
     // D01
+    
+    document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
+    document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
     var ctx = document.getElementById('temperatureChart').getContext('2d');
     myChart = new Chart(ctx, {
       type: 'line',
@@ -381,9 +384,9 @@ calc.addEventListener("click", function() {
 
 
 //date grapt to
-document.getElementById('date_from').value = new Date().toLocaleDateString('en-CA');
-document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
-console.log(date_data30_D_tranfer);
+//document.getElementById('date_from').value = new Date().toLocaleDateString('en-CA');
+//document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
+//console.log(date_data30_D_tranfer);
 function getRange() {
   let date_start = document.getElementById("date_from").value;
   let dat_end = document.getElementById("date_to").value;
@@ -426,6 +429,10 @@ function getRange() {
 
 function ChangeFormateDate(oldDate) {
    return oldDate.toString().split("-").reverse().join("/");
+}
+// change - to /
+function ChangeFormateDateV2(oldDate) {
+  return oldDate.toString().split("/").reverse().join("-");
 }
 
 document.getElementById('resetZoom').addEventListener('click', function() {
