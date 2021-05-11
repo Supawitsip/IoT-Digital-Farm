@@ -30,7 +30,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
-    <script src="path/to/chartjs/dist/chart.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
@@ -197,7 +196,7 @@
       let show = document.getElementById('showTable');
       let tblCon = document.querySelector('.tbl-con');
       let tbl = document.getElementById('table2excel');
-      renderDataTable();
+      // renderDataTable();
       show.addEventListener("click", e => {
         if (tbl.style.display === "none") {
           tblCon.style.display = "inline-block";
