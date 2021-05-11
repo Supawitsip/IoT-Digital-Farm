@@ -87,6 +87,11 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
       let day_samling = n_sampling - 1440;
       let week_sampling = n_sampling - 10080;
       let month_sampling = n_sampling - 43200;
+
+      //for D15
+      /*let day_samling = n_sampling - 24;
+      let week_sampling = n_sampling - 168;
+      let month_sampling = n_sampling - 720; //for D15*/
       all_samp = Object.keys(deviObj[device])[i];
       let timestamp = deviObj[device][all_samp].timestamp/1000;   
       let date = new Date(timestamp * 1000);
@@ -273,7 +278,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         }
     });
 ///////////////////////////////////////////////////////////////////////////// hard
-    var ctx2 = document.getElementById('compareChart').getContext('2d');
+    /*var ctx2 = document.getElementById('compareChart').getContext('2d');
     var compareChart = new Chart(ctx2, {
       type: 'line',
       data: {
@@ -364,7 +369,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
             }]
           },
         }
-    });
+    });*/
 
 
   } else {
@@ -415,7 +420,7 @@ function dayData(){
 
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data1_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length-1].toString().substring(0, 10));
- //console.log(date_data1_D);
+  console.log(date_data1_D);
   myChart.data.datasets[0].data = temp_data1_D;
   myChart.data.datasets[1].data = humi_data1_D;
   myChart.data.labels = date_data1_D;
