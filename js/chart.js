@@ -137,9 +137,9 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     //console.log(date_data1_D.length);
    // console.log(temp_data30_D.length);
    // console.log(humi_data30_D.length);
-    label = date_data1_D;
-    tem_data = temp_data1_D;
-    humi_data = humi_data1_D;
+    label = date_data30_D;
+    tem_data = temp_data30_D;
+    humi_data = humi_data30_D;
     // D01
     
     document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
