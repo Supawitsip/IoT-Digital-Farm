@@ -96,11 +96,19 @@
       <!-- Analytics Graph -->
       <div class="timeSet">
         <div class="calendarTime">
-          <label for="date">Date:</label>
-          <input id="date" type="date" name="task_date" />
+          <label for="date_to"> to:</label>
+          <input id="date_to" type="date" name="task_date" />
           <!--Time:<input id="time" type="time" name="task_time" /> -->
-          <button id="calc" class="getTimeBtn">Get Time</button>
+          
         </div>
+        <div class="calendarTime">
+          <label for="date_from">Date from:</label>
+          <input id="date_from" type="date" name="task_date" />
+          <!--Time:<input id="time" type="time" name="task_time" /> -->
+          
+          <button onclick="getRange()" class="getTimeBtn">Get2</button>
+        </div>
+        
         <div class="btnTime">
           <button onclick="dayData()" class="timeDuration" id="dayDuration">1 d</button> 
           <button onclick="weekData()" class="timeDuration" id="weekDuration">1 w</button> 

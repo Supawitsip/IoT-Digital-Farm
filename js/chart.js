@@ -332,11 +332,10 @@ function monthData(){
   myChart.data.labels = date_data30_D;
   myChart.update();
 }
-
-//date grapt  
-document.getElementById('date').value = new Date().toLocaleDateString('en-CA');
+/*
+//date grapt form
+document.getElementById('date_from').value = new Date().toLocaleDateString('en-CA');
 var calc = document.getElementById("calc")
-
 calc.addEventListener("click", function() {
     var date = document.getElementById("date").value;
     //time = document.getElementById("time").value
@@ -349,7 +348,7 @@ calc.addEventListener("click", function() {
     
     //console.log(date_data30_D[42000].substring(0, 10));
     
-    /*for (let i = 0;i < 43200; i++) {
+    for (let i = 0;i < 43200; i++) {
       
       if (date_data30_D[i] == NaN) {
         continue;
@@ -358,7 +357,7 @@ calc.addEventListener("click", function() {
         humi_carlendar_D.push(humi_data30_D[i]);
         temp_carlendar_D.push(temp_data30_D[i]);
       }
-    }*/
+    }
     for (let i = 0;i < date_data30_D.length; i++) {
       if (dateNow == date_data30_D_tranfer[i].toString().substring(0, 10)) {
         date_carlendar_D.push(date_data30_D[i]);
@@ -367,21 +366,65 @@ calc.addEventListener("click", function() {
         
       }
     }
-    console.log(date_data30_D_tranfer.toString().substring(0, 10));
+    //console.log(date_data30_D_tranfer.toString().substring(0, 10));
     myChart.data.datasets[0].data = temp_carlendar_D;
     myChart.data.datasets[1].data = humi_carlendar_D;
     myChart.data.labels = date_carlendar_D;
   //label = date_carlendar_D;
   //tem_data = temp_carlendar_D;
   //humi_data =  humi_carlendar_D;
-   myChart.update();
-   console.log(date_carlendar_D.length);
-   console.log(humi_carlendar_D.length);
-   console.log(temp_carlendar_D.length);
-})
+    myChart.update();
+    console.log(date_carlendar_D.length);
+    console.log(humi_carlendar_D.length);
+    console.log(temp_carlendar_D.length);
+})*/
 
-function ChangeFormateDate(oldDate)
-{
+
+//date grapt to
+document.getElementById('date_from').value = new Date().toLocaleDateString('en-CA');
+document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
+console.log(date_data30_D_tranfer);
+function getRange() {
+  let date_start = document.getElementById("date_from").value;
+  let dat_end = document.getElementById("date_to").value;
+  let date_start_formate = ChangeFormateDate(date_start); 
+  let date_end_formate = ChangeFormateDate(dat_end); 
+  let check_length = false;
+  date_carlendar_D = []; 
+  humi_carlendar_D = [];
+  temp_carlendar_D = [];
+  //console.log(date_data30_D_tranfer);
+  for (let i = 0;i < date_data30_D.length; i++) {
+    if (date_start_formate == date_data30_D_tranfer[i].toString().substring(0, 10)) {
+      date_carlendar_D.push(date_data30_D[i]);
+      humi_carlendar_D.push(humi_data30_D[i]);
+      temp_carlendar_D.push(temp_data30_D[i]);   
+      check_length = true;
+    } else if (check_length == true) {
+      date_carlendar_D.push(date_data30_D[i]);
+      humi_carlendar_D.push(humi_data30_D[i]);
+      temp_carlendar_D.push(temp_data30_D[i]);   
+      try {
+        if (date_end_formate == date_data30_D_tranfer[i+1].toString().substring(0, 10)) {
+          check_length = false;
+        }
+      } catch(err) {
+        console.log(err.message);
+      }
+    } else if (date_end_formate == date_data30_D_tranfer[i].toString().substring(0, 10)){
+      date_carlendar_D.push(date_data30_D[i]);
+      humi_carlendar_D.push(humi_data30_D[i]);
+      temp_carlendar_D.push(temp_data30_D[i]);   
+    }
+  }
+  myChart.data.datasets[0].data = temp_carlendar_D;
+  myChart.data.datasets[1].data = humi_carlendar_D;
+  myChart.data.labels = date_carlendar_D;
+  console.log("art");
+  myChart.update();
+}
+
+function ChangeFormateDate(oldDate) {
    return oldDate.toString().split("-").reverse().join("/");
 }
 
