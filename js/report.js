@@ -179,11 +179,15 @@ $('#graphPdf').click(function(event) {
       // get the chart height/width
       let canvasHeight = $(this).innerHeight();
       let canvasWidth = $(this).innerWidth();
+      // make canvas BG is white
+      pdfctx.fillStyle = "white";
+      pdfctx.fillRect(0, 0, canvasWidth, canvasHeight+100);
       // reduce size of img chart
       canvasHeight = canvasHeight*90/100;
       canvasWidth = canvasWidth*90/100;
       
       // draw the chart into the new canvas
+      
       pdfctx.drawImage($(this)[0], pdfctxX, pdfctxY, canvasWidth, canvasHeight);
       pdfctxX += canvasWidth + buffer;
       
