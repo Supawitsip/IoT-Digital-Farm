@@ -251,12 +251,11 @@ tr:nth-child(even) {
     float: right;
     margin-left: 14px;
 }
-.dropbtn i {
-    font-size: 26px;
-}
+
 .dropbtn {
+    font-size: 28px;
     color: #E35F43;
-    padding: 13px 28px;
+    padding: 14px 28px;
     background-color: rgb(230, 228, 228);
     cursor: pointer;
     border: none;
@@ -266,6 +265,7 @@ tr:nth-child(even) {
     opacity: 0.8;
 }
 .dropdown-content {
+    right: 0;
     display: none;
     position: absolute;
     background-color: #f1f1f1;
@@ -307,11 +307,9 @@ tr:nth-child(even) {
     .refresh {
         padding: 10px 20px;
     }
-    .dropbtn i {
-        font-size: 22px;
-    }
     .dropbtn {
-        padding: 8px 24px;
+        font-size: 20px;
+        padding: 12px 24px;
     }
     .devi-block {
         margin-bottom: 4px;
