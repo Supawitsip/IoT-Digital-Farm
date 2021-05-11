@@ -144,8 +144,137 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     
     document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
     document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
-    var ctx = document.getElementById('temperatureChart').getContext('2d');
+    let ctx = document.getElementById('temperatureChart').getContext('2d');
     myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: label,
+        datasets: [{ 
+            data: tem_data,
+            label: 'Temperature',
+            indexLabelFontSize: 10,
+            borderColor: "#ec7777",
+            backgroundColor: "#ec7777",
+            fill: false,
+            yAxisID: 'A', 
+            pointRadius: 0,
+            borderWidth: 3,
+            tension: 0
+          }, { 
+            data: humi_data,
+            label: 'Humidity',
+            borderColor: "#5f5ff1",
+            backgroundColor: "#5f5ff1",
+            fill: false,
+            yAxisID: 'B',
+            pointRadius: 0,
+            borderWidth: 3,
+            tension: 0
+            //borderWidth: .00001
+          }]
+        },
+        options: {
+          pan: {
+            enabled: true,
+            mode: 'xy',
+            speed: 20,
+          },
+          zoom: {
+            enabled: true,
+            drag: {
+             borderColor: 'rgba(225,225,225,0.3)',
+             borderWidth: 5,
+             backgroundColor: 'rgb(225,225,225)',
+             animationDuration: 0
+            },
+            mode: 'x',
+           /* limits: {
+              max: 10,
+              min: 0.
+            }*/
+          },
+          tooltips: {
+            mode: 'index',
+            intersect: false
+          },
+          hover: {
+            mode: 'index',
+            intersect: false
+          },
+          responsive: true,
+          scales: {
+            yAxes: [{
+              id: 'A',
+              type: 'linear',
+              position: 'left',
+              ticks: {
+                suggestedMin: 10,
+                suggestedMax: 45, 
+                maxTicksLimit: maxTicksLimitY,
+                fontSize: font_y_size, //10
+                min: 10
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Temperature (°C)',
+                fontSize: font_y_size
+              },
+            }, {
+              id: 'B',
+              type: 'linear',
+              position: 'right',
+              ticks: {
+                suggestedMin: 20,
+                suggestedMax: 90, 
+                maxTicksLimit: maxTicksLimitY,
+                fontSize: font_y_size,
+                min: 20
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Humidity (%RH)',
+                fontSize: font_y_size
+              }          
+            }],
+            xAxes: [{
+              type: 'time',
+              time: {
+                unit: 'hour',
+                stepSize: 0.5,  //I'm using 3 hour intervals here
+                tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
+                parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
+                //: 'second', //I have tried minutes and hours too, same result
+                displayFormats: {
+                  /*millisecond: 'HH:mm:ss', //I have tried without the 'a' too, same result
+                  second: 'HH:mm:ss',
+                  minute: 'HH:mm:ss',
+                  hour: 'HH:mm',
+                  day: 'HH:mm',
+                  'week': 'HH:mm:ss a',
+                  'month': 'HH:mm:ss a',
+                  'quarter': 'HH:mm:ss a',
+                  'year': 'HH:mm:ss a',*/
+                  hour: 'HH:mm'
+                }
+              },
+              ticks: {
+                source: 'auto',
+                major: {
+                  enabled: true, // <-- This is the key line
+                  fontStyle: 'bold', //You can also style these values differently
+                  fontSize: 14 //You can also style these values differently
+               },
+               //autoSkip: true,
+               //fontSize: font_x_size
+               //,maxTicksLimit: maxTicksLimitX,
+              },
+            }]
+          },
+        }
+    });
+///////////////////////////////////////////////////////////////////////////// hard
+    var ctx2 = document.getElementById('compareChart').getContext('2d');
+    var compareChart = new Chart(ctx2, {
       type: 'line',
       data: {
         labels: label,
@@ -273,37 +402,6 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         }
     });
 
-    var ctx = document.getElementById('compareChart').getContext('2d');
-    myChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: label,
-        datasets: [{ 
-            data: tem_data,
-            label: 'Temperature',
-            indexLabelFontSize: 10,
-            borderColor: "#ec7777",
-            backgroundColor: "#ec7777",
-            fill: false,
-            yAxisID: 'A', 
-            pointRadius: 0,
-            borderWidth: 3,
-            tension: 0
-          }, { 
-            data: humi_data,
-            label: 'Humidity',
-            borderColor: "#5f5ff1",
-            backgroundColor: "#5f5ff1",
-            fill: false,
-            yAxisID: 'B',
-            pointRadius: 0,
-            borderWidth: 3,
-            tension: 0
-            //borderWidth: .00001
-          }]
-        },      
-        
-    });
 
   } else {
     console.log("No data available");
