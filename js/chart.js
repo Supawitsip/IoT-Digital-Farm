@@ -1,11 +1,17 @@
-var labels;
+var label;
 var myChart;
+
+var date_data1_D_tranfer;
+var date_data7_D_tranfer;
+var date_data30_D_tranfer;
+
 var temp_data1_D;
 var date_data1_D; 
 var humi_data1_D;
 var temp_data7_D;
 var date_data7_D;
 var humi_data7_D;
+
 var temp_data30_D;
 var date_data30_D; 
 var humi_data30_D;
@@ -18,6 +24,7 @@ var maxTicksLimitX = 24;
 var maxTicksLimitY = 12;
 var font_x_size = 16;
 var font_y_size = 16;
+var test;
 //console.log('name: ' + device);
 if (document.documentElement.clientWidth < 900) {
   //myChart.options.scales.yAxes[0].ticks.maxTicksLimit = 6;
@@ -41,23 +48,38 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     temp_data30_D = [];
     date_data30_D = []; 
     humi_data30_D = [];
+    date_data1_D_tranfer = [];
+    date_data7_D_tranfer = [];
+    date_data30_D_tranfer = [];
+    test = [];
     // when data not enought
-    if (n_sampling < 43200) {
-      for (; n_sampling < 43200; n_sampling++) {
-        if (n_sampling < 10080) { //week
+   /* let sampling_Nan = n_sampling;
+    if (sampling_Nan < 43200) {
+      for (; sampling_Nan < 43200;sampling_Nan++) {
+        if (sampling_Nan < 1440) {
+          temp_data1_D.push(NaN);
+          date_data1_D.push(new Date(0));
+          humi_data1_D.push(NaN);
           temp_data7_D.push(NaN);
-          date_data7_D.push(NaN);
+          date_data7_D.push(new Date(0));
           humi_data7_D.push(NaN);
           temp_data30_D.push(NaN);
-          date_data30_D.push(NaN);
+          date_data30_D.push(new Date(0));
+          humi_data30_D.push(NaN);
+        } else if (sampling_Nan < 10080) { //week
+          temp_data7_D.push(NaN);
+          date_data7_D.push(new Date(0));
+          humi_data7_D.push(NaN);
+          temp_data30_D.push(NaN);
+          date_data30_D.push(new Date(0));
           humi_data30_D.push(NaN);
         } else {
           temp_data30_D.push(NaN);
-          date_data30_D.push(NaN);
+          date_data30_D.push(new Date(0));
           humi_data30_D.push(NaN);
         }  
       }   
-    } 
+    } */
     
     let i = 0;
     for (d in deviObj[device]) {
@@ -75,26 +97,33 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
           ":"+date.getMinutes().toString().padStart(2, "0")+
           ":"+date.getSeconds().toString().padStart(2, "0");
       i += 1;
+      test.push(date);
       if (i >= day_samling) {
         temp_data1_D.push(deviObj[device][all_samp].temperature);
-        date_data1_D.push(currentDateTimeDevice);
+        date_data1_D_tranfer.push(currentDateTimeDevice);
+        date_data1_D.push(date);
         humi_data1_D.push(deviObj[device][all_samp].humidity);
         temp_data7_D.push(deviObj[device][all_samp].temperature);
-        date_data7_D.push(currentDateTimeDevice);
+        date_data7_D_tranfer.push(currentDateTimeDevice);
+        date_data7_D.push(date);
         humi_data7_D.push(deviObj[device][all_samp].humidity);
         temp_data30_D.push(deviObj[device][all_samp].temperature);
-        date_data30_D.push(currentDateTimeDevice);
+        date_data30_D_tranfer.push(currentDateTimeDevice);
+        date_data30_D.push(date);
         humi_data30_D.push(deviObj[device][all_samp].humidity);
       } else if (i >= week_sampling) {
         temp_data7_D.push(deviObj[device][all_samp].temperature);
-        date_data7_D.push(currentDateTimeDevice);
+        date_data7_D_tranfer.push(currentDateTimeDevice);
+        date_data7_D.push(date);
         humi_data7_D.push(deviObj[device][all_samp].humidity);
         temp_data30_D.push(deviObj[device][all_samp].temperature);
-        date_data30_D.push(currentDateTimeDevice);
+        date_data30_D_tranfer.push(currentDateTimeDevice);
+        date_data30_D.push(date);
         humi_data30_D.push(deviObj[device][all_samp].humidity);
       } else if (i >= month_sampling){
         temp_data30_D.push(deviObj[device][all_samp].temperature);
-        date_data30_D.push(currentDateTimeDevice);
+        date_data30_D_tranfer.push(currentDateTimeDevice);
+        date_data30_D.push(date);
         humi_data30_D.push(deviObj[device][all_samp].humidity);
       }
 
@@ -103,10 +132,12 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         dbRef.child("devices_sensor").child(device).child(d).remove();
       }
     }
-   // console.log(date_data30_D.length);
+    //console.log(date_data30_D.length);
+    //console.log(date_data7_D.length);
+    //console.log(date_data1_D.length);
    // console.log(temp_data30_D.length);
    // console.log(humi_data30_D.length);
-    labels = date_data1_D;
+    label = date_data1_D;
     tem_data = temp_data1_D;
     humi_data = humi_data1_D;
     // D01
@@ -114,7 +145,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     myChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: labels,
+        labels: label,
         datasets: [{ 
             data: tem_data,
             label: 'Temperature',
@@ -124,7 +155,8 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
             fill: false,
             yAxisID: 'A', 
             pointRadius: 0,
-            borderWidth: 3
+            borderWidth: 3,
+            tension: 0
           }, { 
             data: humi_data,
             label: 'Humidity',
@@ -133,22 +165,30 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
             fill: false,
             yAxisID: 'B',
             pointRadius: 0,
-            borderWidth: 3
+            borderWidth: 3,
+            tension: 0
             //borderWidth: .00001
           }]
         },
         options: {
-          pan: {
+          /*pan: {
             enabled: true,
             mode: 'x',
             speed: 20,
-          },
+          },*/
           zoom: {
-              enabled: true,                      
-              mode: 'x',
-              speed: 1,
-              threshold: 2,
-              sensitivity: 0.001,
+            enabled: true,
+            drag: {
+             borderColor: 'rgba(225,225,225,0.3)',
+             borderWidth: 5,
+             backgroundColor: 'rgb(225,225,225)',
+             animationDuration: 0
+            },
+            mode: 'x',
+           /* limits: {
+              max: 10,
+              min: 0.
+            }*/
           },
           tooltips: {
             mode: 'index',
@@ -194,12 +234,39 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
               }          
             }],
             xAxes: [{
-              //type: 'time',
+              type: 'time',
+              time: {
+                unit: 'hour',
+                //stepSize: 0.5,  I'm using 3 hour intervals here
+                tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
+                //parser: 'HH:mm:ss a', //these formatting values do nothing, I've tried a few different ones
+                //: 'second', //I have tried minutes and hours too, same result
+                displayFormats: {
+                  millisecond: 'HH:mm:ss', //I have tried without the 'a' too, same result
+                  second: 'HH:mm:ss',
+                  minute: 'HH:mm:ss',
+                  hour: 'HH:mm',
+                  day: 'HH:mm',
+                  'week': 'HH:mm:ss a',
+                  'month': 'HH:mm:ss a',
+                  'quarter': 'HH:mm:ss a',
+                  'year': 'HH:mm:ss a',
+                }
+              },
               ticks: {
-                autoSkip: true,
+                //source: 'auto',
+                major: {
+                  enabled: true, // <-- This is the key line
+                  fontStyle: 'bold', //You can also style these values differently
+                  fontSize: 14 //You can also style these values differently
+               },
+              },
+              
+              /*ticks: {
+                //autoSkip: true,
                 maxTicksLimit: maxTicksLimitX,
                 fontSize: font_x_size
-              },
+              },*/
             }]
           },
         }
@@ -224,6 +291,7 @@ function dayData(){
   monthBtn.style.backgroundColor = "white";
   monthBtn.style.color = "#E35F43";
 
+ //console.log(date_data1_D);
   myChart.data.datasets[0].data = temp_data1_D;
   myChart.data.datasets[1].data = humi_data1_D;
   myChart.data.labels = date_data1_D;
@@ -241,6 +309,7 @@ function weekData(){
   monthBtn.style.backgroundColor = "white";
   monthBtn.style.color = "#E35F43";
 
+  //console.log(date_data7_D.length);
   myChart.data.datasets[0].data = temp_data7_D;
   myChart.data.datasets[1].data = humi_data7_D;
   myChart.data.labels = date_data7_D;
@@ -276,11 +345,11 @@ calc.addEventListener("click", function() {
     temp_carlendar_D = [];
     //console.log(ChangeFormateDate(date));
     dateNow = ChangeFormateDate(date);
-    console.log(dateNow);
+    //console.log(dateNow);
     
-    console.log(date_data30_D[42000].substring(0, 10));
+    //console.log(date_data30_D[42000].substring(0, 10));
     
-    for (let i = 0;i < 43200; i++) {
+    /*for (let i = 0;i < 43200; i++) {
       
       if (date_data30_D[i] == NaN) {
         continue;
@@ -289,13 +358,26 @@ calc.addEventListener("click", function() {
         humi_carlendar_D.push(humi_data30_D[i]);
         temp_carlendar_D.push(temp_data30_D[i]);
       }
+    }*/
+    for (let i = 0;i < date_data30_D.length; i++) {
+      if (dateNow == date_data30_D_tranfer[i].toString().substring(0, 10)) {
+        date_carlendar_D.push(date_data30_D[i]);
+        humi_carlendar_D.push(humi_data30_D[i]);
+        temp_carlendar_D.push(temp_data30_D[i]);
+        
+      }
     }
-  console.log(temp_carlendar_D.legend);
-  myChart.data.datasets[0].data = temp_carlendar_D;
-  myChart.data.datasets[1].data = humi_carlendar_D;
-  myChart.data.labels = date_carlendar_D;
-  myChart.update();
-  console.log(date_carlendar_D);
+    console.log(date_data30_D_tranfer.toString().substring(0, 10));
+    myChart.data.datasets[0].data = temp_carlendar_D;
+    myChart.data.datasets[1].data = humi_carlendar_D;
+    myChart.data.labels = date_carlendar_D;
+  //label = date_carlendar_D;
+  //tem_data = temp_carlendar_D;
+  //humi_data =  humi_carlendar_D;
+   myChart.update();
+   console.log(date_carlendar_D.length);
+   console.log(humi_carlendar_D.length);
+   console.log(temp_carlendar_D.length);
 })
 
 function ChangeFormateDate(oldDate)
@@ -303,3 +385,6 @@ function ChangeFormateDate(oldDate)
    return oldDate.toString().split("-").reverse().join("/");
 }
 
+document.getElementById('resetZoom').addEventListener('click', function() {
+  myChart.resetZoom('none');
+});
