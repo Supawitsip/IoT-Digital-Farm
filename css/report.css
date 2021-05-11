@@ -274,7 +274,10 @@ tr:nth-child(even) {
     display: block;
 }
   
-.dropdown a:hover {background-color: #ddd;}
+.dropdown a:hover {
+    background-color: #ddd;
+    cursor: pointer;
+}
 
 .show {display: block;}
 
