@@ -144,11 +144,13 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
             speed: 20,
           },
           zoom: {
-              enabled: true,                      
-              mode: 'x',
-              speed: 1,
-              threshold: 2,
-              sensitivity: 0.001,
+            enabled: true,
+            drag: true,
+            mode: 'xy',
+            limits: {
+              max: 10,
+              min: 0.
+            }
           },
           tooltips: {
             mode: 'index',
