@@ -307,6 +307,12 @@ tr:nth-child(even) {
     .refresh {
         padding: 10px 20px;
     }
+    .dropbtn i {
+        font-size: 22px;
+    }
+    .dropbtn {
+        padding: 8px 24px;
+    }
     .devi-block {
         margin-bottom: 4px;
     }
@@ -325,13 +331,16 @@ tr:nth-child(even) {
         font-size: 28px;
     }
     .ex-title {
-        width: 50%;
+        width: 40%;
         font-size: 18px;
         margin: 10px 14px;
         vertical-align: middle;
     }
     .export-con i {
         font-size: 30px;
+    }
+    .excel-icon {
+        margin-left: 14px;
     }
     .ex-btn {
         margin: 16px 16px 16px 10px;
@@ -347,4 +356,18 @@ tr:nth-child(even) {
         margin: 6px 4px;
     }
     .timeSet input {background-color: white;}
+    .sh-btn {
+        font-size: 16px;
+        margin: 18px 14px;
+        padding: 2px 18px;
+    }
+    #date_from {
+        width: 80%;
+    }
+    #date_to {
+        width: 82%;
+    }
+    .getTimeBtn {
+        float: right;
+    }
 }
