@@ -377,3 +377,6 @@ function ChangeFormateDate(oldDate)
    return oldDate.toString().split("-").reverse().join("/");
 }
 
+document.getElementById('resetZoom').addEventListener('click', function() {
+  myChart.resetZoom('none');
+});
