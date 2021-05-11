@@ -7,11 +7,14 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const device = urlParams.get('device');
 
+let firstDateTime;
+let lastDateTime;
 dbRef.child(db_devices).child(device).get().then((snapshot) => {
     if (snapshot.exists()) {
         let deviObj = snapshot.val();
-        n_sampling = Object.keys(deviObj).length;
-        last_samp = Object.keys(deviObj)[n_sampling-1];
+        let n_sampling = Object.keys(deviObj).length;
+        let last_samp = Object.keys(deviObj)[n_sampling-1];
+        let first_samp = Object.keys(deviObj)[0];
         console.log("Number of sampling: " + n_sampling);
         console.log("Last sampling key: " + last_samp);
 
@@ -22,13 +25,23 @@ dbRef.child(db_devices).child(device).get().then((snapshot) => {
         // Convert timestamp to readable
         let timestamp = (deviObj[last_samp].timestamp)/1000;
         let date = new Date(timestamp * 1000);
-        let currentDateTime = date.getDate().toString().padStart(2, "0")+
+        lastDateTime = date.getDate().toString().padStart(2, "0")+
                         "/"+((date.getMonth()+1).toString().padStart(2, "0"))+
                         "/"+date.getFullYear()+
                         " "+date.getHours().toString().padStart(2, "0")+
                         ":"+date.getMinutes().toString().padStart(2, "0")+
                         ":"+date.getSeconds().toString().padStart(2, "0");
-        document.getElementById("lastTime").innerText = currentDateTime;
+        
+        timestamp = (deviObj[first_samp].timestamp)/1000;
+        date = new Date(timestamp * 1000);
+        firstDateTime = date.getDate().toString().padStart(2, "0")+
+                        "/"+((date.getMonth()+1).toString().padStart(2, "0"))+
+                        "/"+date.getFullYear()+
+                        " "+date.getHours().toString().padStart(2, "0")+
+                        ":"+date.getMinutes().toString().padStart(2, "0")+
+                        ":"+date.getSeconds().toString().padStart(2, "0");
+
+        document.getElementById("lastTime").innerText = lastDateTime;
         document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviObj[last_samp].temperature} °C`;
         document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviObj[last_samp].humidity} %`;
 
@@ -134,7 +147,7 @@ function exportTable2pdf() {
     doc.setFontSize(16);
     doc.text(290, y = y + 18, `${device}`);  
     doc.setFontSize(12);
-    doc.text(150, y = y + 20, `Start: XX/XX/XX XX:XX:XX, End: XX/XX/XX XX:XX:XX`); 
+    doc.text(150, y = y + 20, `Start: ${firstDateTime}, End: ${lastDateTime}`); 
     doc.autoTable({  
         html: '#table2excel',  
         startY: 70,  
