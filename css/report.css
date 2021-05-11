@@ -114,7 +114,7 @@
     width: 100%;
     height: fit-content;
     padding: 4px;
-    margin: 20px 0;
+    margin: 20px auto;
     background-color: rgb(241, 241, 241);
     box-shadow: 5px 5px 8px 3px rgba(0,0,0,0.19);
 }
@@ -146,7 +146,12 @@
     background-color: #9c9c9c;
     color: white;
 }
-
+.timeSet {
+    width: 100%;
+    display: inline-block;
+    border-radius: 6px;
+    padding: 6px;
+}
 .calendarTime {
     width: fit-content;
     float: right;
@@ -184,6 +189,10 @@
 }
 
 #dayDuration {
+    background-color: #E35F43;
+    color: white;
+}
+#resetZoom:hover {
     background-color: #E35F43;
     color: white;
 }

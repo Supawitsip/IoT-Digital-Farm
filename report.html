@@ -93,59 +93,59 @@
         </div>
       </div>
 
-      <!-- Analytics Graph -->
+      <!-- Set Time to view data -->
       <div class="timeSet">
         <div class="calendarTime">
-          <label for="date_to"> to:</label>
-          <input id="date_to" type="date" name="task_date" />
           <!--Time:<input id="time" type="time" name="task_time" /> -->
-          
         </div>
         <div class="calendarTime">
-          <label for="date_from">Date from:</label>
+          <label for="date_from">Start:</label>
           <input id="date_from" type="date" name="task_date" />
+          <label for="date_to"> End:</label>
+          <input id="date_to" type="date" name="task_date" />
           <!--Time:<input id="time" type="time" name="task_time" /> -->
-          
-          <button onclick="getRange()" class="getTimeBtn">Get2</button>
+          <button onclick="getRange()" class="getTimeBtn">Get</button>
         </div>
         
         <div class="btnTime">
           <button onclick="dayData()" class="timeDuration" id="dayDuration">1 d</button> 
           <button onclick="weekData()" class="timeDuration" id="weekDuration">1 w</button> 
           <button onclick="monthData()" class="timeDuration" id="monthDuration">1 m</button>
+          <button id="resetZoom" class="timeDuration"><i class="fas fa-redo-alt"></i></button>
         </div>
-        <button id="resetZoom">Reset Zoom</button>
       </div>
 
-      <div id="reportPage" style="background-color: none;">
-        <canvas id="temperatureChart"  width="800px" height="400px"></canvas>
-      </div>
-      
+      <!-- Data Container -->
+      <div class="data-con">
+        <!-- Graph Container -->
+        <div id="reportPage" style="background-color: none;">
+          <canvas id="temperatureChart"  width="800px" height="400px"></canvas>
+        </div>
+        
 
-      <!-- Export to Excel -->
-      <div class="export-con">
-        <i class="far fa-file-excel excel-icon"></i>
-        <div class="ex-title">Data Collection Table</div>
-        <button class="sh-btn" id="showTable">Show</button>
-      </div>
+        <!-- Data Table Container -->
+        <div class="export-con">
+          <i class="far fa-file-excel excel-icon"></i>
+          <div class="ex-title">Data Collection Table</div>
+          <button class="sh-btn" id="showTable">Show</button>
+        </div>
 
-      <div class="tbl-con" style="display: none;">
-        <table class="table2excel" id="table2excel" style="display: none;" data-cols-width="10,20,50,20,20">
-          <thead>
-            <tr>
-              <th>No.</th>
-              <th>Device Name</th>
-              <th>Date and Time</th>
-              <th>Temperature (°C)</th>
-              <th>Humidity (%RH)</th>
-            </tr>
-          </thead>
-          <tbody id="tbody">
-          </tbody>
-        </table>
+        <div class="tbl-con" style="display: none;">
+          <table class="table2excel" id="table2excel" style="display: none;" data-cols-width="10,20,50,20,20">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Device Name</th>
+                <th>Date and Time</th>
+                <th>Temperature (°C)</th>
+                <th>Humidity (%RH)</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+          </table>
+        </div>
       </div>
-      
-
       
 
     </div>
