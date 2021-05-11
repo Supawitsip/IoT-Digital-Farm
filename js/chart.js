@@ -240,12 +240,12 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
               type: 'time',
               time: {
                 unit: 'hour',
-                //stepSize: 0.5,  I'm using 3 hour intervals here
+                stepSize: 0.5,  //I'm using 3 hour intervals here
                 tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
-                //parser: 'HH:mm:ss a', //these formatting values do nothing, I've tried a few different ones
+                parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
                 //: 'second', //I have tried minutes and hours too, same result
                 displayFormats: {
-                  millisecond: 'HH:mm:ss', //I have tried without the 'a' too, same result
+                  /*millisecond: 'HH:mm:ss', //I have tried without the 'a' too, same result
                   second: 'HH:mm:ss',
                   minute: 'HH:mm:ss',
                   hour: 'HH:mm',
@@ -253,7 +253,8 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
                   'week': 'HH:mm:ss a',
                   'month': 'HH:mm:ss a',
                   'quarter': 'HH:mm:ss a',
-                  'year': 'HH:mm:ss a',
+                  'year': 'HH:mm:ss a',*/
+                  hour: 'HH:mm'
                 }
               },
               ticks: {
@@ -389,42 +390,62 @@ calc.addEventListener("click", function() {
 //console.log(date_data30_D_tranfer);
 function getRange() {
   let date_start = document.getElementById("date_from").value;
-  let dat_end = document.getElementById("date_to").value;
+  let date_end = document.getElementById("date_to").value;
   let date_start_formate = ChangeFormateDate(date_start); 
-  let date_end_formate = ChangeFormateDate(dat_end); 
+  let date_end_formate = ChangeFormateDate(date_end); 
   let check_length = false;
   date_carlendar_D = []; 
   humi_carlendar_D = [];
   temp_carlendar_D = [];
   //console.log(date_data30_D_tranfer);
-  for (let i = 0;i < date_data30_D.length; i++) {
-    if (date_start_formate == date_data30_D_tranfer[i].toString().substring(0, 10)) {
-      date_carlendar_D.push(date_data30_D[i]);
-      humi_carlendar_D.push(humi_data30_D[i]);
-      temp_carlendar_D.push(temp_data30_D[i]);   
-      check_length = true;
-    } else if (check_length == true) {
-      date_carlendar_D.push(date_data30_D[i]);
-      humi_carlendar_D.push(humi_data30_D[i]);
-      temp_carlendar_D.push(temp_data30_D[i]);   
-      try {
-        if (date_end_formate == date_data30_D_tranfer[i+1].toString().substring(0, 10)) {
-          check_length = false;
-        }
-      } catch(err) {
-        console.log(err.message);
+  if (date_start > date_end) {
+    console.log("worng");
+    console.log(date_start);
+    console.log(date_end);
+  } else {
+    for (let i = 0;i < date_data30_D.length; i++) {
+      if (date_start <= ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) <= date_end) {
+        date_carlendar_D.push(date_data30_D[i]);
+        humi_carlendar_D.push(humi_data30_D[i]);
+        temp_carlendar_D.push(temp_data30_D[i]);   
+        //console.log(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
       }
-    } else if (date_end_formate == date_data30_D_tranfer[i].toString().substring(0, 10)){
-      date_carlendar_D.push(date_data30_D[i]);
-      humi_carlendar_D.push(humi_data30_D[i]);
-      temp_carlendar_D.push(temp_data30_D[i]);   
-    }
+      //console.log(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
+    };
+    //console.log(ChangeFormateDateV2(date_data30_D_tranfer[1].toString().substring(0, 10)));
+    //console.log(date_start);
+    //console.log(date_end);
+    //console.log("art");
+    //console.log(date_carlendar_D);
+    /*for (let i = 0;i < date_data30_D.length; i++) {
+      if (date_start_formate == date_data30_D_tranfer[i].toString().substring(0, 10)) {
+        date_carlendar_D.push(date_data30_D[i]);
+        humi_carlendar_D.push(humi_data30_D[i]);
+        temp_carlendar_D.push(temp_data30_D[i]);   
+        check_length = true;
+      } else if (check_length == true) {
+        date_carlendar_D.push(date_data30_D[i]);
+        humi_carlendar_D.push(humi_data30_D[i]);
+        temp_carlendar_D.push(temp_data30_D[i]);   
+        try {
+          if (date_end_formate == date_data30_D_tranfer[i+1].toString().substring(0, 10)) {
+            check_length = false;
+          }
+        } catch(err) {
+          console.log(err.message);
+        }
+      } else if (date_end_formate == date_data30_D_tranfer[i].toString().substring(0, 10)){
+        date_carlendar_D.push(date_data30_D[i]);
+        humi_carlendar_D.push(humi_data30_D[i]);
+        temp_carlendar_D.push(temp_data30_D[i]);   
+      }
+    }*/
+    myChart.data.datasets[0].data = temp_carlendar_D;
+    myChart.data.datasets[1].data = humi_carlendar_D;
+    myChart.data.labels = date_carlendar_D;
+    
+    myChart.update();
   }
-  myChart.data.datasets[0].data = temp_carlendar_D;
-  myChart.data.datasets[1].data = humi_carlendar_D;
-  myChart.data.labels = date_carlendar_D;
-  console.log("art");
-  myChart.update();
 }
 
 function ChangeFormateDate(oldDate) {
