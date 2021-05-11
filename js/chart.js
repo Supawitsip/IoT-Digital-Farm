@@ -236,14 +236,17 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
             xAxes: [{
               type: 'time',
               time: {
-                parser: 'HH:mm:ss a', //these formatting values do nothing, I've tried a few different ones
-                unit: 'minutes', //I have tried minutes and hours too, same result
+                unit: 'hour',
+                //stepSize: 0.5,  I'm using 3 hour intervals here
+                tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
+                //parser: 'HH:mm:ss a', //these formatting values do nothing, I've tried a few different ones
+                //: 'second', //I have tried minutes and hours too, same result
                 displayFormats: {
-                 // 'millisecond': 'HH:mm:ss a', //I have tried without the 'a' too, same result
-                  'second': 'HH:mm:ss a',
-                  'minute': 'HH:mm:ss a',
-                  'hour': 'HH:mm:ss a',
-                  'day': 'HH:mm:ss a',
+                  millisecond: 'HH:mm:ss', //I have tried without the 'a' too, same result
+                  second: 'HH:mm:ss',
+                  minute: 'HH:mm:ss',
+                  hour: 'HH:mm',
+                  day: 'HH:mm',
                   'week': 'HH:mm:ss a',
                   'month': 'HH:mm:ss a',
                   'quarter': 'HH:mm:ss a',
@@ -251,7 +254,12 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
                 }
               },
               ticks: {
-                source: 'auto'
+                //source: 'auto',
+                major: {
+                  enabled: true, // <-- This is the key line
+                  fontStyle: 'bold', //You can also style these values differently
+                  fontSize: 14 //You can also style these values differently
+               },
               },
               
               /*ticks: {
@@ -283,7 +291,7 @@ function dayData(){
   monthBtn.style.backgroundColor = "white";
   monthBtn.style.color = "#E35F43";
 
-  console.log(date_data1_D);
+ //console.log(date_data1_D);
   myChart.data.datasets[0].data = temp_data1_D;
   myChart.data.datasets[1].data = humi_data1_D;
   myChart.data.labels = date_data1_D;
@@ -301,7 +309,7 @@ function weekData(){
   monthBtn.style.backgroundColor = "white";
   monthBtn.style.color = "#E35F43";
 
-  console.log(date_data7_D.length);
+  //console.log(date_data7_D.length);
   myChart.data.datasets[0].data = temp_data7_D;
   myChart.data.datasets[1].data = humi_data7_D;
   myChart.data.labels = date_data7_D;
