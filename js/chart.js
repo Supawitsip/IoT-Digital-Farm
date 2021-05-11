@@ -352,14 +352,14 @@ calc.addEventListener("click", function() {
       }
     }*/
     for (let i = 0;i < date_data30_D.length; i++) {
-      if (dateNow == date_data30_D_tranfer.toString().substring(0, 10)) {
+      if (dateNow == date_data30_D_tranfer[i].toString().substring(0, 10)) {
         date_carlendar_D.push(date_data30_D[i]);
         humi_carlendar_D.push(humi_data30_D[i]);
         temp_carlendar_D.push(temp_data30_D[i]);
+        
       }
-      //console.log(date_data30_D[i]);
-    }//console.log(date_carlendar_D);
- // console.log(temp_carlendar_D.legend);
+    }
+    console.log(date_data30_D_tranfer.toString().substring(0, 10));
     myChart.data.datasets[0].data = temp_carlendar_D;
     myChart.data.datasets[1].data = humi_carlendar_D;
     myChart.data.labels = date_carlendar_D;
