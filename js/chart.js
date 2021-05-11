@@ -258,7 +258,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
                 }
               },
               ticks: {
-                source: 'auto',
+                //source: 'auto',
                 major: {
                   enabled: true, // <-- This is the key line
                   fontStyle: 'bold', //You can also style these values differently
@@ -277,37 +277,33 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     var compareChart = new Chart(ctx2, {
       type: 'line',
       data: {
-        labels: label,
+        labels: date_data1_D,
         datasets: [{ 
-            data: tem_data,
-            label: 'Temperature',
+            data: temp_data1_D,
+            label: 'Temperature1',
             indexLabelFontSize: 10,
             borderColor: "#ec7777",
             backgroundColor: "#ec7777",
             fill: false,
-            yAxisID: 'A', 
+            //yAxisID: 'A', 
             pointRadius: 0,
             borderWidth: 3,
             tension: 0
-          }, { 
-            data: humi_data,
-            label: 'Humidity',
-            borderColor: "#5f5ff1",
-            backgroundColor: "#5f5ff1",
+          },
+          {
+            data: temp_data1_D,
+            label: 'Temperature2',
+            indexLabelFontSize: 10,
+            borderColor: "#ec7777",
+            backgroundColor: "#ec7777",
             fill: false,
-            yAxisID: 'B',
+            //yAxisID: 'A', 
             pointRadius: 0,
             borderWidth: 3,
             tension: 0
-            //borderWidth: .00001
           }]
         },
         options: {
-          /*pan: {
-            enabled: true,
-            mode: 'x',
-            speed: 20,
-          },*/
           zoom: {
             enabled: true,
             drag: {
@@ -317,10 +313,6 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
              animationDuration: 0
             },
             mode: 'x',
-           /* limits: {
-              max: 10,
-              min: 0.
-            }*/
           },
           tooltips: {
             mode: 'index',
@@ -340,30 +332,14 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
                 suggestedMin: 10,
                 suggestedMax: 45, 
                 maxTicksLimit: maxTicksLimitY,
-                fontSize: font_y_size, //10
+                fontSize: font_y_size,
                 min: 10
               },
               scaleLabel: {
                 display: true,
                 labelString: 'Temperature (°C)',
                 fontSize: font_y_size
-              },
-            }, {
-              id: 'B',
-              type: 'linear',
-              position: 'right',
-              ticks: {
-                suggestedMin: 20,
-                suggestedMax: 90, 
-                maxTicksLimit: maxTicksLimitY,
-                fontSize: font_y_size,
-                min: 20
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Humidity (%RH)',
-                fontSize: font_y_size
-              }          
+              },        
             }],
             xAxes: [{
               type: 'time',
@@ -374,15 +350,6 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
                 parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
                 //: 'second', //I have tried minutes and hours too, same result
                 displayFormats: {
-                  /*millisecond: 'HH:mm:ss', //I have tried without the 'a' too, same result
-                  second: 'HH:mm:ss',
-                  minute: 'HH:mm:ss',
-                  hour: 'HH:mm',
-                  day: 'HH:mm',
-                  'week': 'HH:mm:ss a',
-                  'month': 'HH:mm:ss a',
-                  'quarter': 'HH:mm:ss a',
-                  'year': 'HH:mm:ss a',*/
                   hour: 'HH:mm'
                 }
               },
@@ -393,9 +360,6 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
                   fontStyle: 'bold', //You can also style these values differently
                   fontSize: 14 //You can also style these values differently
                },
-               //autoSkip: true,
-               //fontSize: font_x_size
-               //,maxTicksLimit: maxTicksLimitX,
               },
             }]
           },
