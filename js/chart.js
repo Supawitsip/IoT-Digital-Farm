@@ -287,6 +287,19 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
 
 //click for change grapt
 function allData(){
+  let dayBtn = document.getElementById("dayDuration");
+  let weekBtn = document.getElementById("weekDuration");
+  let monthBtn = document.getElementById("monthDuration");
+  let allBtn = document.getElementById("allDuration");
+  allBtn.style.backgroundColor = "#E35F43";
+  allBtn.style.color = "white";
+  dayBtn.style.backgroundColor = "white";
+  dayBtn.style.color = "#E35F43";
+  weekBtn.style.backgroundColor = "white";
+  weekBtn.style.color = "#E35F43";
+  monthBtn.style.backgroundColor = "white";
+  monthBtn.style.color = "#E35F43";
+
   //console.log(date_data1_D);
   myChart.data.datasets[0].data = temp_data30_D;
   myChart.data.datasets[1].data = humi_data30_D;
@@ -299,12 +312,15 @@ function dayData(){
   let dayBtn = document.getElementById("dayDuration");
   let weekBtn = document.getElementById("weekDuration");
   let monthBtn = document.getElementById("monthDuration");
+  let allBtn = document.getElementById("allDuration");
   dayBtn.style.backgroundColor = "#E35F43";
   dayBtn.style.color = "white";
   weekBtn.style.backgroundColor = "white";
   weekBtn.style.color = "#E35F43";
   monthBtn.style.backgroundColor = "white";
   monthBtn.style.color = "#E35F43";
+  allBtn.style.backgroundColor = "white";
+  allBtn.style.color = "#E35F43";
 
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data1_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length-1].toString().substring(0, 10));
@@ -319,12 +335,15 @@ function weekData(){
   let dayBtn = document.getElementById("dayDuration");
   let weekBtn = document.getElementById("weekDuration");
   let monthBtn = document.getElementById("monthDuration");
+  let allBtn = document.getElementById("allDuration");
   weekBtn.style.backgroundColor = "#E35F43";
   weekBtn.style.color = "white";
   dayBtn.style.backgroundColor = "white";
   dayBtn.style.color = "#E35F43";
   monthBtn.style.backgroundColor = "white";
   monthBtn.style.color = "#E35F43";
+  allBtn.style.backgroundColor = "white";
+  allBtn.style.color = "#E35F43";
 
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = ChangeFormateDateV2(date_data7_D_tranfer[date_data7_D_tranfer.length-1].toString().substring(0, 10));
@@ -339,12 +358,15 @@ function monthData(){
   let dayBtn = document.getElementById("dayDuration");
   let weekBtn = document.getElementById("weekDuration");
   let monthBtn = document.getElementById("monthDuration");
+  let allBtn = document.getElementById("allDuration");
   monthBtn.style.backgroundColor = "#E35F43";
   monthBtn.style.color = "white";
   weekBtn.style.backgroundColor = "white";
   weekBtn.style.color = "#E35F43";
   dayBtn.style.backgroundColor = "white";
   dayBtn.style.color = "#E35F43";
+  allBtn.style.backgroundColor = "white";
+  allBtn.style.color = "#E35F43";
 
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = ChangeFormateDateV2(date_data30_D_tranfer[date_data30_D_tranfer.length-1].toString().substring(0, 10));
