@@ -264,16 +264,45 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
                   fontStyle: 'bold', //You can also style these values differently
                   fontSize: 14 //You can also style these values differently
                },
+               //autoSkip: true,
+               //fontSize: font_x_size
+               //,maxTicksLimit: maxTicksLimitX,
               },
-              
-              /*ticks: {
-                //autoSkip: true,
-                maxTicksLimit: maxTicksLimitX,
-                fontSize: font_x_size
-              },*/
             }]
           },
         }
+    });
+
+    var ctx = document.getElementById('compareChart').getContext('2d');
+    myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: label,
+        datasets: [{ 
+            data: tem_data,
+            label: 'Temperature',
+            indexLabelFontSize: 10,
+            borderColor: "#ec7777",
+            backgroundColor: "#ec7777",
+            fill: false,
+            yAxisID: 'A', 
+            pointRadius: 0,
+            borderWidth: 3,
+            tension: 0
+          }, { 
+            data: humi_data,
+            label: 'Humidity',
+            borderColor: "#5f5ff1",
+            backgroundColor: "#5f5ff1",
+            fill: false,
+            yAxisID: 'B',
+            pointRadius: 0,
+            borderWidth: 3,
+            tension: 0
+            //borderWidth: .00001
+          }]
+        },      
+        
     });
 
   } else {
