@@ -21,6 +21,9 @@
     <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script>
 
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>  
 
     <script src="ie-emulation-modes-warning.js"></script>
     <link href="carousel.css" rel="stylesheet">
@@ -60,6 +63,14 @@
           <i class="fas fa-clock" style="color: rgb(126, 126, 126);"></i>
         </div>
         <div class="head-con-text" id="lastTime"></div>
+        <div class="dropdown">
+          <button onclick="dropdownExport()" class="dropbtn"><i class="fas fa-file-download"></i></button>
+          <div id="myDropdown" class="dropdown-content">
+            <a id="graphPdf">Graph (PDF)</a>
+            <a id="dataPdf">Data Table (PDF)</a>
+            <a id="dataCsv">Data Table (CSV)</a>
+          </div>
+        </div>
         <a class="refresh" onclick="location.reload(true)">
           <i class="fas fa-sync-alt" style="font-size: 22px;"></i>
         </a>
@@ -87,13 +98,13 @@
           <button id="calc" class="getTimeBtn">Get Time</button>
         </div>
         <div class="btnTime">
-          <button onclick="monthData()" class="timeDuration" id="monthDuration">1 m</button>
-          <button onclick="weekData()" class="timeDuration" id="weekDuration">1 w</button> 
           <button onclick="dayData()" class="timeDuration" id="dayDuration">1 d</button> 
+          <button onclick="weekData()" class="timeDuration" id="weekDuration">1 w</button> 
+          <button onclick="monthData()" class="timeDuration" id="monthDuration">1 m</button>
         </div>
       </div>
 
-      <div>
+      <div id="reportPage">
         <canvas id="temperatureChart"  width="800px" height="400px"></canvas>
       </div>
       
@@ -101,20 +112,31 @@
       <!-- Export to Excel -->
       <div class="export-con">
         <i class="far fa-file-excel excel-icon"></i>
-        <div class="ex-title">3 Months Data Collection Table</div>
-        <button class="ex-btn" id="ex-btn">Excel</button>
+        <div class="ex-title">Data Collection Table</div>
+        <button class="sh-btn" id="showTable">Show</button>
+      </div>
+
+      <div class="tbl-con" style="display: none;">
         <table class="table2excel" id="table2excel" style="display: none;" data-cols-width="10,20,50,20,20">
-          <tr>
-            <th>No.</th>
-            <th>Device Name</th>
-            <th>Date and Time</th>
-            <th>Temperature (°C)</th>
-            <th>Humidity (%RH)</th>
-          </tr>
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Device Name</th>
+              <th>Date and Time</th>
+              <th>Temperature (°C)</th>
+              <th>Humidity (%RH)</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+          </tbody>
         </table>
       </div>
-    </div>
+      
 
+      
+
+    </div>
+    <!-- End of Main Container -->
 
     <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-analytics.js"></script>
     <script>
@@ -150,13 +172,52 @@
     
     <script src="js/chart.js"></script>
 
-    <!-- Export HTML Table to Excel Script -->
+    <!-- Export HTML Table to PDF or CSV file -->
     <script>
-      let button = document.querySelector("#ex-btn");
-      button.addEventListener("click", e => {
-        export2excel();
+      document.querySelector('#dataPdf').addEventListener('click', exportTable2pdf);
+      document.querySelector('#dataCsv').addEventListener('click', exportTable2excel);
+    </script>
+    
+    <!-- Hide and Show Table -->
+    <script>
+      let show = document.getElementById('showTable');
+      let tblCon = document.querySelector('.tbl-con');
+      let tbl = document.getElementById('table2excel');
+      renderDataTable();
+      show.addEventListener("click", e => {
+        if (tbl.style.display === "none") {
+          tblCon.style.display = "inline-block";
+          tbl.style.display = "inline-block";
+          show.innerText = "Hide";
+        } else {
+          tblCon.style.display = "none";
+          tbl.style.display = "none";
+          show.innerText = "Show";
+        }
       });
     </script>
     
+    <!-- Dropdown Script -->
+    <script>
+      /* When the user clicks on the button, 
+      toggle between hiding and showing the dropdown content */
+      function dropdownExport() {
+        document.getElementById("myDropdown").classList.toggle("show");
+      }
+      
+      // Close the dropdown if the user clicks outside of it
+      window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+          var dropdowns = document.getElementsByClassName("dropdown-content");
+          var i;
+          for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+              openDropdown.classList.remove('show');
+            }
+          }
+        }
+      }
+      </script>
   </body>
 </html>
