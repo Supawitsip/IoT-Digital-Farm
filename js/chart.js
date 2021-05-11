@@ -174,11 +174,11 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
           }]
         },
         options: {
-          pan: {
+          /*pan: {
             enabled: true,
-            mode: 'xy',
+            mode: 'x',
             speed: 20,
-          },
+          },*/
           zoom: {
             enabled: true,
             drag: {
