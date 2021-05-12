@@ -1,5 +1,8 @@
 var label;
+var humi_data;
+var tem_data;
 var myChart;
+var compareChart;
 
 var date_data1_D_tranfer;
 var date_data7_D_tranfer;
@@ -8,6 +11,7 @@ var date_data30_D_tranfer;
 var temp_data1_D;
 var date_data1_D; 
 var humi_data1_D;
+
 var temp_data7_D;
 var date_data7_D;
 var humi_data7_D;
@@ -15,11 +19,14 @@ var humi_data7_D;
 var temp_data30_D;
 var date_data30_D; 
 var humi_data30_D;
+
 var date_carlendar_D; 
 var humi_carlendar_D;
 var temp_carlendar_D;
-var humi_data;
-var tem_data;
+
+var day_in_week;
+var day1440;
+
 var maxTicksLimitX = 24;
 var maxTicksLimitY = 12;
 var font_x_size = 16;
@@ -52,6 +59,8 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     date_data7_D_tranfer = [];
     date_data30_D_tranfer = [];
     test = [];
+    day_in_week = [];
+    day1440 = [];
     // when data not enought
    /* let sampling_Nan = n_sampling;
     if (sampling_Nan < 43200) {
@@ -82,6 +91,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     } */
     
     let i = 0;
+    let j = 0;
     for (d in deviObj[device]) {
       n_sampling = Object.keys(deviObj[device]).length;
       let day_samling = n_sampling - 1440;
@@ -104,6 +114,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
       i += 1;
       test.push(date);
       if (i >= day_samling) {
+        
         temp_data1_D.push(deviObj[device][all_samp].temperature);
         date_data1_D_tranfer.push(currentDateTimeDevice);
         date_data1_D.push(date);
@@ -116,6 +127,13 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         date_data30_D_tranfer.push(currentDateTimeDevice);
         date_data30_D.push(date);
         humi_data30_D.push(deviObj[device][all_samp].humidity);
+        
+        /*day1440.push(deviObj[device][all_samp].temperature,date);
+        if (j >= 1440) {
+          day_in_week.push(day1440);
+          j = 0;
+        }
+        j++*/
       } else if (i >= week_sampling) {
         temp_data7_D.push(deviObj[device][all_samp].temperature);
         date_data7_D_tranfer.push(currentDateTimeDevice);
@@ -125,6 +143,13 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         date_data30_D_tranfer.push(currentDateTimeDevice);
         date_data30_D.push(date);
         humi_data30_D.push(deviObj[device][all_samp].humidity);
+        
+        /*if (j >= 1440) {
+          day_in_week.push(day1440);
+          j = 0;
+        }
+        day1440.push(deviObj[device][all_samp].temperature,date);
+        j++*/
       } else if (i >= month_sampling){
         temp_data30_D.push(deviObj[device][all_samp].temperature);
         date_data30_D_tranfer.push(currentDateTimeDevice);
@@ -136,8 +161,11 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         console.log("Some of the data was older than 3 months, so it has been deleted.");
         dbRef.child("devices_sensor").child(device).child(d).remove();
       }
+
+      
     }
-    //console.log(date_data30_D.length);
+    //console.log(day_in_week);
+    //console.log(day1440);
     //console.log(date_data7_D.length);
     //console.log(date_data1_D.length);
    // console.log(temp_data30_D.length);
@@ -145,11 +173,31 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     label = date_data30_D;
     tem_data = temp_data30_D;
     humi_data = humi_data30_D;
-    // D01
-    
+
+    myChart.data.datasets[0].data = temp_data30_D;
+    myChart.data.datasets[1].data = humi_data30_D;
+    myChart.data.labels = date_data30_D;
+    myChart.update();
+
     document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
     document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
-    let ctx = document.getElementById('temperatureChart').getContext('2d');
+    
+///////////////////////////////////////////////////////////////////////////// hard
+    
+    
+  //} else {
+  ////  console.log("No data available");
+  }
+}).catch((error) => {
+  console.error(error);
+  
+});
+
+
+console.log(label + " asdasd");
+
+////////////////////////////////////////////////////////////////////////////////
+let ctx = document.getElementById('temperatureChart').getContext('2d');
     myChart = new Chart(ctx, {
       type: 'line',
       data: {
@@ -277,108 +325,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
           },
         }
     });
-///////////////////////////////////////////////////////////////////////////// hard
-    /*var ctx2 = document.getElementById('compareChart').getContext('2d');
-    var compareChart = new Chart(ctx2, {
-      type: 'line',
-      data: {
-        labels: date_data1_D,
-        datasets: [{ 
-            data: temp_data1_D,
-            label: 'Temperature1',
-            indexLabelFontSize: 10,
-            borderColor: "#ec7777",
-            backgroundColor: "#ec7777",
-            fill: false,
-            //yAxisID: 'A', 
-            pointRadius: 0,
-            borderWidth: 3,
-            tension: 0
-          },
-          {
-            data: temp_data1_D,
-            label: 'Temperature2',
-            indexLabelFontSize: 10,
-            borderColor: "#ec7777",
-            backgroundColor: "#ec7777",
-            fill: false,
-            //yAxisID: 'A', 
-            pointRadius: 0,
-            borderWidth: 3,
-            tension: 0
-          }]
-        },
-        options: {
-          zoom: {
-            enabled: true,
-            drag: {
-             borderColor: 'rgba(225,225,225,0.3)',
-             borderWidth: 5,
-             backgroundColor: 'rgb(225,225,225)',
-             animationDuration: 0
-            },
-            mode: 'x',
-          },
-          tooltips: {
-            mode: 'index',
-            intersect: false
-          },
-          hover: {
-            mode: 'index',
-            intersect: false
-          },
-          responsive: true,
-          scales: {
-            yAxes: [{
-              id: 'A',
-              type: 'linear',
-              position: 'left',
-              ticks: {
-                suggestedMin: 10,
-                suggestedMax: 45, 
-                maxTicksLimit: maxTicksLimitY,
-                fontSize: font_y_size,
-                min: 10
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Temperature (°C)',
-                fontSize: font_y_size
-              },        
-            }],
-            xAxes: [{
-              type: 'time',
-              time: {
-                unit: 'hour',
-                stepSize: 0.5,  //I'm using 3 hour intervals here
-                tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
-                parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
-                //: 'second', //I have tried minutes and hours too, same result
-                displayFormats: {
-                  hour: 'HH:mm'
-                }
-              },
-              ticks: {
-                //source: 'auto',
-                major: {
-                  enabled: true, // <-- This is the key line
-                  fontStyle: 'bold', //You can also style these values differently
-                  fontSize: 14 //You can also style these values differently
-               },
-              },
-            }]
-          },
-        }
-    });*/
-
-
-  } else {
-    console.log("No data available");
-  }
-}).catch((error) => {
-  console.error(error);
-});
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 //click for change grapt
@@ -420,7 +367,7 @@ function dayData(){
 
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data1_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length-1].toString().substring(0, 10));
-  console.log(date_data1_D);
+  //console.log(date_data1_D);
   myChart.data.datasets[0].data = temp_data1_D;
   myChart.data.datasets[1].data = humi_data1_D;
   myChart.data.labels = date_data1_D;
@@ -443,7 +390,8 @@ function weekData(){
 
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = ChangeFormateDateV2(date_data7_D_tranfer[date_data7_D_tranfer.length-1].toString().substring(0, 10));
-  console.log(ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10)));
+  //console.log(ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10)));
+  //console.log(ChangeFormateDateV2(date_data7_D_tranfer[date_data7_D_tranfer.length-1].toString().substring(0, 10)));
   myChart.data.datasets[0].data = temp_data7_D;
   myChart.data.datasets[1].data = humi_data7_D;
   myChart.data.labels = date_data7_D;
@@ -512,3 +460,99 @@ function ChangeFormateDateV2(oldDate) {
 document.getElementById('resetZoom').addEventListener('click', function() {
   myChart.resetZoom('none');
 });
+
+
+function compareGraph() {
+var ctx2 = document.getElementById('compareChart').getContext('2d');
+var compareChart = new Chart(ctx2, {
+  type: 'line',
+  data: {
+    labels: date_data1_D,
+    datasets: [{ 
+        data: temp_data1_D,
+        label: 'Temperature1',
+        indexLabelFontSize: 10,
+        borderColor: "#ec7777",
+        backgroundColor: "#ec7777",
+        fill: false,
+        //yAxisID: 'A', 
+        pointRadius: 0,
+        borderWidth: 3,
+        tension: 0
+      },
+      {
+        data: temp_data1_D,
+        label: 'Temperature2',
+        indexLabelFontSize: 10,
+        borderColor: "#ec7777",
+        backgroundColor: "#ec7777",
+        fill: false,
+        //yAxisID: 'A', 
+        pointRadius: 0,
+        borderWidth: 3,
+        tension: 0
+      }]
+    },
+    options: {
+      zoom: {
+        enabled: true,
+        drag: {
+          borderColor: 'rgba(225,225,225,0.3)',
+          borderWidth: 5,
+          backgroundColor: 'rgb(225,225,225)',
+          animationDuration: 0
+        },
+        mode: 'x',
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false
+      },
+      hover: {
+        mode: 'index',
+        intersect: false
+      },
+      responsive: true,
+      scales: {
+        yAxes: [{
+          id: 'A',
+          type: 'linear',
+          position: 'left',
+          ticks: {
+            suggestedMin: 10,
+            suggestedMax: 45, 
+            maxTicksLimit: maxTicksLimitY,
+            fontSize: font_y_size,
+            min: 10
+          },
+          scaleLabel: {
+            display: true,
+            labelString: 'Temperature (°C)',
+            fontSize: font_y_size
+          },        
+        }],
+        xAxes: [{
+          type: 'time',
+          time: {
+            unit: 'hour',
+            stepSize: 0.5,  //I'm using 3 hour intervals here
+            tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
+            parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
+            //: 'second', //I have tried minutes and hours too, same result
+            displayFormats: {
+              hour: 'HH:mm'
+            }
+          },
+          ticks: {
+            //source: 'auto',
+            major: {
+              enabled: true, // <-- This is the key line
+              fontStyle: 'bold', //You can also style these values differently
+              fontSize: 14 //You can also style these values differently
+            },
+          },
+        }]
+      },
+    }
+});
+}
