@@ -371,7 +371,7 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
         }
     });*/
 
-
+    renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
   } else {
     console.log("No data available");
   }
@@ -401,6 +401,8 @@ function allData(){
   myChart.data.datasets[1].data = humi_data30_D;
   myChart.data.labels = date_data30_D;
   myChart.update();
+
+  renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
 }
 
 
@@ -420,11 +422,13 @@ function dayData(){
 
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data1_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length-1].toString().substring(0, 10));
-  console.log(date_data1_D);
+  //console.log(date_data1_D);
   myChart.data.datasets[0].data = temp_data1_D;
   myChart.data.datasets[1].data = humi_data1_D;
   myChart.data.labels = date_data1_D;
   myChart.update();
+
+  renderTable(device, date_data1_D_tranfer, temp_data1_D, humi_data1_D);
 }
 
 function weekData(){
@@ -448,6 +452,8 @@ function weekData(){
   myChart.data.datasets[1].data = humi_data7_D;
   myChart.data.labels = date_data7_D;
   myChart.update();
+
+  renderTable(device, date_data7_D_tranfer, temp_data7_D, humi_data7_D);
 }
 
 function monthData(){
@@ -470,6 +476,8 @@ function monthData(){
   myChart.data.datasets[1].data = humi_data30_D;
   myChart.data.labels = date_data30_D;
   myChart.update();
+
+  renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
 }
 
 function getRange() {
@@ -477,6 +485,7 @@ function getRange() {
   let date_end = document.getElementById("date_to").value;
  // let date_start_formate = ChangeFormateDate(date_start); 
  // let date_end_formate = ChangeFormateDate(date_end); 
+  date_calendar_transfer = [];
   date_carlendar_D = []; 
   humi_carlendar_D = [];
   temp_carlendar_D = [];
@@ -490,13 +499,16 @@ function getRange() {
       if (date_start <= ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) <= date_end) {
         date_carlendar_D.push(date_data30_D[i]);
         humi_carlendar_D.push(humi_data30_D[i]);
-        temp_carlendar_D.push(temp_data30_D[i]);   
+        temp_carlendar_D.push(temp_data30_D[i]);  
+        date_calendar_transfer.push(date_data30_D_tranfer[i]);
       }
     };
     myChart.data.datasets[0].data = temp_carlendar_D;
     myChart.data.datasets[1].data = humi_carlendar_D;
     myChart.data.labels = date_carlendar_D;
     myChart.update();
+
+    renderTable(device, date_calendar_transfer, temp_carlendar_D, humi_carlendar_D);
   }
 }
 
@@ -512,3 +524,24 @@ function ChangeFormateDateV2(oldDate) {
 document.getElementById('resetZoom').addEventListener('click', function() {
   myChart.resetZoom('none');
 });
+
+function renderTable(device_name, date_array, temp_array, humi_array) {
+  let haveTbody = document.getElementById('tbl-body');
+  if (haveTbody) {
+    haveTbody.remove();
+  }
+  let tbody = document.createElement('tbody');
+  tbody.setAttribute('id', 'tbl-body');
+  let col = 5; //column head number
+  for (i = 0; i < date_array.length; i++) {
+    let row = document.createElement('tr');
+    let td_list = [i+1, device_name, date_array[i], temp_array[i], humi_array[i]]
+    for (j = 0; j < col; j++) {
+      let td = document.createElement('td');
+      td.innerText = td_list[j];
+      row.appendChild(td);
+    }
+    tbody.appendChild(row);
+  }
+  document.getElementById('table2excel').appendChild(tbody);
+}
