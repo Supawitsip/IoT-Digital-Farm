@@ -13,6 +13,7 @@ var day_all_data;
 var date_data1_D_tranfer;
 var date_data7_D_tranfer;
 var date_data30_D_tranfer;
+var date_data_all_D_tranfer;
 
 var temp_data1_D;
 var date_data1_D;
@@ -25,6 +26,10 @@ var humi_data7_D;
 var temp_data30_D;
 var date_data30_D;
 var humi_data30_D;
+
+var temp_data_all_D;
+var date_data_all_D;
+var humi_data_all_D;
 
 var date_carlendar_D;
 var humi_carlendar_D;
@@ -87,6 +92,10 @@ function secondLoad() {
   date_data1_D_tranfer = [];
   date_data7_D_tranfer = [];
   date_data30_D_tranfer = [];
+  date_data_all_D_tranfer = [];
+  temp_data_all_D = [];
+  date_data_all_D = [];
+  humi_data_all_D = [];
   let i = 0;
   console.log('name: ' + device);
   n_sampling = Object.keys(deviObj).length;
@@ -123,6 +132,11 @@ function secondLoad() {
       date_data30_D.push(date);
       humi_data30_D.push(deviObj[d].humidity);
 
+      temp_data_all_D.push(deviObj[d].temperature);
+      date_data_all_D_tranfer.push(currentDateTimeDevice);
+      date_data_all_D.push(date);
+      humi_data_all_D.push(deviObj[d].humidity);
+
     } else if (i >= week_sampling) {
       temp_data7_D.push(deviObj[d].temperature);
       date_data7_D_tranfer.push(currentDateTimeDevice);
@@ -134,13 +148,26 @@ function secondLoad() {
       date_data30_D.push(date);
       humi_data30_D.push(deviObj[d].humidity);
 
-
+      temp_data_all_D.push(deviObj[d].temperature);
+      date_data_all_D_tranfer.push(currentDateTimeDevice);
+      date_data_all_D.push(date);
+      humi_data_all_D.push(deviObj[d].humidity);
 
     } else if (i >= month_sampling) {
       temp_data30_D.push(deviObj[d].temperature);
       date_data30_D_tranfer.push(currentDateTimeDevice);
       date_data30_D.push(date);
       humi_data30_D.push(deviObj[d].humidity);
+
+      temp_data_all_D.push(deviObj[d].temperature);
+      date_data_all_D_tranfer.push(currentDateTimeDevice);
+      date_data_all_D.push(date);
+      humi_data_all_D.push(deviObj[d].humidity);
+    } else {
+      temp_data_all_D.push(deviObj[d].temperature);
+      date_data_all_D_tranfer.push(currentDateTimeDevice);
+      date_data_all_D.push(date);
+      humi_data_all_D.push(deviObj[d].humidity);
     }
 
     /* if (i > 129600) {
@@ -413,6 +440,32 @@ function monthData() {
   renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
 }
 
+function allData() {
+  let dayBtn = document.getElementById("dayDuration");
+  let weekBtn = document.getElementById("weekDuration");
+  let monthBtn = document.getElementById("monthDuration");
+  let allBtn = document.getElementById("allDuration");
+  monthBtn.style.backgroundColor = "#white";
+  monthBtn.style.color = "E35F43";
+  weekBtn.style.backgroundColor = "white";
+  weekBtn.style.color = "#E35F43";
+  dayBtn.style.backgroundColor = "white";
+  dayBtn.style.color = "#E35F43";
+  allBtn.style.backgroundColor = "#E35F43";
+  allBtn.style.color = "#white";
+
+  document.getElementById('date_from').value = ChangeFormateDateV2(date_data_all_D_tranfer[0].toString().substring(0, 10));
+  document.getElementById('date_to').value = ChangeFormateDateV2(date_data_all_D_tranfer[date_data_all_D_tranfer.length - 1].toString().substring(0, 10));
+  myChart.data.datasets[0].data = temp_data_all_D;
+  myChart.data.datasets[1].data = humi_data_all_D;
+  myChart.data.labels = date_data_all_D;
+  myChart.update();
+  //console.log(date_data_all_D.length);
+ // console.log(date_data30_D.length);
+  renderTable(device, date_data_all_D_tranfer, temp_data_all_D, humi_data_all_D);
+}
+
+
 function getRange() {
   let date_start = document.getElementById("date_from").value;
   let date_end = document.getElementById("date_to").value;
@@ -498,8 +551,8 @@ function compareGraph() {
       j++
     } 
   }
-  console.log(day_all_data);
-  console.log(day_compareGraph);
+  //console.log(day_all_data);
+  //console.log(day_compareGraph);
   
   var ctx2 = document.getElementById('compareChart').getContext('2d');
   compareChart = new Chart(ctx2, {
@@ -575,20 +628,13 @@ function compareGraph() {
 function renderTable(device_name, date_array, temp_array, humi_array) {
   firstDateTime = date_array[0];
   lastDateTime = date_array[date_array.length - 1];
-  let tbody = document.getElementById('tbl-body');
-  let col = 5; //column head number
-  let load_sector = 1500
-  let multiply = 1;
-  let shifter;
-  let last_load = false;
-  //reset old table
-  tbody.innerText = '';
-
-  //init load
-  if (date_array.length <= 1500) {
-    last_load = true;
-    console.log('loading finished');
+  let haveTbody = document.getElementById('tbl-body');
+  if (haveTbody) {
+    haveTbody.remove();
   }
+  let tbody = document.createElement('tbody');
+  tbody.setAttribute('id', 'tbl-body');
+  let col = 5; //column head number
   for (i = 0; i < date_array.length; i++) {
     let row = document.createElement('tr');
     let td_list = [i + 1, device_name, date_array[i], temp_array[i], humi_array[i]]
@@ -597,40 +643,9 @@ function renderTable(device_name, date_array, temp_array, humi_array) {
       td.innerText = td_list[j];
       row.appendChild(td);
     }
-    if (i >= load_sector) {
-      row.style.display = "none";
-    }
     tbody.appendChild(row);
   }
   document.getElementById('table2excel').appendChild(tbody);
-  
-  //load more data when user scroll down to bottom
-  $(document).ready(function () {
-    $('.tbl-con').on('scroll', function(e) {
-      if (!last_load) {
-        let elem = $(e.currentTarget);
-        if (elem[0].scrollHeight - elem.scrollTop() == elem.outerHeight()) {
-          shifter = load_sector * multiply;
-          if (date_array.length-shifter <= load_sector) {
-            console.log('last load');
-            for (i = 0+shifter; i < date_array.length; i++) {
-              tbody.childNodes[i].style.display = "";
-            }
-            document.getElementById('table2excel').appendChild(tbody);
-            last_load = true;
-          } else {
-            console.log('more load');
-            shifter = load_sector * multiply; 
-            for (i = 0+shifter; i < load_sector+shifter; i++) {
-              tbody.childNodes[i].style.display = "";
-            }
-            multiply++;
-            document.getElementById('table2excel').appendChild(tbody);
-          }
-        }
-      }
-    });
-  });
 }
 
 // function addData(chart, label, data) {
@@ -650,5 +665,7 @@ function addData(chart, label, color, data) {
   });
   chart.update();
 }
+
+// อยู่ตรงนี้วัยรุ่น
 /////////////////////////////////////////////////// start function
 firstLoad();
