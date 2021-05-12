@@ -7,8 +7,6 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const device = urlParams.get('device');
 
-let firstDateTime;
-let lastDateTime;
 dbRef.child(db_devices).child(device).get().then((snapshot) => {
     if (snapshot.exists()) {
         let deviObj = snapshot.val();

@@ -32,6 +32,9 @@ var maxTicksLimitY = 12;
 var font_x_size = 16;
 var font_y_size = 16;
 var test;
+
+var firstDateTime;
+var lastDateTime;
 //console.log('name: ' + device);
 if (document.documentElement.clientWidth < 900) {
   //myChart.options.scales.yAxes[0].ticks.maxTicksLimit = 6;
@@ -675,6 +678,8 @@ var compareChart = new Chart(ctx2, {
 });
 =======
 function renderTable(device_name, date_array, temp_array, humi_array) {
+  firstDateTime = date_array[0];
+  lastDateTime = date_array[date_array.length - 1];
   let haveTbody = document.getElementById('tbl-body');
   if (haveTbody) {
     haveTbody.remove();
