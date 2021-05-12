@@ -50,6 +50,10 @@ function readableTime(time) {
 
 // Export data table from HTML to PDF 
 function exportTable2pdf() {  
+    // let tbody = document.getElementById('tbl-body');
+    // for (i=0; i < tbody.rows.length; i++){
+    //     tbody.childNodes[i].style.display = "";
+    // }
     let doc = new jsPDF('p', 'pt', 'a4');  
     let htmlstring = '';  
     let tempVarToCheckPageHeight = 0;  
@@ -76,6 +80,7 @@ function exportTable2pdf() {
     doc.setFontSize(12);
     doc.text(150, y = y + 20, `Start: ${firstDateTime}, End: ${lastDateTime}`); 
     doc.autoTable({  
+        includeHiddenHtml: true,
         html: '#table2excel',  
         startY: 70,  
         theme: 'grid', 
@@ -177,4 +182,3 @@ function exportGraph2pdf() {
     // download the pdf
     pdf.save('graph-report.pdf');
 }
-    

@@ -72,8 +72,8 @@
           <i class="fas fa-file-download dropbtn" onclick="dropdownExport()"></i>
           <div id="myDropdown" class="dropdown-content">
             <a id="graphPdf">Graph (PDF)</a>
-            <a id="dataPdf">Data Table (PDF)</a>
-            <a id="dataCsv">Data Table (CSV)</a>
+            <a id="dataPdf">Data (PDF)</a>
+            <a id="dataCsv">Data (XLSX)</a>
           </div>
         </div>
         <a class="refresh" onclick="location.reload(true)">
@@ -143,7 +143,8 @@
                 <th>Humidity (%RH)</th>
               </tr>
             </thead>
-
+            <tbody id="tbl-body">
+            </tbody>
           </table>
         </div>
       </div>
@@ -151,6 +152,10 @@
       <div id="reportPage" style="background-color: none;">
         <button id="resetZoom2" class="timeDuration"><i class="fas fa-redo-alt"></i></button>
         <canvas id="compareChart"  width="800px" height="400px"></canvas>
+      </div>
+
+      <div id="myScroll">
+
       </div>
 
     </div>
