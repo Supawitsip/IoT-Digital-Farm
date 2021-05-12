@@ -1,6 +1,5 @@
 const dbRef = firebase.database().ref();
-
-const db_devices = "devices_sensor"
+const db_devices = "devices_sensor";
 
 //Get url parameter (the device name)
 const queryString = window.location.search;
@@ -37,46 +36,6 @@ dbRef.child(db_devices).child(device).get().then((snapshot) => {
 }).catch((error) => {
   console.error(error);
 });
-
-// Render data table into report HTML
-// function renderDataTable() {
-//     dbRef.child(db_devices).child(device).get().then((snapshot) => {
-//         if (snapshot.exists()) {
-//             let deviObj = snapshot.val();
-//             let no = 0; //for count No. in the table
-//             Object.keys(deviObj).forEach(element => {
-//                 no++;
-//                 let col = 4; //column head number
-//                 let dname = deviObj[element].deviceNameID;
-//                 let dtemp = deviObj[element].temperature;
-//                 let dhumi = deviObj[element].humidity;
-//                 let dtime = (deviObj[element].timestamp)/1000;
-//                 let samp_date = new Date(dtime * 1000);
-//                 dtime = samp_date.getDate().toString().padStart(2, "0")+
-//                         "/"+((samp_date.getMonth()+1).toString().padStart(2, "0"))+
-//                         "/"+samp_date.getFullYear()+
-//                         " "+samp_date.getHours().toString().padStart(2, "0")+
-//                         ":"+samp_date.getMinutes().toString().padStart(2, "0")+
-//                         ":"+samp_date.getSeconds().toString().padStart(2, "0");
-//                 let row = document.createElement('tr');
-//                 let num = document.createElement('td');
-//                 num.innerText = no;
-//                 row.appendChild(num);
-//                 let td_list = [dname, dtime, dtemp, dhumi]
-//                 for (i = 0; i < col; i++) {
-//                     let td = document.createElement('td');
-//                     td.innerText = td_list[i];
-//                     row.appendChild(td);
-//                 }
-//                 document.getElementById('tbody').appendChild(row);
-//             });
-//         } else {
-//             console.log("Can't create data table")
-//         }
-//     }).catch((error) => {
-//         console.error(error);
-//     });
-// };
 
 // Convert timestamp to readable
 function readableTime(time) {
@@ -165,7 +124,7 @@ function exportTable2excel() {
 }
 
 // Export Graph to PDF file
-$('#graphPdf').click(function(event) {
+function exportGraph2pdf() {
     // get size of report page
     let reportPageHeight = $('#reportPage').innerHeight();
     let reportPageWidth = $('#reportPage').innerWidth();
@@ -182,15 +141,17 @@ $('#graphPdf').click(function(event) {
     let pdfctxX = 0;
     let pdfctxY = 0;
     let buffer = 100;
+    // make canvas BG is white
+    pdfctx.fillStyle = "white";
+    pdfctx.fillRect(0, 0, 1200, 800);
     
     // for each chart.js chart
     $("canvas").each(function(index) {
       // get the chart height/width
       let canvasHeight = $(this).innerHeight();
       let canvasWidth = $(this).innerWidth();
-      // make canvas BG is white
-      pdfctx.fillStyle = "white";
-      pdfctx.fillRect(0, 0, canvasWidth, canvasHeight+100);
+      
+      
       // reduce size of img chart
       canvasHeight = canvasHeight*90/100;
       canvasWidth = canvasWidth*90/100;
@@ -215,6 +176,5 @@ $('#graphPdf').click(function(event) {
     
     // download the pdf
     pdf.save('graph-report.pdf');
-});
-
+}
     
