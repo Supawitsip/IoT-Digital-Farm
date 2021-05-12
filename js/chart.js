@@ -550,3 +550,4 @@ function renderTable(device_name, date_array, temp_array, humi_array) {
   }
   document.getElementById('table2excel').appendChild(tbody);
 }
+// อยู่ตรงนี้วัยรุ่น
