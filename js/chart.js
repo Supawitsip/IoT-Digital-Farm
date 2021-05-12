@@ -35,7 +35,10 @@ var test;
 
 var firstDateTime;
 var lastDateTime;
-//console.log('name: ' + device);
+
+var test_all = [];
+var deviObj = {};
+console.log('name: ' + device);
 if (document.documentElement.clientWidth < 900) {
   //myChart.options.scales.yAxes[0].ticks.maxTicksLimit = 6;
   //myChart.options.scales.yAxes[1].ticks.maxTicksLimit = 6;
@@ -46,161 +49,115 @@ if (document.documentElement.clientWidth < 900) {
   font_y_size = 10;
 }
 
-dbRef.child("devices_sensor").get().then((snapshot) => {
-  if (snapshot.exists()) {
-    let deviObj = snapshot.val();
-    temp_data1_D = [];
-    date_data1_D = [];
-    humi_data1_D = [];
-    temp_data7_D = [];
-    date_data7_D = [];
-    humi_data7_D = [];
-    temp_data30_D = [];
-    date_data30_D = []; 
-    humi_data30_D = [];
-    date_data1_D_tranfer = [];
-    date_data7_D_tranfer = [];
-    date_data30_D_tranfer = [];
-    test = [];
-    day_in_week = [];
-    day1440 = [];
-    // when data not enought
-   /* let sampling_Nan = n_sampling;
-    if (sampling_Nan < 43200) {
-      for (; sampling_Nan < 43200;sampling_Nan++) {
-        if (sampling_Nan < 1440) {
-          temp_data1_D.push(NaN);
-          date_data1_D.push(new Date(0));
-          humi_data1_D.push(NaN);
-          temp_data7_D.push(NaN);
-          date_data7_D.push(new Date(0));
-          humi_data7_D.push(NaN);
-          temp_data30_D.push(NaN);
-          date_data30_D.push(new Date(0));
-          humi_data30_D.push(NaN);
-        } else if (sampling_Nan < 10080) { //week
-          temp_data7_D.push(NaN);
-          date_data7_D.push(new Date(0));
-          humi_data7_D.push(NaN);
-          temp_data30_D.push(NaN);
-          date_data30_D.push(new Date(0));
-          humi_data30_D.push(NaN);
-        } else {
-          temp_data30_D.push(NaN);
-          date_data30_D.push(new Date(0));
-          humi_data30_D.push(NaN);
-        }  
-      }   
-    } */
-    
-    let i = 0;
-    let j = 0;
-    for (d in deviObj[device]) {
-      n_sampling = Object.keys(deviObj[device]).length;
-      let day_samling = n_sampling - 1440;
-      let week_sampling = n_sampling - 10080;
-      let month_sampling = n_sampling - 43200;
+function firstLoad() {
+  dbRef.child(`devices_sensor/${device}`).get().then((snapshot) => {
+    if (snapshot.exists()) {
+      let deObj = snapshot.val();
+      //console.log(Object.values(deObj));
+      deviObj = Object.values(deObj);
+      console.log(typeof deviObj);
+      //test_all.push(deviObj);
+      
+      secondLoad();
+    } else {
+      console.log("No data available");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+}
 
-      //for D15
-      /*let day_samling = n_sampling - 24;
-      let week_sampling = n_sampling - 168;
-      let month_sampling = n_sampling - 720; //for D15*/
-      all_samp = Object.keys(deviObj[device])[i];
-      let timestamp = deviObj[device][all_samp].timestamp/1000;   
-      let date = new Date(timestamp * 1000);
+function secondLoad() {
+  console.log(deviObj);
+  temp_data1_D = [];
+  date_data1_D = [];
+  humi_data1_D = [];
+  temp_data7_D = [];
+  date_data7_D = [];
+  humi_data7_D = [];
+  temp_data30_D = [];
+  date_data30_D = []; 
+  humi_data30_D = [];
+  date_data1_D_tranfer = [];
+  date_data7_D_tranfer = [];
+  date_data30_D_tranfer = [];
+  let i = 0;
+  console.log('name: ' + device);
+  n_sampling = Object.keys(deviObj).length;
+  let day_samling = n_sampling - 1440;
+  let week_sampling = n_sampling - 10080;
+  let month_sampling = n_sampling - 43200;
+  for (d in deviObj) {
+        //console.log(test_all);
+      //all_samp = deviObj[d].;
+      let timestamp = deviObj[d].timestamp;
+      //let timestamp = deviObj[device][all_samp].timestamp/1000;   
+      let date = new Date(timestamp);
       let currentDateTimeDevice = date.getDate().toString().padStart(2, "0")+
           "/"+((date.getMonth()+1).toString().padStart(2, "0"))+
           "/"+date.getFullYear()+
           " "+date.getHours().toString().padStart(2, "0")+
           ":"+date.getMinutes().toString().padStart(2, "0")+
           ":"+date.getSeconds().toString().padStart(2, "0");
-      i += 1;
-      test.push(date);
+      i++
       if (i >= day_samling) {
         
-        temp_data1_D.push(deviObj[device][all_samp].temperature);
+        temp_data1_D.push(deviObj[d].temperature);
         date_data1_D_tranfer.push(currentDateTimeDevice);
         date_data1_D.push(date);
-        humi_data1_D.push(deviObj[device][all_samp].humidity);
-        temp_data7_D.push(deviObj[device][all_samp].temperature);
-        date_data7_D_tranfer.push(currentDateTimeDevice);
-        date_data7_D.push(date);
-        humi_data7_D.push(deviObj[device][all_samp].humidity);
-        temp_data30_D.push(deviObj[device][all_samp].temperature);
-        date_data30_D_tranfer.push(currentDateTimeDevice);
-        date_data30_D.push(date);
-        humi_data30_D.push(deviObj[device][all_samp].humidity);
-        
-        /*day1440.push(deviObj[device][all_samp].temperature,date);
-        if (j >= 1440) {
-          day_in_week.push(day1440);
-          j = 0;
-        }
-        j++*/
-      } else if (i >= week_sampling) {
-        temp_data7_D.push(deviObj[device][all_samp].temperature);
-        date_data7_D_tranfer.push(currentDateTimeDevice);
-        date_data7_D.push(date);
-        humi_data7_D.push(deviObj[device][all_samp].humidity);
-        temp_data30_D.push(deviObj[device][all_samp].temperature);
-        date_data30_D_tranfer.push(currentDateTimeDevice);
-        date_data30_D.push(date);
-        humi_data30_D.push(deviObj[device][all_samp].humidity);
-        
-        /*if (j >= 1440) {
-          day_in_week.push(day1440);
-          j = 0;
-        }
-        day1440.push(deviObj[device][all_samp].temperature,date);
-        j++*/
-      } else if (i >= month_sampling){
-        temp_data30_D.push(deviObj[device][all_samp].temperature);
-        date_data30_D_tranfer.push(currentDateTimeDevice);
-        date_data30_D.push(date);
-        humi_data30_D.push(deviObj[device][all_samp].humidity);
-      }
+        humi_data1_D.push(deviObj[d].humidity);
 
-      if (i > 129600) {
+        temp_data7_D.push(deviObj[d].temperature);
+        date_data7_D_tranfer.push(currentDateTimeDevice);
+        date_data7_D.push(date);
+        humi_data7_D.push(deviObj[d].humidity);
+
+        temp_data30_D.push(deviObj[d].temperature);
+        date_data30_D_tranfer.push(currentDateTimeDevice);
+        date_data30_D.push(date);
+        humi_data30_D.push(deviObj[d].humidity);
+
+      } else if (i >= week_sampling) {
+        temp_data7_D.push(deviObj[d].temperature);
+        date_data7_D_tranfer.push(currentDateTimeDevice);
+        date_data7_D.push(date);
+        humi_data7_D.push(deviObj[d].humidity);
+
+        temp_data30_D.push(deviObj[d].temperature);
+        date_data30_D_tranfer.push(currentDateTimeDevice);
+        date_data30_D.push(date);
+        humi_data30_D.push(deviObj[d].humidity);
+              
+          
+     
+      } else if (i >= month_sampling){
+        temp_data30_D.push(deviObj[d].temperature);
+        date_data30_D_tranfer.push(currentDateTimeDevice);
+        date_data30_D.push(date);
+        humi_data30_D.push(deviObj[d].humidity);
+      }
+      
+     /* if (i > 129600) {
         console.log("Some of the data was older than 3 months, so it has been deleted.");
         dbRef.child("devices_sensor").child(device).child(d).remove();
-      }
-
-      
-    }
-    //console.log(day_in_week);
-    //console.log(day1440);
-    //console.log(date_data7_D.length);
-    //console.log(date_data1_D.length);
-   // console.log(temp_data30_D.length);
-   // console.log(humi_data30_D.length);
+      }*/
+  }
+  //console.log(all_samp);
+  //console.log(Object.keys(deviObj)[1000]);
     label = date_data30_D;
     tem_data = temp_data30_D;
     humi_data = humi_data30_D;
-
-    myChart.data.datasets[0].data = temp_data30_D;
-    myChart.data.datasets[1].data = humi_data30_D;
-    myChart.data.labels = date_data30_D;
-    myChart.update();
-
     document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
     document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
-    
-///////////////////////////////////////////////////////////////////////////// hard
-    
     renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
-  } else {
-    console.log("No data available");
-  }
-}).catch((error) => {
-  console.error(error);
-  
-});
+    mainChat();
+}
 
-
-console.log(label + " asdasd");
+firstLoad();
 
 ////////////////////////////////////////////////////////////////////////////////
-let ctx = document.getElementById('temperatureChart').getContext('2d');
+function mainChat() {
+  let ctx = document.getElementById('temperatureChart').getContext('2d');
     myChart = new Chart(ctx, {
       type: 'line',
       data: {
@@ -328,11 +285,13 @@ let ctx = document.getElementById('temperatureChart').getContext('2d');
           },
         }
     });
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 //click for change grapt
 function allData(){
+
   let dayBtn = document.getElementById("dayDuration");
   let weekBtn = document.getElementById("weekDuration");
   let monthBtn = document.getElementById("monthDuration");
@@ -596,3 +555,4 @@ function renderTable(device_name, date_array, temp_array, humi_array) {
   document.getElementById('table2excel').appendChild(tbody);
 }
 // อยู่ตรงนี้วัยรุ่น
+
