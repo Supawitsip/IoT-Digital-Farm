@@ -174,8 +174,10 @@
       const db = firebase.database();
     </script>
     
-    <!-- <script src="js/index.js"></script> -->
     <script src="js/report.js"></script>
+    <script src="js/chart.js"></script>
+
+    <!-- Responsive NavBar Script -->
     <script>
       function resNavBar() {
         var x = document.getElementById("myTopnav");
@@ -186,11 +188,10 @@
         }
       }
     </script>
-    
-    <script src="js/chart.js"></script>
 
-    <!-- Export HTML Table to PDF or CSV file -->
+    <!-- Add event listener: Export HTML to PDF or CSV file -->
     <script>
+      document.querySelector('#graphPdf').addEventListener('click', exportGraph2pdf);
       document.querySelector('#dataPdf').addEventListener('click', exportTable2pdf);
       document.querySelector('#dataCsv').addEventListener('click', exportTable2excel);
     </script>
