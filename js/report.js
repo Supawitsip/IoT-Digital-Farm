@@ -177,4 +177,3 @@ function exportGraph2pdf() {
     // download the pdf
     pdf.save('graph-report.pdf');
 }
-    

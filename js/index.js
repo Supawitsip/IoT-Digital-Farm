@@ -3,7 +3,7 @@ const db_devices = "devices_sensor";
 
 let deviObj;
 let num_of_devi;
-dbRef.child("db_devices").get().then((snapshot) => {
+dbRef.child(db_devices).get().then((snapshot) => {
   if (snapshot.exists()) {
     deviObj = snapshot.val();
     // Get Number of device connected

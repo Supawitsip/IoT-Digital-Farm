@@ -535,13 +535,20 @@ function compareGraph() {
 function renderTable(device_name, date_array, temp_array, humi_array) {
   firstDateTime = date_array[0];
   lastDateTime = date_array[date_array.length - 1];
-  let haveTbody = document.getElementById('tbl-body');
-  if (haveTbody) {
-    haveTbody.remove();
-  }
-  let tbody = document.createElement('tbody');
-  tbody.setAttribute('id', 'tbl-body');
+  let tbody = document.getElementById('tbl-body');
   let col = 5; //column head number
+  let load_sector = 1500
+  let multiply = 1;
+  let shifter;
+  let last_load = false;
+  //reset old table
+  tbody.innerText = '';
+
+  //init load
+  if (date_array.length <= 1500) {
+    last_load = true;
+    console.log('loading finished');
+  }
   for (i = 0; i < date_array.length; i++) {
     let row = document.createElement('tr');
     let td_list = [i+1, device_name, date_array[i], temp_array[i], humi_array[i]]
@@ -550,10 +557,41 @@ function renderTable(device_name, date_array, temp_array, humi_array) {
       td.innerText = td_list[j];
       row.appendChild(td);
     }
+    if (i >= load_sector) {
+      row.style.display = "none";
+    }
     tbody.appendChild(row);
   }
   document.getElementById('table2excel').appendChild(tbody);
+  
+  //load more data when user scroll down to bottom
+  $(document).ready(function () {
+    $('.tbl-con').on('scroll', function(e) {
+      if (!last_load) {
+        let elem = $(e.currentTarget);
+        if (elem[0].scrollHeight - elem.scrollTop() == elem.outerHeight()) {
+          shifter = load_sector * multiply;
+          if (date_array.length-shifter <= load_sector) {
+            console.log('last load');
+            for (i = 0+shifter; i < date_array.length; i++) {
+              tbody.childNodes[i].style.display = "";
+            }
+            document.getElementById('table2excel').appendChild(tbody);
+            last_load = true;
+          } else {
+            console.log('more load');
+            shifter = load_sector * multiply; 
+            for (i = 0+shifter; i < load_sector+shifter; i++) {
+              tbody.childNodes[i].style.display = "";
+            }
+            multiply++;
+            document.getElementById('table2excel').appendChild(tbody);
+          }
+        }
+      }
+    });
+  });
 }
-// อยู่ตรงนี้วัยรุ่น
+
 /////////////////////////////////////////////////// start function
 firstLoad();
