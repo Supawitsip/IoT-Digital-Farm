@@ -55,7 +55,7 @@ function firstLoad() {
       let deObj = snapshot.val();
       //console.log(Object.values(deObj));
       deviObj = Object.values(deObj);
-      console.log(typeof deviObj);
+      //console.log(typeof deviObj);
       //test_all.push(deviObj);
       
       secondLoad();
@@ -153,7 +153,7 @@ function secondLoad() {
     mainChat();
 }
 
-firstLoad();
+
 
 ////////////////////////////////////////////////////////////////////////////////
 function mainChat() {
@@ -555,4 +555,5 @@ function renderTable(device_name, date_array, temp_array, humi_array) {
   document.getElementById('table2excel').appendChild(tbody);
 }
 // อยู่ตรงนี้วัยรุ่น
-
+/////////////////////////////////////////////////// start function
+firstLoad();
