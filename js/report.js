@@ -25,54 +25,14 @@ dbRef.child(db_devices).child(device).get().then((snapshot) => {
         // Convert timestamp to readable
         let timestamp = (deviObj[last_samp].timestamp)/1000;
         let date = new Date(timestamp * 1000);
-        lastDateTime = date.getDate().toString().padStart(2, "0")+
-                        "/"+((date.getMonth()+1).toString().padStart(2, "0"))+
-                        "/"+date.getFullYear()+
-                        " "+date.getHours().toString().padStart(2, "0")+
-                        ":"+date.getMinutes().toString().padStart(2, "0")+
-                        ":"+date.getSeconds().toString().padStart(2, "0");
-        
+        lastDateTime = readableTime(date);
         timestamp = (deviObj[first_samp].timestamp)/1000;
         date = new Date(timestamp * 1000);
-        firstDateTime = date.getDate().toString().padStart(2, "0")+
-                        "/"+((date.getMonth()+1).toString().padStart(2, "0"))+
-                        "/"+date.getFullYear()+
-                        " "+date.getHours().toString().padStart(2, "0")+
-                        ":"+date.getMinutes().toString().padStart(2, "0")+
-                        ":"+date.getSeconds().toString().padStart(2, "0");
+        firstDateTime = readableTime(date);
 
         document.getElementById("lastTime").innerText = lastDateTime;
         document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviObj[last_samp].temperature} °C`;
         document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviObj[last_samp].humidity} %`;
-
-        //Render data table into report HTML
-        let no = 0; //for count No. in the table
-        Object.keys(deviObj).forEach(element => {
-            no++;
-            let col = 4; //column head number
-            let dname = deviObj[element].deviceNameID;
-            let dtemp = deviObj[element].temperature;
-            let dhumi = deviObj[element].humidity;
-            let dtime = (deviObj[element].timestamp)/1000;
-            let samp_date = new Date(dtime * 1000);
-            dtime = samp_date.getDate().toString().padStart(2, "0")+
-                    "/"+((samp_date.getMonth()+1).toString().padStart(2, "0"))+
-                    "/"+samp_date.getFullYear()+
-                    " "+samp_date.getHours().toString().padStart(2, "0")+
-                    ":"+samp_date.getMinutes().toString().padStart(2, "0")+
-                    ":"+samp_date.getSeconds().toString().padStart(2, "0");
-            let row = document.createElement('tr');
-            let num = document.createElement('td');
-            num.innerText = no;
-            row.appendChild(num);
-            let td_list = [dname, dtime, dtemp, dhumi]
-            for (i = 0; i < col; i++) {
-                let td = document.createElement('td');
-                td.innerText = td_list[i];
-                row.appendChild(td);
-            }
-            document.getElementById('tbody').appendChild(row);
-        });
     } else {
         console.log("No data available")
     }
@@ -120,6 +80,16 @@ dbRef.child(db_devices).child(device).get().then((snapshot) => {
 //     });
 // };
 
+// Convert timestamp to readable
+function readableTime(time) {
+    readable = time.getDate().toString().padStart(2, "0")+
+        "/"+((time.getMonth()+1).toString().padStart(2, "0"))+
+        "/"+time.getFullYear()+
+        " "+time.getHours().toString().padStart(2, "0")+
+        ":"+time.getMinutes().toString().padStart(2, "0")+
+        ":"+time.getSeconds().toString().padStart(2, "0");
+    return readable;
+}
 
 // Export data table from HTML to PDF 
 function exportTable2pdf() {  
