@@ -187,9 +187,9 @@ dbRef.child("devices_sensor").get().then((snapshot) => {
     
 ///////////////////////////////////////////////////////////////////////////// hard
     
-    
-  //} else {
-  ////  console.log("No data available");
+    renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
+  } else {
+    console.log("No data available");
   }
 }).catch((error) => {
   console.error(error);
