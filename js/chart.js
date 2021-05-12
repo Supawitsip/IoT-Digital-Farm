@@ -328,112 +328,7 @@ let ctx = document.getElementById('temperatureChart').getContext('2d');
           },
         }
     });
-<<<<<<< HEAD
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-=======
-///////////////////////////////////////////////////////////////////////////// hard
-    /*var ctx2 = document.getElementById('compareChart').getContext('2d');
-    var compareChart = new Chart(ctx2, {
-      type: 'line',
-      data: {
-        labels: date_data1_D,
-        datasets: [{ 
-            data: temp_data1_D,
-            label: 'Temperature1',
-            indexLabelFontSize: 10,
-            borderColor: "#ec7777",
-            backgroundColor: "#ec7777",
-            fill: false,
-            //yAxisID: 'A', 
-            pointRadius: 0,
-            borderWidth: 3,
-            tension: 0
-          },
-          {
-            data: temp_data1_D,
-            label: 'Temperature2',
-            indexLabelFontSize: 10,
-            borderColor: "#ec7777",
-            backgroundColor: "#ec7777",
-            fill: false,
-            //yAxisID: 'A', 
-            pointRadius: 0,
-            borderWidth: 3,
-            tension: 0
-          }]
-        },
-        options: {
-          zoom: {
-            enabled: true,
-            drag: {
-             borderColor: 'rgba(225,225,225,0.3)',
-             borderWidth: 5,
-             backgroundColor: 'rgb(225,225,225)',
-             animationDuration: 0
-            },
-            mode: 'x',
-          },
-          tooltips: {
-            mode: 'index',
-            intersect: false
-          },
-          hover: {
-            mode: 'index',
-            intersect: false
-          },
-          responsive: true,
-          scales: {
-            yAxes: [{
-              id: 'A',
-              type: 'linear',
-              position: 'left',
-              ticks: {
-                suggestedMin: 10,
-                suggestedMax: 45, 
-                maxTicksLimit: maxTicksLimitY,
-                fontSize: font_y_size,
-                min: 10
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Temperature (°C)',
-                fontSize: font_y_size
-              },        
-            }],
-            xAxes: [{
-              type: 'time',
-              time: {
-                unit: 'hour',
-                stepSize: 0.5,  //I'm using 3 hour intervals here
-                tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
-                parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
-                //: 'second', //I have tried minutes and hours too, same result
-                displayFormats: {
-                  hour: 'HH:mm'
-                }
-              },
-              ticks: {
-                //source: 'auto',
-                major: {
-                  enabled: true, // <-- This is the key line
-                  fontStyle: 'bold', //You can also style these values differently
-                  fontSize: 14 //You can also style these values differently
-               },
-              },
-            }]
-          },
-        }
-    });*/
-
-    renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
-  } else {
-    console.log("No data available");
-  }
-}).catch((error) => {
-  console.error(error);
-});
-
->>>>>>> 7c5f1a7b7e04d2164080683312c56af037341897
 
 
 //click for change grapt
@@ -581,102 +476,103 @@ document.getElementById('resetZoom').addEventListener('click', function() {
   myChart.resetZoom('none');
 });
 
-<<<<<<< HEAD
 
 function compareGraph() {
-var ctx2 = document.getElementById('compareChart').getContext('2d');
-var compareChart = new Chart(ctx2, {
-  type: 'line',
-  data: {
-    labels: date_data1_D,
-    datasets: [{ 
-        data: temp_data1_D,
-        label: 'Temperature1',
-        indexLabelFontSize: 10,
-        borderColor: "#ec7777",
-        backgroundColor: "#ec7777",
-        fill: false,
-        //yAxisID: 'A', 
-        pointRadius: 0,
-        borderWidth: 3,
-        tension: 0
-      },
-      {
-        data: temp_data1_D,
-        label: 'Temperature2',
-        indexLabelFontSize: 10,
-        borderColor: "#ec7777",
-        backgroundColor: "#ec7777",
-        fill: false,
-        //yAxisID: 'A', 
-        pointRadius: 0,
-        borderWidth: 3,
-        tension: 0
-      }]
-    },
-    options: {
-      zoom: {
-        enabled: true,
-        drag: {
-          borderColor: 'rgba(225,225,225,0.3)',
-          borderWidth: 5,
-          backgroundColor: 'rgb(225,225,225)',
-          animationDuration: 0
+  var ctx2 = document.getElementById('compareChart').getContext('2d');
+  var compareChart = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: date_data1_D,
+      datasets: [{ 
+          data: temp_data1_D,
+          label: 'Temperature1',
+          indexLabelFontSize: 10,
+          borderColor: "#ec7777",
+          backgroundColor: "#ec7777",
+          fill: false,
+          //yAxisID: 'A', 
+          pointRadius: 0,
+          borderWidth: 3,
+          tension: 0
         },
-        mode: 'x',
-      },
-      tooltips: {
-        mode: 'index',
-        intersect: false
-      },
-      hover: {
-        mode: 'index',
-        intersect: false
-      },
-      responsive: true,
-      scales: {
-        yAxes: [{
-          id: 'A',
-          type: 'linear',
-          position: 'left',
-          ticks: {
-            suggestedMin: 10,
-            suggestedMax: 45, 
-            maxTicksLimit: maxTicksLimitY,
-            fontSize: font_y_size,
-            min: 10
-          },
-          scaleLabel: {
-            display: true,
-            labelString: 'Temperature (°C)',
-            fontSize: font_y_size
-          },        
-        }],
-        xAxes: [{
-          type: 'time',
-          time: {
-            unit: 'hour',
-            stepSize: 0.5,  //I'm using 3 hour intervals here
-            tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
-            parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
-            //: 'second', //I have tried minutes and hours too, same result
-            displayFormats: {
-              hour: 'HH:mm'
-            }
-          },
-          ticks: {
-            //source: 'auto',
-            major: {
-              enabled: true, // <-- This is the key line
-              fontStyle: 'bold', //You can also style these values differently
-              fontSize: 14 //You can also style these values differently
-            },
-          },
+        {
+          data: temp_data1_D,
+          label: 'Temperature2',
+          indexLabelFontSize: 10,
+          borderColor: "#ec7777",
+          backgroundColor: "#ec7777",
+          fill: false,
+          //yAxisID: 'A', 
+          pointRadius: 0,
+          borderWidth: 3,
+          tension: 0
         }]
       },
-    }
-});
-=======
+      options: {
+        zoom: {
+          enabled: true,
+          drag: {
+            borderColor: 'rgba(225,225,225,0.3)',
+            borderWidth: 5,
+            backgroundColor: 'rgb(225,225,225)',
+            animationDuration: 0
+          },
+          mode: 'x',
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false
+        },
+        hover: {
+          mode: 'index',
+          intersect: false
+        },
+        responsive: true,
+        scales: {
+          yAxes: [{
+            id: 'A',
+            type: 'linear',
+            position: 'left',
+            ticks: {
+              suggestedMin: 10,
+              suggestedMax: 45, 
+              maxTicksLimit: maxTicksLimitY,
+              fontSize: font_y_size,
+              min: 10
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Temperature (°C)',
+              fontSize: font_y_size
+            },        
+          }],
+          xAxes: [{
+            type: 'time',
+            time: {
+              unit: 'hour',
+              stepSize: 0.5,  //I'm using 3 hour intervals here
+              tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
+              parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
+              //: 'second', //I have tried minutes and hours too, same result
+              displayFormats: {
+                hour: 'HH:mm'
+              }
+            },
+            ticks: {
+              //source: 'auto',
+              major: {
+                enabled: true, // <-- This is the key line
+                fontStyle: 'bold', //You can also style these values differently
+                fontSize: 14 //You can also style these values differently
+              },
+            },
+          }]
+        },
+      }
+  });
+}
+
+
 function renderTable(device_name, date_array, temp_array, humi_array) {
   firstDateTime = date_array[0];
   lastDateTime = date_array[date_array.length - 1];
@@ -698,5 +594,4 @@ function renderTable(device_name, date_array, temp_array, humi_array) {
     tbody.appendChild(row);
   }
   document.getElementById('table2excel').appendChild(tbody);
->>>>>>> 7c5f1a7b7e04d2164080683312c56af037341897
 }
