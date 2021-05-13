@@ -6,26 +6,21 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const device = urlParams.get('device');
 
-var allDeviceData;
-var deviceObj;
-var n_sampling;
-var last_samp;
-var first_samp;
-var num_of_devi;
+let deviceObj;
+let n_sampling;
+let last_samp;
+let first_samp;
 
 function initialLoad() {
-    dbRef.child(db_devices).get().then((snapshot) => {
+    dbRef.child(db_devices).child(device).get().then((snapshot) => {
         if (snapshot.exists()) {
-            allDeviceData = snapshot.val();
-            if (device === null) {
-                displayLoaded();
-            } else {
-                deviceObj = allDeviceData[device];
-                n_sampling = Object.keys(deviceObj).length;
-                last_samp = Object.keys(deviceObj)[n_sampling-1];
-                first_samp = Object.keys(deviceObj)[0];
-                displayDeviceInfo();
-            }
+            deviceObj = snapshot.val();
+            n_sampling = Object.keys(deviceObj).length;
+            last_samp = Object.keys(deviceObj)[n_sampling-1];
+            first_samp = Object.keys(deviceObj)[0];
+
+            displayDeviceInfo();
+            firstLoad();
         } else {
             console.log("No data available")
         }
@@ -33,99 +28,8 @@ function initialLoad() {
       console.error(error);
     });
 }
-function displayLoaded() {
-    // Get Number of device connected
-    num_of_devi = Object.keys(allDeviceData).length;
-    console.log('All Devices:' + num_of_devi);
-    document.getElementById('allDevices').innerText = num_of_devi + " devices";
-  
-    // Display current time
-    console.log(getLocalCurrentTime());
-    document.getElementById('lastTime').innerText = getLocalCurrentTime();
-  
-    // Get all devices info and display it
-    renderDevices();
-    
-    // Can delete device
-    deleteDevice();
-}
-  
-  function deleteDevice() {
-    // Add event listener to device-block
-    var deviName = document.querySelectorAll('.device-name');
-    for (clicked of deviName) {
-      clicked.addEventListener('click', function() {
-          let thisName = this.getAttribute("dname");
-          location.href=`/report.html?device=${thisName}`;
-      });
-    };
-    // Delete device
-    var delBtn = document.querySelectorAll('.delBtn');
-    for (clicked of delBtn) {
-      clicked.addEventListener('click', function() {
-          let dname = this.getAttribute("dname");
-          let conf = confirm(`Are you sure you want to remove ${dname}?`);
-          if (conf == true) {
-            dbRef.child("devices_sensor").child(dname).remove().catch((error) => {
-              console.error(error);
-            });
-            alert(`Remove ${dname} successfully`);
-            location.reload(true);;
-          }
-      });
-    };
-  }
-  
-  function renderDevices() {
-    let i = 0;
-    for (d in allDeviceData) {
-      console.log(i);
-      i++
-      n_sampling = Object.keys(allDeviceData[d]).length;
-      last_samp = Object.keys(allDeviceData[d])[n_sampling-1];
-      let d_name = allDeviceData[d][last_samp].deviceNameID;
-      let humi = allDeviceData[d][last_samp].humidity;
-      let temp = allDeviceData[d][last_samp].temperature;
-      console.log(d_name + ' sampling: ' + n_sampling);
-      console.log(d_name + ': ' + temp + ', ' + humi);
-  
-      let devi_info = document.createElement('div');
-      devi_info.setAttribute('class', 'devi-block');
-      devi_info.innerHTML = 
-                          `<div class="devi-head">
-                            <i class="fas fa-laptop-code"></i>
-                            <div class="device-name" dname="${d_name}">${d_name}</div>
-                            <i class="fas fa-trash-alt delBtn" dname="${d_name}"></i>
-                          </div>
-                          <div class="temp-con">
-                            <div class="temp-text">
-                              <p class="temp-title">Temperature</p>
-                              <p class="temp"><i class="fas fa-thermometer-half"></i>${temp} °C</p>
-                            </div>
-                          </div>
-                          <div class="humi-con">
-                            <div class="humi-text">
-                              <p class="humi-title">Humidity</p>
-                              <p class="humi"><i class="fas fa-tint"></i>${humi} %</p>
-                            </div>
-                          </div>`;
-      document.getElementById("devices-con").appendChild(devi_info);
-    };
-  }
-  
-  function getLocalCurrentTime() {
-  // Get now time
-    let date = new Date();
-    let currentDateTime = date.getDate().toString().padStart(2, "0")+
-        "/"+((date.getMonth()+1).toString().padStart(2, "0"))+
-        "/"+date.getFullYear()+
-        " "+date.getHours().toString().padStart(2, "0")+
-        ":"+date.getMinutes().toString().padStart(2, "0")+
-        ":"+date.getSeconds().toString().padStart(2, "0");
-    return currentDateTime;
-  }
 
-///////////////Report Part//////////////////////////////
+
 function displayDeviceInfo() {
     console.log("Number of sampling: " + n_sampling);
     console.log("Last sampling key: " + last_samp);
@@ -145,8 +49,6 @@ function displayDeviceInfo() {
     document.getElementById("lastTime").innerText = lastDateTime;
     document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviceObj[last_samp].temperature} °C`;
     document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviceObj[last_samp].humidity} %`;
-
-    firstLoad();
 }
 
 // Convert timestamp to readable
@@ -295,10 +197,10 @@ function exportGraph2pdf() {
     pdf.save('graph-report.pdf');
 }
 
-////////////////////////////// Chart Part ///////////////////////////////
 var presenceRef = firebase.database().ref("disconnectmessage");
 // // Write a string when this client loses connection
 presenceRef.onDisconnect().set("I disconnected!");
+
 
 var label;
 var humi_data;
@@ -358,21 +260,13 @@ if (document.documentElement.clientWidth < 900) {
 }
 
 function firstLoad() {
-//   dbRef.child(`devices_sensor/${device}`).get().then((snapshot) => {
-//     if (snapshot.exists()) {
-      let deObj = deviceObj;
-      //console.log(Object.values(deObj));
-      deviObj = Object.values(deObj);
-      //console.log(typeof deviObj);
-      //test_all.push(deviObj);
-      
-      secondLoad();
-//     } else {
-//       console.log("No data available");
-//     }
-//   }).catch((error) => {
-//     console.error(error);
-//   });
+    let deObj = deviceObj;
+    //console.log(Object.values(deObj));
+    deviObj = Object.values(deObj);
+    //console.log(typeof deviObj);
+    //test_all.push(deviObj);
+    
+    secondLoad();
 }
 
 function secondLoad() {
@@ -661,7 +555,7 @@ function dayData() {
   myChart.data.datasets[1].data = humi_data1_D;
   myChart.data.labels = date_data1_D;
   myChart.update();
-
+  console.log(date_data1_D_tranfer.length);
   renderTable(device, date_data1_D_tranfer, temp_data1_D, humi_data1_D);
 }
 
@@ -756,7 +650,13 @@ function ChangeFormateDateV2(oldDate) {
   return oldDate.toString().split("/").reverse().join("-");
 }
 
+document.getElementById('resetZoom').addEventListener('click', function () {
+  myChart.resetZoom('none');
+});
 
+document.getElementById('resetZoom2').addEventListener('click', function () {
+  compareChart.resetZoom('none');
+});
 
 function compareGraph() {
   /*let yesterday = Date.now() - 86400000;
@@ -876,57 +776,55 @@ function renderTable(device_name, date_array, temp_array, humi_array) {
   let load_sector = 1500
   let multiply = 1;
   let shifter;
-  let last_load = false;
   //reset old table
   tbody.innerText = '';
 
   //init load
-  if (date_array.length <= 1500) {
-    last_load = true;
-    console.log('loading finished');
-  }
-  for (i = 0; i < date_array.length; i++) {
-    let row = document.createElement('tr');
-    let td_list = [i + 1, device_name, date_array[i], temp_array[i], humi_array[i]]
-    for (j = 0; j < col; j++) {
-      let td = document.createElement('td');
-      td.innerText = td_list[j];
-      row.appendChild(td);
-    }
-    if (i >= load_sector) {
-      row.style.display = "none";
-    }
-    tbody.appendChild(row);
-  }
-  document.getElementById('table2excel').appendChild(tbody);
-  
-  //load more data when user scroll down to bottom
-  $(document).ready(function () {
-    $('.tbl-con').on('scroll', function(e) {
-      if (!last_load) {
-        let elem = $(e.currentTarget);
-        if (elem[0].scrollHeight - elem.scrollTop() == elem.outerHeight()) {
-          shifter = load_sector * multiply;
-          if (date_array.length-shifter <= load_sector) {
-            console.log('last load');
-            for (i = 0+shifter; i < date_array.length; i++) {
-              tbody.childNodes[i].style.display = "";
+    if (date_array.length <= load_sector) {
+        for (i = 0; i < date_array.length; i++) {
+            let row = document.createElement('tr');
+            let td_list = [i + 1, device_name, date_array[i], temp_array[i], humi_array[i]]
+            for (j = 0; j < col; j++) {
+            let td = document.createElement('td');
+            td.innerText = td_list[j];
+            row.appendChild(td);
+            tbody.appendChild(row);
             }
-            document.getElementById('table2excel').appendChild(tbody);
-            last_load = true;
-          } else {
-            console.log('more load');
-            shifter = load_sector * multiply; 
-            for (i = 0+shifter; i < load_sector+shifter; i++) {
-              tbody.childNodes[i].style.display = "";
+        };
+    } else {
+        for (i = 0; i < date_array.length; i++) {
+            let row = document.createElement('tr');
+            let td_list = [i + 1, device_name, date_array[i], temp_array[i], humi_array[i]]
+            for (j = 0; j < col; j++) {
+                let td = document.createElement('td');
+                td.innerText = td_list[j];
+                row.appendChild(td);
+                }
+                if (i >= load_sector) {
+                row.style.display = "none";
             }
-            multiply++;
-            document.getElementById('table2excel').appendChild(tbody);
-          }
-        }
-      }
-    });
-  });
+            tbody.appendChild(row);
+        };
+        $('.tbl-con').on('scroll', function(e) {
+            let elem = $(e.currentTarget);
+            if (elem[0].scrollHeight - elem.scrollTop() == elem.outerHeight()) {
+                shifter = load_sector * multiply;
+                if (date_array.length-shifter <= load_sector) {
+                    console.log('last load');
+                    for (i = 0+shifter; i < date_array.length; i++) {
+                    tbody.childNodes[i].style.display = "";
+                    }
+                } else {
+                    console.log('more load');
+                    shifter = load_sector * multiply; 
+                    for (i = 0+shifter; i < load_sector+shifter; i++) {
+                    tbody.childNodes[i].style.display = "";
+                    }
+                    multiply++;
+                }
+            }
+        });
+    }
 }
 
 // function addData(chart, label, data) {
@@ -949,4 +847,7 @@ function addData(chart, label, color, data) {
 
 // อยู่ตรงนี้วัยรุ่น
 /////////////////////////////////////////////////// start function
+//////////////////////////////// Start Fucntion
 initialLoad();
+
+

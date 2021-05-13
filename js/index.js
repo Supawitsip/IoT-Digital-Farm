@@ -10,7 +10,6 @@ function initialLoad() {
       deviObj = snapshot.val();
   
       displayLoaded();
-      console.log(deviObj);
     } else {
       console.log("No data available");
     }
@@ -114,4 +113,3 @@ function getLocalCurrentTime() {
 
 //////////////////////////////////Start Function
 initialLoad();
-console.log(deviObj);
