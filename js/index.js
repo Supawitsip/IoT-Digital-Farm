@@ -1,7 +1,7 @@
 const dbRef = firebase.database().ref();
 const db_devices = "devices_sensor";
 
-let deviObj;
+var deviObj;
 let num_of_devi;
 
 function initialLoad() {
@@ -15,7 +15,6 @@ function initialLoad() {
       console.log('retrievedObject: ', JSON.parse(retrievedObject));
       
       displayLoaded();
-
     } else {
       console.log("No data available");
     }
