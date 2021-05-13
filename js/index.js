@@ -64,7 +64,10 @@ function deleteDevice() {
 }
 
 function renderDevices() {
+  let i = 0;
   for (d in deviObj) {
+    console.log(i);
+    i++
     n_sampling = Object.keys(deviObj[d]).length;
     last_samp = Object.keys(deviObj[d])[n_sampling-1];
     let d_name = deviObj[d][last_samp].deviceNameID;
