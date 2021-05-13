@@ -127,7 +127,7 @@
 
         <!-- Data Table Container -->
         <div class="export-con">
-          <i class="far fa-file-excel excel-icon"></i>
+          <i class="fas fa-table excel-icon"></i>
           <div class="ex-title">Data Collection Table</div>
           <button class="sh-btn" id="showTable">Show</button>
         </div>
@@ -149,13 +149,14 @@
         </div>
       </div>
 
-      <div id="reportPage" style="background-color: none;">
+      <div class="export-con">
+        <i class="fas fa-chart-area excel-icon"></i>
+        <div class="ex-title">Graph Comparing</div>
+        <button class="sh-btn" id="showChart">Show</button>
+      </div>
+      <div id="compareChartCon" style="background-color: none; display: none;">
         <button id="resetZoom2" class="timeDuration"><i class="fas fa-redo-alt"></i></button>
         <canvas id="compareChart"  width="800px" height="400px"></canvas>
-      </div>
-
-      <div id="myScroll">
-
       </div>
 
     </div>
@@ -202,12 +203,11 @@
       document.querySelector('#dataCsv').addEventListener('click', exportTable2excel);
     </script>
     
-    <!-- Hide and Show Table -->
+    <!-- Hide and Show -->
     <script>
       let show = document.getElementById('showTable');
       let tblCon = document.querySelector('.tbl-con');
       let tbl = document.getElementById('table2excel');
-      // renderDataTable();
       show.addEventListener("click", e => {
         if (tbl.style.display === "none") {
           tblCon.style.display = "inline-block";
@@ -217,6 +217,18 @@
           tblCon.style.display = "none";
           tbl.style.display = "none";
           show.innerText = "Show";
+        }
+      });
+
+      let showChart = document.getElementById('showChart');
+      let chartCon = document.getElementById('compareChartCon');
+      showChart.addEventListener("click", e => {
+        if (chartCon.style.display === "none") {
+          chartCon.style.display = "";
+          showChart.innerText = "Hide";
+        } else {
+          chartCon.style.display = "none";
+          showChart.innerText = "Show";
         }
       });
     </script>
