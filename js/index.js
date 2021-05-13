@@ -1,7 +1,7 @@
 const dbRef = firebase.database().ref();
 const db_devices = "devices_sensor";
 
-let deviObj;
+var deviObj;
 let num_of_devi;
 
 function initialLoad() {
@@ -10,7 +10,7 @@ function initialLoad() {
       deviObj = snapshot.val();
   
       displayLoaded();
-
+      console.log(deviObj);
     } else {
       console.log("No data available");
     }
@@ -114,3 +114,4 @@ function getLocalCurrentTime() {
 
 //////////////////////////////////Start Function
 initialLoad();
+console.log(deviObj);
