@@ -8,7 +8,9 @@ function initialLoad() {
   dbRef.child(db_devices).get().then((snapshot) => {
     if (snapshot.exists()) {
       deviObj = snapshot.val();
-  
+      console.log(deviObj);
+      
+      
       displayLoaded();
 
     } else {
