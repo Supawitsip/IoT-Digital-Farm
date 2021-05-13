@@ -3,31 +3,39 @@ const db_devices = "devices_sensor";
 
 let deviObj;
 let num_of_devi;
-dbRef.child(db_devices).get().then((snapshot) => {
-  if (snapshot.exists()) {
-    deviObj = snapshot.val();
-    // Get Number of device connected
-    num_of_devi = Object.keys(deviObj).length;
-    console.log('All Devices:' + num_of_devi);
-    document.getElementById('allDevices').innerText = num_of_devi + " devices";
 
-    // Display current time
-    console.log(getLocalCurrentTime());
-    document.getElementById('lastTime').innerText = getLocalCurrentTime();
+function initialLoad() {
+  dbRef.child(db_devices).get().then((snapshot) => {
+    if (snapshot.exists()) {
+      deviObj = snapshot.val();
+  
+      displayLoaded();
 
-    // Get all devices info and display it
-    renderDevices();
-    
-    // Can delete device
-    deleteDevice();
+    } else {
+      console.log("No data available");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+}
 
-  } else {
-    console.log("No data available");
-  }
-}).catch((error) => {
-  console.error(error);
-});
 
+function displayLoaded() {
+  // Get Number of device connected
+  num_of_devi = Object.keys(deviObj).length;
+  console.log('All Devices:' + num_of_devi);
+  document.getElementById('allDevices').innerText = num_of_devi + " devices";
+
+  // Display current time
+  console.log(getLocalCurrentTime());
+  document.getElementById('lastTime').innerText = getLocalCurrentTime();
+
+  // Get all devices info and display it
+  renderDevices();
+  
+  // Can delete device
+  deleteDevice();
+}
 
 function deleteDevice() {
   // Add event listener to device-block
@@ -101,3 +109,5 @@ function getLocalCurrentTime() {
   return currentDateTime;
 }
 
+//////////////////////////////////Start Function
+initialLoad();

@@ -6,36 +6,49 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const device = urlParams.get('device');
 
-dbRef.child(db_devices).child(device).get().then((snapshot) => {
-    if (snapshot.exists()) {
-        let deviObj = snapshot.val();
-        let n_sampling = Object.keys(deviObj).length;
-        let last_samp = Object.keys(deviObj)[n_sampling-1];
-        let first_samp = Object.keys(deviObj)[0];
-        console.log("Number of sampling: " + n_sampling);
-        console.log("Last sampling key: " + last_samp);
+let deviceObj;
+let n_sampling;
+let last_samp;
+let first_samp;
 
-        // Display device info
-        document.getElementById("device").innerText = deviObj[last_samp].deviceNameID;
-        document.getElementById("dName").innerText = deviObj[last_samp].deviceNameID;
+function initialLoad() {
+    dbRef.child(db_devices).child(device).get().then((snapshot) => {
+        if (snapshot.exists()) {
+            deviceObj = snapshot.val();
+            n_sampling = Object.keys(deviceObj).length;
+            last_samp = Object.keys(deviceObj)[n_sampling-1];
+            first_samp = Object.keys(deviceObj)[0];
 
-        // Convert timestamp to readable
-        let timestamp = (deviObj[last_samp].timestamp)/1000;
-        let date = new Date(timestamp * 1000);
-        lastDateTime = readableTime(date);
-        timestamp = (deviObj[first_samp].timestamp)/1000;
-        date = new Date(timestamp * 1000);
-        firstDateTime = readableTime(date);
+            displayDeviceInfo();
+        } else {
+            console.log("No data available")
+        }
+    }).catch((error) => {
+      console.error(error);
+    });
+}
 
-        document.getElementById("lastTime").innerText = lastDateTime;
-        document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviObj[last_samp].temperature} °C`;
-        document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviObj[last_samp].humidity} %`;
-    } else {
-        console.log("No data available")
-    }
-}).catch((error) => {
-  console.error(error);
-});
+
+function displayDeviceInfo() {
+    console.log("Number of sampling: " + n_sampling);
+    console.log("Last sampling key: " + last_samp);
+
+    // Display device info
+    document.getElementById("device").innerText = deviceObj[last_samp].deviceNameID;
+    document.getElementById("dName").innerText = deviceObj[last_samp].deviceNameID;
+
+    // Convert timestamp to readable
+    let timestamp = (deviceObj[last_samp].timestamp)/1000;
+    let date = new Date(timestamp * 1000);
+    lastDateTime = readableTime(date);
+    timestamp = (deviceObj[first_samp].timestamp)/1000;
+    date = new Date(timestamp * 1000);
+    firstDateTime = readableTime(date);
+
+    document.getElementById("lastTime").innerText = lastDateTime;
+    document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviceObj[last_samp].temperature} °C`;
+    document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviceObj[last_samp].humidity} %`;
+}
 
 // Convert timestamp to readable
 function readableTime(time) {
@@ -182,3 +195,6 @@ function exportGraph2pdf() {
     // download the pdf
     pdf.save('graph-report.pdf');
 }
+
+//////////////////////////////// Start Fucntion
+initialLoad();
