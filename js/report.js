@@ -182,3 +182,7 @@ function exportGraph2pdf() {
     // download the pdf
     pdf.save('graph-report.pdf');
 }
+
+var presenceRef = firebase.database().ref("disconnectmessage");
+// Write a string when this client loses connection
+presenceRef.onDisconnect().set("I disconnected!");
