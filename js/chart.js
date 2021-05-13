@@ -64,7 +64,7 @@ function firstLoad() {
       //console.log(typeof deviObj);
       //test_all.push(deviObj);
       
-     // secondLoad();
+      secondLoad();
     } else {
       console.log("No data available");
     }
