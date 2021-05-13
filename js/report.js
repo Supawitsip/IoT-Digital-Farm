@@ -19,7 +19,7 @@ function initialLoad() {
             last_samp = Object.keys(deviceObj)[n_sampling-1];
             first_samp = Object.keys(deviceObj)[0];
 
-            //displayDeviceInfo();
+            displayDeviceInfo();
         } else {
             console.log("No data available")
         }
