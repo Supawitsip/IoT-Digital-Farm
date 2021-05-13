@@ -11,24 +11,35 @@ let n_sampling;
 let last_samp;
 let first_samp;
 
+// function initialLoad() {
+//     dbRef.child(db_devices).child(device).get().then((snapshot) => {
+//         if (snapshot.exists()) {
+//             deviceObj = snapshot.val();
+//             n_sampling = Object.keys(deviceObj).length;
+//             last_samp = Object.keys(deviceObj)[n_sampling-1];
+//             first_samp = Object.keys(deviceObj)[0];
+
+//             displayDeviceInfo();
+//             firstLoad();
+//         } else {
+//             console.log("No data available")
+//         }
+//     }).catch((error) => {
+//       console.error(error);
+//     });
+// }
+
 function initialLoad() {
-    dbRef.child(db_devices).child(device).get().then((snapshot) => {
-        if (snapshot.exists()) {
-            deviceObj = snapshot.val();
-            n_sampling = Object.keys(deviceObj).length;
-            last_samp = Object.keys(deviceObj)[n_sampling-1];
-            first_samp = Object.keys(deviceObj)[0];
-
-            displayDeviceInfo();
-            firstLoad();
-        } else {
-            console.log("No data available")
-        }
-    }).catch((error) => {
-      console.error(error);
-    });
+  let retrievedObject = JSON.parse(localStorage.getItem('testObject'));
+  deviceObj = retrievedObject[device];
+  n_sampling = Object.keys(deviceObj).length;
+  last_samp = Object.keys(deviceObj)[n_sampling-1];
+  first_samp = Object.keys(deviceObj)[0];
+  //console.log(typeof retrievedObject);
+  //console.log(retrievedObject[device]);
+  displayDeviceInfo();
+  firstLoad();
 }
-
 
 function displayDeviceInfo() {
     console.log("Number of sampling: " + n_sampling);
