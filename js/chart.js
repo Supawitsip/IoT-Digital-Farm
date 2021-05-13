@@ -654,3 +654,5 @@ function addData(chart, label, color, data) {
 // อยู่ตรงนี้วัยรุ่น
 /////////////////////////////////////////////////// start function
 firstLoad();
+
+
