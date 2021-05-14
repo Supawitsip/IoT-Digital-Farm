@@ -158,9 +158,14 @@
         <button id="resetZoom2" class="timeDuration"><i class="fas fa-redo-alt"></i></button>
         <button onclick="compareChartTem()" class="timeDuration" id="dayDuration">Tem</button> 
         <button onclick="compareChartHumi()" class="timeDuration" id="dayDuration">Humi</button> 
+        <div class="calendarTime">
+          <label for="date_now">Start:</label>
+          <input id="date_now" type="date" name="task_date" />
+          <!--Time:<input id="time" type="time" name="task_time" /> -->
+          <button onclick="get()" class="getTimeBtn">Get Now</button>
+        </div>
         <canvas id="compareChart"  width="800px" height="400px"></canvas>
       </div>
-
     </div>
    <!-- End of Main Container -->
 
