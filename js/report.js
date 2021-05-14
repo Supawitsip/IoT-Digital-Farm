@@ -504,7 +504,7 @@ function mainChat() {
           position: 'right',
           ticks: {
             suggestedMin: 20,
-            suggestedMax: 110,
+            suggestedMax: 100,
             maxTicksLimit: maxTicksLimitY,
             fontSize: font_y_size,
             min: 20
