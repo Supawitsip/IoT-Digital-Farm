@@ -409,7 +409,6 @@ function secondLoad() {
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
   document.getElementById('date_now').value = new Date(new Date().getTime() - 86400000).toLocaleDateString('en-CA');
-  renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
   document.getElementById('tbl_from').value = new Date().toLocaleDateString('en-CA');
   document.getElementById('tbl_to').value = new Date().toLocaleDateString('en-CA');
   getTableRange();
@@ -981,6 +980,13 @@ function initialCompareChart(){
 }
 
 function compareChartTem() {
+  let temBtn = document.getElementById("tempCompare");
+  let humiBtn = document.getElementById("humiCompare");
+  temBtn.style.backgroundColor = "#E35F43";
+  temBtn.style.color = "white";
+  humiBtn.style.backgroundColor = "white";
+  humiBtn.style.color = "#E35F43";
+
   //compareChart.destroy();
   for(let i = 1 ;i < day_all_tem_data.length; i++) {
     compareChart.data.datasets[i-1].data = day_all_tem_data[i];
@@ -997,6 +1003,13 @@ function compareChartTem() {
 }
 
 function compareChartHumi() {
+  let temBtn = document.getElementById("tempCompare");
+  let humiBtn = document.getElementById("humiCompare");
+  temBtn.style.backgroundColor = "white";
+  temBtn.style.color = "#E35F43";
+  humiBtn.style.backgroundColor = "#E35F43";
+  humiBtn.style.color = "white";
+
   //compareChart.destroy();
   for(let i = 1 ;i < day_all_humi_data.length; i++) {
     compareChart.data.datasets[i-1].data = day_all_humi_data[i];
@@ -1017,7 +1030,7 @@ function renderTable(date_array, temp_array, humi_array) {
   firstDateTime = date_array[0];
   lastDateTime = date_array[date_array.length - 1];
   let tbody = document.getElementById('tbl-body');
-  let col = 5; //column head number
+  let col = 4; //column head number
   let load_sector = 1500;
   let multiply = 1;
   let shifter;
