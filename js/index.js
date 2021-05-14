@@ -1,5 +1,5 @@
 const dbRef = firebase.database().ref();
-const db_devices = "device_key";
+const db_devices = "devices_sensor";
 
 var deviObj;
 let num_of_devi;
@@ -10,9 +10,9 @@ function initialLoad() {
       deviObj = snapshot.val();
       console.log(deviObj);
       
-      // localStorage.setItem('testObject', JSON.stringify(deviObj));
-      // let retrievedObject = localStorage.getItem('testObject');
-      // console.log('retrievedObject: ', JSON.parse(retrievedObject));
+      localStorage.setItem('testObject', JSON.stringify(deviObj));
+      let retrievedObject = localStorage.getItem('testObject');
+      console.log('retrievedObject: ', JSON.parse(retrievedObject));
       
       displayLoaded();
     } else {
@@ -70,14 +70,15 @@ function deleteDevice() {
 function renderDevices() {
   let i = 0;
   for (d in deviObj) {
+    console.log(i);
     i++
-    // n_sampling = Object.keys(deviObj[d]).length;
-    // last_samp = Object.keys(deviObj[d])[n_sampling-1];
-    let d_name = deviObj[d].key;
-    let humi = deviObj[d].h;
-    let temp = deviObj[d].te;
-    // console.log(d_name + ' sampling: ' + n_sampling);
-    // console.log(d_name + ': ' + temp + ', ' + humi);
+    n_sampling = Object.keys(deviObj[d]).length;
+    last_samp = Object.keys(deviObj[d])[n_sampling-1];
+    let d_name = deviObj[d][last_samp].deviceNameID;
+    let humi = deviObj[d][last_samp].humidity;
+    let temp = deviObj[d][last_samp].temperature;
+    console.log(d_name + ' sampling: ' + n_sampling);
+    console.log(d_name + ': ' + temp + ', ' + humi);
 
     let devi_info = document.createElement('div');
     devi_info.setAttribute('class', 'devi-block');
