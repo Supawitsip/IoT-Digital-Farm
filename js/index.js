@@ -10,8 +10,8 @@ function initialLoad() {
       deviObj = snapshot.val();
       console.log(deviObj);
       
-      localStorage.setItem('testObject', JSON.stringify(deviObj));
-      let retrievedObject = localStorage.getItem('testObject');
+      localStorage.setItem('deviceObject', JSON.stringify(deviObj));
+      let retrievedObject = localStorage.getItem('deviceObject');
       console.log('retrievedObject: ', JSON.parse(retrievedObject));
       
       displayLoaded();
