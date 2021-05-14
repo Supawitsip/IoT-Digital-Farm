@@ -744,8 +744,8 @@ function compareGraph() {
   
   //console.log(new Date().toLocaleDateString('en-CA'));
   //let day_count = lastest_week;
-  console.log(lastest_day);
-  console.log(lastest_week);
+  // console.log(lastest_day);
+  // console.log(lastest_week);
   
  
   let j = 0;
@@ -772,10 +772,10 @@ function compareGraph() {
       j++
     } 
   }
-  console.log(date_data7_D.length);
-  console.log(temp_data30_D.length);
-  //console.log(day_all_data);
-  console.log(day_compareGraph);
+  // console.log(date_data7_D.length);
+  // console.log(temp_data30_D.length);
+  // //console.log(day_all_data);
+  // console.log(day_compareGraph);
   
   var ctx2 = document.getElementById('compareChart').getContext('2d');
   compareChart = new Chart(ctx2, {
@@ -825,7 +825,7 @@ function compareGraph() {
           time: {
             unit: 'hour',
             stepSize: 0.5,  //I'm using 3 hour intervals here
-            tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
+            tooltipFormat: 'HH:mm:ss',
             parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
             //: 'second', //I have tried minutes and hours too, same result
             displayFormats: {
@@ -854,35 +854,78 @@ function compareGraphSet() {
   let day_tem_day = [];
   let day_humi_day = [];
   
-  let lastest_week = ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10));
   let get_select_date = document.getElementById('date_now').value;
+  //let lastest_week =
+  let day7 = (new Date(new Date(get_select_date).getTime() - 604800000).toLocaleDateString('en-CA'));
+ // console.log(day9);
+  let start_mount = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
   let lastest_day = (new Date(new Date(get_select_date).getTime() + 86400000).toLocaleDateString('en-CA'));
+  // console.log(lastest_day);
+
+  let lastest_week = ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10));
+  //let lastest_week =
+
   let j = 0;
-  for (let i = 0; i < date_data7_D.length; i++) {
-    let day_count = ChangeFormateDateV2(date_data7_D_tranfer[i].toString().substring(0, 10));
-    if (day_count == lastest_day) {
-        day_all_tem_data.push(day_tem_day);
-        day_all_humi_data.push(day_humi_day);
-        day_compareGraph.push(ChangeFormateDateV2(date_data7_D_tranfer[i+10].toString().substring(0, 10)));
-      break;
-    } else if (day_count != lastest_week) {
-      if (j < 1440) {
-        date_label.push(date_data7_D[i]);
-      }
-      if (0 == j % 1440) {
-        day_compareGraph.push(ChangeFormateDateV2(date_data7_D_tranfer[i+10].toString().substring(0, 10)));
-        day_all_tem_data.push(day_tem_day);
-        day_all_humi_data.push(day_humi_day);
-        day_humi_day = [];
-        day_tem_day = [];
-      }
-      day_tem_day.push(temp_data7_D[i]);
-      day_humi_day.push(humi_data7_D[i]);
-      j++
-    } 
+  let start_count = false;
+  if (start_mount > day7) {
+    console.log("this not collect 7 day");
+    let j = 0;
+    for (let i = 0; i < date_data7_D.length; i++) {
+      let day_count = ChangeFormateDateV2(date_data7_D_tranfer[i].toString().substring(0, 10));
+      if (day_count == lastest_day) {
+          day_all_tem_data.push(day_tem_day);
+          day_all_humi_data.push(day_humi_day);
+
+        break;
+      } else if (day_count != lastest_week) {
+        if (j < 1440) {
+          date_label.push(date_data7_D[i]);
+        }
+        if (0 == j % 1440) {
+          day_compareGraph.push(ChangeFormateDateV2(date_data7_D_tranfer[i+10].toString().substring(0, 10)));
+          day_all_tem_data.push(day_tem_day);
+          day_all_humi_data.push(day_humi_day);
+          day_humi_day = [];
+          day_tem_day = [];
+        }
+        day_tem_day.push(temp_data7_D[i]);
+        day_humi_day.push(humi_data7_D[i]);
+        j++
+      } 
+    }
+  } else {
+    for (let i = 0; i < date_data30_D.length; i++) {
+      let day_count = ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10));
+      
+      if (day_count == lastest_day) {
+          day_all_tem_data.push(day_tem_day);
+          day_all_humi_data.push(day_humi_day);
+          day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i+10].toString().substring(0, 10)));
+        break;
+      } else if (day_count == day7) {
+        start_count = true;
+        
+      } 
+      if (start_count) {
+        if (j < 1440) {
+          date_label.push(date_data30_D[i]);
+        }
+        if (0 == j % 1440) {
+          day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i+10].toString().substring(0, 10)));
+          day_all_tem_data.push(day_tem_day);
+          day_all_humi_data.push(day_humi_day);
+          day_humi_day = [];
+          day_tem_day = [];
+          console.log(day_count);
+        }
+        day_tem_day.push(temp_data30_D[i]);
+        day_humi_day.push(humi_data30_D[i]);
+        j++
+      } 
+    }
   }
-  console.log(day_all_tem_data);
-  console.log(day_all_humi_data);
+  // console.log(day_all_tem_data);
+  // console.log(day_all_humi_data);
   /*for(let i = 0 ;i < day_all_tem_data.length; i++) {
     compareChart.data.datasets[i].data = day_all_tem_data[i+1];
   }*/
@@ -935,7 +978,7 @@ function compareGraphSet() {
           time: {
             unit: 'hour',
             stepSize: 0.5,  //I'm using 3 hour intervals here
-            tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
+            tooltipFormat: 'HH:mm:ss',
             parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
             //: 'second', //I have tried minutes and hours too, same result
             displayFormats: {
