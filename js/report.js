@@ -408,6 +408,8 @@ function secondLoad() {
   humi_data = humi_data30_D;
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
+  document.getElementById('date_now').value = new Date(new Date().getTime() - 86400000).toLocaleDateString('en-CA');
+  renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
   document.getElementById('tbl_from').value = new Date().toLocaleDateString('en-CA');
   document.getElementById('tbl_to').value = new Date().toLocaleDateString('en-CA');
   getTableRange();
@@ -737,17 +739,26 @@ function compareGraph() {
   day_compareGraph = [];
   let day_tem_day = [];
   let day_humi_day = [];
-  let lastest_day = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length-1].toString().substring(0, 10));
+  //let lastest_day = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length-1].toString().substring(0, 10));
   let lastest_week = ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10));
+  let get_select_date = document.getElementById('date_now').value;
+  //let lastest_week =
+  let day9 = new Date(new Date().getTime() - 777600000).toLocaleDateString('en-CA');
+  let lastest_day = (new Date(new Date(get_select_date).getTime() + 86400000).toLocaleDateString('en-CA'));
+  
+  //console.log(new Date().toLocaleDateString('en-CA'));
   //let day_count = lastest_week;
   console.log(lastest_day);
   console.log(lastest_week);
-  //console.log(date_data1_D_tranfer[0]);
-  let day_set = lastest_week;
+  
+ 
   let j = 0;
   for (let i = 0; i < date_data7_D.length; i++) {
     let day_count = ChangeFormateDateV2(date_data7_D_tranfer[i].toString().substring(0, 10));
     if (day_count == lastest_day) {
+        day_all_tem_data.push(day_tem_day);
+        day_all_humi_data.push(day_humi_day);
+        //day_compareGraph.push(ChangeFormateDateV2(date_data7_D_tranfer[i+10].toString().substring(0, 10)));
       break;
     } else if (day_count != lastest_week) {
       if (j < 1440) {
@@ -760,13 +771,15 @@ function compareGraph() {
         day_humi_day = [];
         day_tem_day = [];
       }
-      day_tem_day.push(temp_data30_D[i]);
-      day_humi_day.push(humi_data30_D[i]);
+      day_tem_day.push(temp_data7_D[i]);
+      day_humi_day.push(humi_data7_D[i]);
       j++
     } 
   }
+  console.log(date_data7_D.length);
+  console.log(temp_data30_D.length);
   //console.log(day_all_data);
-  //console.log(day_compareGraph);
+  console.log(day_compareGraph);
   
   var ctx2 = document.getElementById('compareChart').getContext('2d');
   compareChart = new Chart(ctx2, {
@@ -836,16 +849,129 @@ function compareGraph() {
     }
   });
 }
+
+function compareGraphSet() {
+  date_label = [];
+  day_all_tem_data = [];
+  day_all_humi_data = [];
+  day_compareGraph = [];
+  let day_tem_day = [];
+  let day_humi_day = [];
+  
+  let lastest_week = ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10));
+  let get_select_date = document.getElementById('date_now').value;
+  let lastest_day = (new Date(new Date(get_select_date).getTime() + 86400000).toLocaleDateString('en-CA'));
+  let j = 0;
+  for (let i = 0; i < date_data7_D.length; i++) {
+    let day_count = ChangeFormateDateV2(date_data7_D_tranfer[i].toString().substring(0, 10));
+    if (day_count == lastest_day) {
+        day_all_tem_data.push(day_tem_day);
+        day_all_humi_data.push(day_humi_day);
+        day_compareGraph.push(ChangeFormateDateV2(date_data7_D_tranfer[i+10].toString().substring(0, 10)));
+      break;
+    } else if (day_count != lastest_week) {
+      if (j < 1440) {
+        date_label.push(date_data7_D[i]);
+      }
+      if (0 == j % 1440) {
+        day_compareGraph.push(ChangeFormateDateV2(date_data7_D_tranfer[i+10].toString().substring(0, 10)));
+        day_all_tem_data.push(day_tem_day);
+        day_all_humi_data.push(day_humi_day);
+        day_humi_day = [];
+        day_tem_day = [];
+      }
+      day_tem_day.push(temp_data7_D[i]);
+      day_humi_day.push(humi_data7_D[i]);
+      j++
+    } 
+  }
+  console.log(day_all_tem_data);
+  console.log(day_all_humi_data);
+  /*for(let i = 0 ;i < day_all_tem_data.length; i++) {
+    compareChart.data.datasets[i].data = day_all_tem_data[i+1];
+  }*/
+  compareChart.destroy();
+  let ctx3 = document.getElementById('compareChart').getContext('2d');
+  compareChart = new Chart(ctx3, {
+    type: 'line',
+    data: {
+      labels: date_label,
+    },
+    options: {
+      zoom: {
+        enabled: true,
+        drag: {
+          borderColor: 'rgba(225,225,225,0.3)',
+          borderWidth: 5,
+          backgroundColor: 'rgb(225,225,225)',
+          animationDuration: 0
+        },
+        mode: 'x',
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false
+      },
+      hover: {
+        mode: 'index',
+        intersect: false
+      },
+      responsive: true,
+      scales: {
+        yAxes: [{
+          type: 'linear',
+          position: 'left',
+          ticks: {
+            suggestedMin: 20,
+            suggestedMax: 45,
+            maxTicksLimit: maxTicksLimitY,
+            fontSize: font_y_size,
+            min: 20
+          },
+          scaleLabel: {
+            display: true,
+            labelString: 'Temperature (°C)',
+            fontSize: font_y_size
+          },
+        }],
+        xAxes: [{
+          type: 'time',
+          time: {
+            unit: 'hour',
+            stepSize: 0.5,  //I'm using 3 hour intervals here
+            tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
+            parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
+            //: 'second', //I have tried minutes and hours too, same result
+            displayFormats: {
+              hour: 'HH:mm'
+            }
+          },
+          ticks: {
+            //source: 'auto',
+            major: {
+              //enabled: true, // <-- This is the key line
+              fontStyle: 'bold', //You can also style these values differently
+              fontSize: 14 //You can also style these values differently
+            },
+          },
+        }]
+      },
+    }
+  });
+  initialCompareChart();
+}
+
+
 function initialCompareChart(){
   
-  for(let i = 1 ;i < day_all_tem_data.length; i++) {
+  for(let i = 0 ;i < day_all_tem_data.length - 1; i++) {
     compareChart.data.datasets.push({
       label: day_compareGraph[i] ,
       backgroundColor: getPastelColor(),
       borderColor: getPastelColor(),
       indexLabelFontSize: 10,
       fill: false,
-      data: day_all_tem_data[i],
+      data: day_all_tem_data[i+1],
       pointRadius: 0,
       borderWidth: 3,
       tension: 0
@@ -891,7 +1017,10 @@ function renderTable(date_array, temp_array, humi_array) {
   firstDateTime = date_array[0];
   lastDateTime = date_array[date_array.length - 1];
   let tbody = document.getElementById('tbl-body');
-  let col = 4; //column head number
+  let col = 5; //column head number
+  let load_sector = 1500;
+  let multiply = 1;
+  let shifter;
   //reset old table
   tbody.innerText = '';
 
