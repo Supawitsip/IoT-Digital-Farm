@@ -164,6 +164,8 @@ function exportGraph2pdf() {
     // get size of report page
     let reportPageHeight = $('#reportPage').innerHeight();
     let reportPageWidth = $('#reportPage').innerWidth();
+
+    let checkChart2 = document.getElementById('compareChartCon');
     
     // create a new canvas object that we will populate with all other canvas objects
     let pdfCanvas = $('<canvas />').attr({
@@ -186,17 +188,6 @@ function exportGraph2pdf() {
     // make canvas BG is white
     pdfctx.fillStyle = "white";
     pdfctx.fillRect(0, 0, 1200, 800);
-
-    // Comparing chart canvas
-    // keep track canvas position
-    let pdfComctx = $(pdfCanvas2)[0].getContext('2d');
-    let pdfComctxX = 0;
-    let pdfComctxY = 0;
-    // make canvas BG is white
-    pdfComctx.fillStyle = "white";
-    pdfComctx.fillRect(0, 0, 1200, 800);
-    
-    // for main chart
     $("#temperatureChart").each(function(index) {
       // get the chart height/width
       let canvasHeight = $(this).innerHeight();
@@ -218,37 +209,50 @@ function exportGraph2pdf() {
         pdfctxY += canvasHeight + buffer;
       }
     });
-    // for comparing chart
-    $("#temperatureChart").each(function(index) {
-      // get the chart height/width
-      let canvasHeight = $(this).innerHeight();
-      let canvasWidth = $(this).innerWidth();
-      
-      
-      // reduce size of img chart
-      canvasHeight = canvasHeight*90/100;
-      canvasWidth = canvasWidth*90/100;
-      
-      // draw the chart into the new canvas
-      
-      pdfctx.drawImage($(this)[0], pdfComctxX, pdfComctxY, canvasWidth, canvasHeight);
-      pdfctxX += canvasWidth + buffer;
-      
-      // our report page is in a grid pattern so replicate that in the new canvas
-      if (index % 2 === 1) {
-        pdfctxX = 0;
-        pdfctxY += canvasHeight + buffer;
-      }
-    });
+
+    if (checkChart2.style.display != "none") {
+      // Comparing chart canvas
+      // keep track canvas position
+      let pdfComctx = $(pdfCanvas2)[0].getContext('2d');
+      let pdfComctxX = 0;
+      let pdfComctxY = 0;
+      // make canvas BG is white
+      pdfComctx.fillStyle = "white";
+      pdfComctx.fillRect(0, 0, 1200, 800);
+      // for comparing chart
+      $("#compareChart").each(function(index) {
+        // get the chart height/width
+        let canvasHeight = $(this).innerHeight();
+        let canvasWidth = $(this).innerWidth();
+        
+        
+        // reduce size of img chart
+        canvasHeight = canvasHeight*89/100;
+        canvasWidth = canvasWidth*89/100;
+        
+        // draw the chart into the new canvas
+        
+        pdfComctx.drawImage($(this)[0], pdfComctxX, pdfComctxY, canvasWidth, canvasHeight);
+        pdfComctxX += canvasWidth + buffer;
+        
+        // our report page is in a grid pattern so replicate that in the new canvas
+        if (index % 2 === 1) {
+          pdfComctxX = 0;
+          pdfComctxY += canvasHeight + buffer;
+        }
+      });
+    }
     
     // create new pdf and add our new canvas as an image
     let pdf = new jsPDF('landscape');
     pdf.setFontSize(20)
     pdf.text(140, 15, `${device}`)
     pdf.addImage($(pdfCanvas)[0], 'PNG', 12, 25);
-    pdf.addPage();
-    pdf.addImage($(pdfCanvas2)[0], 'PNG', 12, 25);
-    
+
+    if (checkChart2.style.display != "none") {
+      pdf.addPage();
+      pdf.addImage($(pdfCanvas2)[0], 'PNG', 12, 25);
+    }
     // download the pdf
     pdf.save('graph-report.pdf');
 }
