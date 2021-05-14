@@ -404,14 +404,11 @@ function secondLoad() {
   humi_data = humi_data30_D;
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
-<<<<<<< HEAD
   document.getElementById('date_now').value = new Date(new Date().getTime() - 86400000).toLocaleDateString('en-CA');
   renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
-=======
   document.getElementById('tbl_from').value = new Date().toLocaleDateString('en-CA');
   document.getElementById('tbl_to').value = new Date().toLocaleDateString('en-CA');
   getTableRange();
->>>>>>> b3430bc3a9029151414201d73775ce02c39b52bb
   mainChat();
   compareGraph();
   initialCompareChart();
@@ -1016,14 +1013,10 @@ function renderTable(date_array, temp_array, humi_array) {
   firstDateTime = date_array[0];
   lastDateTime = date_array[date_array.length - 1];
   let tbody = document.getElementById('tbl-body');
-<<<<<<< HEAD
   let col = 5; //column head number
   let load_sector = 1500;
   let multiply = 1;
   let shifter;
-=======
-  let col = 4; //column head number
->>>>>>> b3430bc3a9029151414201d73775ce02c39b52bb
   //reset old table
   tbody.innerText = '';
 
