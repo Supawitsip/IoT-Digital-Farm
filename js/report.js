@@ -408,7 +408,8 @@ function secondLoad() {
   humi_data = humi_data30_D;
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
-  document.getElementById('date_now').value = new Date(new Date().getTime() - 86400000).toLocaleDateString('en-CA');
+  document.getElementById('date_now').value = lastest_day = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length - 1].toString().substring(0, 10));
+  //new Date(new Date().getTime() - 86400000).toLocaleDateString('en-CA');
   document.getElementById('tbl_from').value = new Date().toLocaleDateString('en-CA');
   document.getElementById('tbl_to').value = new Date().toLocaleDateString('en-CA');
   getTableRange();
@@ -869,9 +870,11 @@ function compareGraphSet() {
   let day7 = (new Date(new Date(get_select_date).getTime() - 604800000).toLocaleDateString('en-CA'));
  // console.log(day9);
   let start_mount = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
-  let lastest_day = (new Date(new Date(get_select_date).getTime() + 86400000).toLocaleDateString('en-CA'));
+  //let lastest_day = (new Date(new Date(get_select_date).getTime() + 86400000).toLocaleDateString('en-CA'));
   // console.log(lastest_day);
-
+  document.getElementById('date_from').value = ChangeFormateDateV2(date_data1_D_tranfer[0].toString().substring(0, 10));
+  let lastest_day = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length - 1].toString().substring(0, 10));
+  //
   let lastest_week = ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10));
   //let lastest_week =
 
