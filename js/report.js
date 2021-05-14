@@ -171,7 +171,13 @@ function exportGraph2pdf() {
       width: reportPageWidth,
       height: reportPageHeight
     });
+    let pdfCanvas2 = $('<canvas />').attr({
+      id: "canvaspdf",
+      width: reportPageWidth,
+      height: reportPageHeight
+    });
     
+    // Main chart canvas
     // keep track canvas position
     let pdfctx = $(pdfCanvas)[0].getContext('2d');
     let pdfctxX = 0;
@@ -180,9 +186,18 @@ function exportGraph2pdf() {
     // make canvas BG is white
     pdfctx.fillStyle = "white";
     pdfctx.fillRect(0, 0, 1200, 800);
+
+    // Comparing chart canvas
+    // keep track canvas position
+    let pdfComctx = $(pdfCanvas2)[0].getContext('2d');
+    let pdfComctxX = 0;
+    let pdfComctxY = 0;
+    // make canvas BG is white
+    pdfComctx.fillStyle = "white";
+    pdfComctx.fillRect(0, 0, 1200, 800);
     
-    // for each chart.js chart
-    $("canvas").each(function(index) {
+    // for main chart
+    $("#temperatureChart").each(function(index) {
       // get the chart height/width
       let canvasHeight = $(this).innerHeight();
       let canvasWidth = $(this).innerWidth();
@@ -203,12 +218,36 @@ function exportGraph2pdf() {
         pdfctxY += canvasHeight + buffer;
       }
     });
+    // for comparing chart
+    $("#temperatureChart").each(function(index) {
+      // get the chart height/width
+      let canvasHeight = $(this).innerHeight();
+      let canvasWidth = $(this).innerWidth();
+      
+      
+      // reduce size of img chart
+      canvasHeight = canvasHeight*90/100;
+      canvasWidth = canvasWidth*90/100;
+      
+      // draw the chart into the new canvas
+      
+      pdfctx.drawImage($(this)[0], pdfComctxX, pdfComctxY, canvasWidth, canvasHeight);
+      pdfctxX += canvasWidth + buffer;
+      
+      // our report page is in a grid pattern so replicate that in the new canvas
+      if (index % 2 === 1) {
+        pdfctxX = 0;
+        pdfctxY += canvasHeight + buffer;
+      }
+    });
     
     // create new pdf and add our new canvas as an image
     let pdf = new jsPDF('landscape');
     pdf.setFontSize(20)
     pdf.text(140, 15, `${device}`)
     pdf.addImage($(pdfCanvas)[0], 'PNG', 12, 25);
+    pdf.addPage();
+    pdf.addImage($(pdfCanvas2)[0], 'PNG', 12, 25);
     
     // download the pdf
     pdf.save('graph-report.pdf');
