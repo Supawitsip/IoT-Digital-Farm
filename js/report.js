@@ -52,20 +52,20 @@ function displayDeviceInfo() {
     console.log("Last sampling key: " + last_samp);
 
     // Display device info
-    document.getElementById("device").innerText = deviceObj[last_samp].deviceNameID;
-    document.getElementById("dName").innerText = deviceObj[last_samp].deviceNameID;
+    document.getElementById("device").innerText = device;
+    document.getElementById("dName").innerText = device;
 
     // Convert timestamp to readable
-    let timestamp = (deviceObj[last_samp].timestamp)/1000;
+    let timestamp = (deviceObj[last_samp].ti)/1000;
     let date = new Date(timestamp * 1000);
     lastDateTime = readableTime(date);
-    timestamp = (deviceObj[first_samp].timestamp)/1000;
+    timestamp = (deviceObj[first_samp].ti)/1000;
     date = new Date(timestamp * 1000);
     firstDateTime = readableTime(date);
 
     document.getElementById("lastTime").innerText = lastDateTime;
-    document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviceObj[last_samp].temperature} °C`;
-    document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviceObj[last_samp].humidity} %`;
+    document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviceObj[last_samp].te} °C`;
+    document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviceObj[last_samp].h} %`;
 }
 
 // Convert timestamp to readable
@@ -349,7 +349,7 @@ function secondLoad() {
   for (d in deviObj) {
     //console.log(test_all);
     //all_samp = deviObj[d].;
-    let timestamp = deviObj[d].timestamp;
+    let timestamp = deviObj[d].ti;
     //let timestamp = deviObj[device][all_samp].timestamp/1000;   
     let date = new Date(timestamp);
     let currentDateTimeDevice = date.getDate().toString().padStart(2, "0") +
@@ -361,39 +361,39 @@ function secondLoad() {
     i++
     if (i >= day_samling) {
 
-      temp_data1_D.push(deviObj[d].temperature);
+      temp_data1_D.push(deviObj[d].te);
       date_data1_D_tranfer.push(currentDateTimeDevice);
       date_data1_D.push(date);
-      humi_data1_D.push(deviObj[d].humidity);
+      humi_data1_D.push(deviObj[d].h);
 
-      temp_data7_D.push(deviObj[d].temperature);
+      temp_data7_D.push(deviObj[d].te);
       date_data7_D_tranfer.push(currentDateTimeDevice);
       date_data7_D.push(date);
-      humi_data7_D.push(deviObj[d].humidity);
+      humi_data7_D.push(deviObj[d].h);
 
-      temp_data30_D.push(deviObj[d].temperature);
+      temp_data30_D.push(deviObj[d].te);
       date_data30_D_tranfer.push(currentDateTimeDevice);
       date_data30_D.push(date);
-      humi_data30_D.push(deviObj[d].humidity);
+      humi_data30_D.push(deviObj[d].h);
 
     } else if (i >= week_sampling) {
-      temp_data7_D.push(deviObj[d].temperature);
+      temp_data7_D.push(deviObj[d].te);
       date_data7_D_tranfer.push(currentDateTimeDevice);
       date_data7_D.push(date);
-      humi_data7_D.push(deviObj[d].humidity);
+      humi_data7_D.push(deviObj[d].h);
 
-      temp_data30_D.push(deviObj[d].temperature);
+      temp_data30_D.push(deviObj[d].te);
       date_data30_D_tranfer.push(currentDateTimeDevice);
       date_data30_D.push(date);
-      humi_data30_D.push(deviObj[d].humidity);
+      humi_data30_D.push(deviObj[d].h);
 
 
 
     } else if (i >= month_sampling) {
-      temp_data30_D.push(deviObj[d].temperature);
+      temp_data30_D.push(deviObj[d].te);
       date_data30_D_tranfer.push(currentDateTimeDevice);
       date_data30_D.push(date);
-      humi_data30_D.push(deviObj[d].humidity);
+      humi_data30_D.push(deviObj[d].h);
     }
 
     /* if (i > 129600) {
@@ -856,7 +856,7 @@ function compareGraphSet() {
   temBtn.style.color = "white";
   humiBtn.style.backgroundColor = "white";
   humiBtn.style.color = "#E35F43";
-  
+
   date_label = [];
   day_all_tem_data = [];
   day_all_humi_data = [];
