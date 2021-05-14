@@ -850,6 +850,13 @@ function compareGraph() {
 }
 
 function compareGraphSet() {
+  let temBtn = document.getElementById("tempCompare");
+  let humiBtn = document.getElementById("humiCompare");
+  temBtn.style.backgroundColor = "#E35F43";
+  temBtn.style.color = "white";
+  humiBtn.style.backgroundColor = "white";
+  humiBtn.style.color = "#E35F43";
+  
   date_label = [];
   day_all_tem_data = [];
   day_all_humi_data = [];
