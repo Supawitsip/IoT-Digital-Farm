@@ -164,6 +164,8 @@ function exportGraph2pdf() {
     // get size of report page
     let reportPageHeight = $('#reportPage').innerHeight();
     let reportPageWidth = $('#reportPage').innerWidth();
+
+    let checkChart2 = document.getElementById('compareChartCon');
     
     // create a new canvas object that we will populate with all other canvas objects
     let pdfCanvas = $('<canvas />').attr({
@@ -186,17 +188,6 @@ function exportGraph2pdf() {
     // make canvas BG is white
     pdfctx.fillStyle = "white";
     pdfctx.fillRect(0, 0, 1200, 800);
-
-    // Comparing chart canvas
-    // keep track canvas position
-    let pdfComctx = $(pdfCanvas2)[0].getContext('2d');
-    let pdfComctxX = 0;
-    let pdfComctxY = 0;
-    // make canvas BG is white
-    pdfComctx.fillStyle = "white";
-    pdfComctx.fillRect(0, 0, 1200, 800);
-    
-    // for main chart
     $("#temperatureChart").each(function(index) {
       // get the chart height/width
       let canvasHeight = $(this).innerHeight();
@@ -218,37 +209,50 @@ function exportGraph2pdf() {
         pdfctxY += canvasHeight + buffer;
       }
     });
-    // for comparing chart
-    $("#temperatureChart").each(function(index) {
-      // get the chart height/width
-      let canvasHeight = $(this).innerHeight();
-      let canvasWidth = $(this).innerWidth();
-      
-      
-      // reduce size of img chart
-      canvasHeight = canvasHeight*90/100;
-      canvasWidth = canvasWidth*90/100;
-      
-      // draw the chart into the new canvas
-      
-      pdfctx.drawImage($(this)[0], pdfComctxX, pdfComctxY, canvasWidth, canvasHeight);
-      pdfctxX += canvasWidth + buffer;
-      
-      // our report page is in a grid pattern so replicate that in the new canvas
-      if (index % 2 === 1) {
-        pdfctxX = 0;
-        pdfctxY += canvasHeight + buffer;
-      }
-    });
+
+    if (checkChart2.style.display != "none") {
+      // Comparing chart canvas
+      // keep track canvas position
+      let pdfComctx = $(pdfCanvas2)[0].getContext('2d');
+      let pdfComctxX = 0;
+      let pdfComctxY = 0;
+      // make canvas BG is white
+      pdfComctx.fillStyle = "white";
+      pdfComctx.fillRect(0, 0, 1200, 800);
+      // for comparing chart
+      $("#compareChart").each(function(index) {
+        // get the chart height/width
+        let canvasHeight = $(this).innerHeight();
+        let canvasWidth = $(this).innerWidth();
+        
+        
+        // reduce size of img chart
+        canvasHeight = canvasHeight*89/100;
+        canvasWidth = canvasWidth*89/100;
+        
+        // draw the chart into the new canvas
+        
+        pdfComctx.drawImage($(this)[0], pdfComctxX, pdfComctxY, canvasWidth, canvasHeight);
+        pdfComctxX += canvasWidth + buffer;
+        
+        // our report page is in a grid pattern so replicate that in the new canvas
+        if (index % 2 === 1) {
+          pdfComctxX = 0;
+          pdfComctxY += canvasHeight + buffer;
+        }
+      });
+    }
     
     // create new pdf and add our new canvas as an image
     let pdf = new jsPDF('landscape');
     pdf.setFontSize(20)
     pdf.text(140, 15, `${device}`)
     pdf.addImage($(pdfCanvas)[0], 'PNG', 12, 25);
-    pdf.addPage();
-    pdf.addImage($(pdfCanvas2)[0], 'PNG', 12, 25);
-    
+
+    if (checkChart2.style.display != "none") {
+      pdf.addPage();
+      pdf.addImage($(pdfCanvas2)[0], 'PNG', 12, 25);
+    }
     // download the pdf
     pdf.save('graph-report.pdf');
 }
@@ -405,7 +409,6 @@ function secondLoad() {
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
   document.getElementById('date_now').value = new Date(new Date().getTime() - 86400000).toLocaleDateString('en-CA');
-  renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
   document.getElementById('tbl_from').value = new Date().toLocaleDateString('en-CA');
   document.getElementById('tbl_to').value = new Date().toLocaleDateString('en-CA');
   getTableRange();
@@ -1020,6 +1023,13 @@ function initialCompareChart(){
 }
 
 function compareChartTem() {
+  let temBtn = document.getElementById("tempCompare");
+  let humiBtn = document.getElementById("humiCompare");
+  temBtn.style.backgroundColor = "#E35F43";
+  temBtn.style.color = "white";
+  humiBtn.style.backgroundColor = "white";
+  humiBtn.style.color = "#E35F43";
+
   //compareChart.destroy();
   for(let i = 1 ;i < day_all_tem_data.length; i++) {
     compareChart.data.datasets[i-1].data = day_all_tem_data[i];
@@ -1036,6 +1046,13 @@ function compareChartTem() {
 }
 
 function compareChartHumi() {
+  let temBtn = document.getElementById("tempCompare");
+  let humiBtn = document.getElementById("humiCompare");
+  temBtn.style.backgroundColor = "white";
+  temBtn.style.color = "#E35F43";
+  humiBtn.style.backgroundColor = "#E35F43";
+  humiBtn.style.color = "white";
+
   //compareChart.destroy();
   for(let i = 1 ;i < day_all_humi_data.length; i++) {
     compareChart.data.datasets[i-1].data = day_all_humi_data[i];
@@ -1056,7 +1073,7 @@ function renderTable(date_array, temp_array, humi_array) {
   firstDateTime = date_array[0];
   lastDateTime = date_array[date_array.length - 1];
   let tbody = document.getElementById('tbl-body');
-  let col = 5; //column head number
+  let col = 4; //column head number
   let load_sector = 1500;
   let multiply = 1;
   let shifter;

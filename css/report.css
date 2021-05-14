@@ -155,6 +155,7 @@
     width: fit-content;
     float: right;
 }
+
 .btnTime {
     width: fit-content;
     float: left;
@@ -192,6 +193,14 @@
     color: white;
 }
 #resetZoom:hover {
+    background-color: #E35F43;
+    color: white;
+}
+#resetZoom2:hover {
+    background-color: #E35F43;
+    color: white;
+}
+#tempCompare:hover {
     background-color: #E35F43;
     color: white;
 }
@@ -308,6 +317,28 @@ tr:nth-child(even) {
 
 .show {display: block;}
 
+#tempCompare {
+    background-color: #E35F43;
+    color: white;
+}
+
+.calendarTime2 {
+    width: fit-content;
+    float: right;
+}
+.calendarTime2 label {
+    color: #E35F43;
+    margin: 12px 2px;
+}
+.calendarTime2 input[type=date] {
+    color: #E35F43;
+    border: 1px solid #E35F43;
+    border-radius: 4px;
+    height: 30px;
+    padding: 4px;
+    margin: 12px 2px;
+}
+
 @media screen and (max-width: 600px) {
     .head-con {
         margin: 8px 0;
@@ -407,5 +438,8 @@ tr:nth-child(even) {
     }
     #label-tbl_to {
         margin-right: 5px;
+    }
+    .calendarTime2 {
+        float: left;
     }
 }
