@@ -787,6 +787,12 @@ function compareGraph() {
       labels: date_label,
     },
     options: {
+      
+      legend: {
+          display: true,
+          position: 'left'
+      
+      },
       zoom: {
         enabled: true,
         drag: {
@@ -809,7 +815,7 @@ function compareGraph() {
       scales: {
         yAxes: [{
           type: 'linear',
-          position: 'left',
+          position: 'right',
           ticks: {
             suggestedMin: 20,
             suggestedMax: 45,
@@ -940,6 +946,11 @@ function compareGraphSet() {
       labels: date_label,
     },
     options: {
+      legend: {
+          display: true,
+          position: 'left'
+      
+      },
       zoom: {
         enabled: true,
         drag: {
@@ -962,7 +973,7 @@ function compareGraphSet() {
       scales: {
         yAxes: [{
           type: 'linear',
-          position: 'left',
+          position: 'right',
           ticks: {
             suggestedMin: 20,
             suggestedMax: 45,
