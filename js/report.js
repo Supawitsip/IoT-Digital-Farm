@@ -31,7 +31,7 @@ let  day_all_humi_data
 // }
 
 function initialLoad() {
-    let retrievedObject = JSON.parse(localStorage.getItem('testObject'));
+    let retrievedObject = JSON.parse(localStorage.getItem('deviceObject'));
     // console.log('retrievedObject: ', JSON.parse(retrievedObject));
     //deviObj = Object.values(retrievedObject.ABC);
     //console.log(typeof retrievedObject);
@@ -42,8 +42,8 @@ function initialLoad() {
     n_sampling = Object.keys(deviceObj).length;
     last_samp = Object.keys(deviceObj)[n_sampling-1];
     first_samp = Object.keys(deviceObj)[0];
-    //console.log(typeof retrievedObject);
-    //console.log(retrievedObject[device]);
+    console.log(n_sampling);
+    console.log(retrievedObject[device]);
     displayDeviceInfo();
     firstLoad();
   
