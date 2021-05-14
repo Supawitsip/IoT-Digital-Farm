@@ -1018,12 +1018,12 @@ function compareGraphSet() {
 
 
 function initialCompareChart(){
-  
+  let color = getPastelColor()
   for(let i = 0 ;i < day_all_tem_data.length - 1; i++) {
     compareChart.data.datasets.push({
       label: day_compareGraph[i] ,
-      backgroundColor: getPastelColor(),
-      borderColor: getPastelColor(),
+      backgroundColor: color,
+      borderColor: color,
       indexLabelFontSize: 10,
       fill: false,
       data: day_all_tem_data[i+1],
