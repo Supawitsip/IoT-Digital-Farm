@@ -11,6 +11,7 @@ let n_sampling;
 let last_samp;
 let first_samp;
 
+let  day_all_humi_data 
 // function initialLoad() {
 //     dbRef.child(db_devices).child(device).get().then((snapshot) => {
 //         if (snapshot.exists()) {
@@ -213,9 +214,6 @@ function exportGraph2pdf() {
     pdf.save('graph-report.pdf');
 }
 
-var presenceRef = firebase.database().ref("disconnectmessage");
-// // Write a string when this client loses connection
-presenceRef.onDisconnect().set("I disconnected!");
 
 
 var label;
@@ -372,22 +370,9 @@ function secondLoad() {
   getTableRange();
   mainChat();
   compareGraph();
-  
-  for(let i = 1 ;i < day_all_data.length; i++) {
-    compareChart.data.datasets.push({
-      label: day_compareGraph[i] ,
-      backgroundColor: color[i-1],
-      borderColor: color[i-1],
-      indexLabelFontSize: 10,
-      fill: false,
-      data: day_all_data[i],
-      pointRadius: 0,
-      borderWidth: 3,
-      tension: 0
-    });
-    compareChart.update();
-  }
-
+  initialCompareChart();
+  //compareChartHumi();
+  //compareChart.update();
 }
 
 
@@ -524,8 +509,11 @@ function mainChat() {
   });
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+function getPastelColor(){ 
+  return "hsl(" + 360 * Math.random() + ',' +
+              (35 + 50 * Math.random()) + '%,' + 
+              (65 + 10 * Math.random()) + '%)';
+}
 //click for change grapt
 function allData() {
 
@@ -701,9 +689,11 @@ function compareGraph() {
       "/" + ((dateYesterday.getMonth() + 1).toString().padStart(2, "0")) +
       "/" + dateYesterday.getFullYear();*/
   date_label = [];
-  day_all_data = [];
+  day_all_tem_data = [];
+  day_all_humi_data = [];
   day_compareGraph = [];
-  let day_eve_day = [];
+  let day_tem_day = [];
+  let day_humi_day = [];
   let lastest_day = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length-1].toString().substring(0, 10));
   let lastest_week = ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10));
   //let day_count = lastest_week;
@@ -722,10 +712,13 @@ function compareGraph() {
       }
       if (0 == j % 1440) {
         day_compareGraph.push(ChangeFormateDateV2(date_data7_D_tranfer[i+10].toString().substring(0, 10)));
-        day_all_data.push(day_eve_day);
-        day_eve_day = [];
+        day_all_tem_data.push(day_tem_day);
+        day_all_humi_data.push(day_humi_day);
+        day_humi_day = [];
+        day_tem_day = [];
       }
-      day_eve_day.push(temp_data30_D[i]);
+      day_tem_day.push(temp_data30_D[i]);
+      day_humi_day.push(humi_data30_D[i]);
       j++
     } 
   }
@@ -760,15 +753,14 @@ function compareGraph() {
       responsive: true,
       scales: {
         yAxes: [{
-          id: 'A',
           type: 'linear',
           position: 'left',
           ticks: {
-            suggestedMin: 10,
+            suggestedMin: 20,
             suggestedMax: 45,
             maxTicksLimit: maxTicksLimitY,
             fontSize: font_y_size,
-            min: 10
+            min: 20
           },
           scaleLabel: {
             display: true,
@@ -791,7 +783,7 @@ function compareGraph() {
           ticks: {
             //source: 'auto',
             major: {
-              enabled: true, // <-- This is the key line
+              //enabled: true, // <-- This is the key line
               fontStyle: 'bold', //You can also style these values differently
               fontSize: 14 //You can also style these values differently
             },
@@ -800,6 +792,55 @@ function compareGraph() {
       },
     }
   });
+}
+function initialCompareChart(){
+  
+  for(let i = 1 ;i < day_all_tem_data.length; i++) {
+    compareChart.data.datasets.push({
+      label: day_compareGraph[i] ,
+      backgroundColor: getPastelColor(),
+      borderColor: getPastelColor(),
+      indexLabelFontSize: 10,
+      fill: false,
+      data: day_all_tem_data[i],
+      pointRadius: 0,
+      borderWidth: 3,
+      tension: 0
+    });
+  }
+  compareChart.update();
+}
+
+function compareChartTem() {
+  //compareChart.destroy();
+  for(let i = 1 ;i < day_all_tem_data.length; i++) {
+    compareChart.data.datasets[i-1].data = day_all_tem_data[i];
+    //compareChart.data.datasets[i-1].label = day_compareGraph[i];
+    let color = getPastelColor();
+    compareChart.data.datasets[i-1].backgroundColor = color;
+    compareChart.data.datasets[i-1].borderColor = color;
+  }
+  
+  // compareChart.options.scales.yAxes[0].ticks.suggestedMin = 10;
+  // compareChart.options.scales.yAxes[0].ticks.suggestedMin = 50;
+  compareChart.options.scales.yAxes[0].scaleLabel.labelString = 'Temperature (°C)';
+  compareChart.update();
+}
+
+function compareChartHumi() {
+  //compareChart.destroy();
+  for(let i = 1 ;i < day_all_humi_data.length; i++) {
+    compareChart.data.datasets[i-1].data = day_all_humi_data[i];
+    let color = getPastelColor();
+    compareChart.data.datasets[i-1].backgroundColor = color;
+    compareChart.data.datasets[i-1].borderColor = color;
+    //compareChart.data.datasets[i-1].label = day_compareGraph[i];
+    //myChart.data.datasets[1].data = humi_carlendar_D;
+    //myChart.data.labels = date_carlendar_D;
+    //compareChart.update();
+  }
+  compareChart.options.scales.yAxes[0].scaleLabel.labelString = 'Humidity (%RH)';
+  compareChart.update();
 }
 
 
@@ -823,14 +864,6 @@ function renderTable(date_array, temp_array, humi_array) {
   };
 }
 
-// function addData(chart, label, data) {
-//   chart.data.labels.push(label);
-//   chart.data.datasets.forEach((dataset) => {
-//       dataset.data.push(data);
-//   });
-//   chart.update();
-// }
-
 function addData(chart, label, color, data) {
   chart.data.datasets.push({
     label: label,
@@ -840,6 +873,7 @@ function addData(chart, label, color, data) {
   });
   chart.update();
 }
+
 
 // อยู่ตรงนี้วัยรุ่น
 /////////////////////////////////////////////////// start function
