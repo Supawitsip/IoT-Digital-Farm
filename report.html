@@ -129,15 +129,24 @@
         <div class="export-con">
           <i class="fas fa-table excel-icon"></i>
           <div class="ex-title">Data Collection Table</div>
-          <button class="sh-btn" id="showTable">Show</button>
+          <div class="tbl-range-con">
+            <div>
+              <label for="tbl_from">Start:</label>
+              <input id="tbl_from" type="date" name="task_date" />
+              <label for="tbl_to" id="label-tbl_to"> End:</label>
+              <input id="tbl_to" type="date" name="task_date" />
+              <input type="checkbox" id="allDataTbl" name="allDataTbl">
+              <label for="allDataTbl">All data</label>
+            </div>
+            <button class="sh-btn" id="showTable">Show</button>
+          </div>
         </div>
 
         <div class="tbl-con" style="display: none;">
-          <table class="table2excel" id="table2excel" style="display: none;" data-cols-width="10,20,50,20,20">
+          <table class="table2excel" id="table2excel" style="display: none;" data-cols-width="10,50,20,20">
             <thead>
               <tr>
                 <th>No.</th>
-                <th>Device Name</th>
                 <th>Date and Time</th>
                 <th>Temperature (°C)</th>
                 <th>Humidity (%RH)</th>
@@ -208,6 +217,22 @@
       document.getElementById('resetZoom2').addEventListener('click', function () {
         compareChart.resetZoom('none');
       });
+      let tbl_f = document.getElementById('tbl_from');
+      let tbl_t = document.getElementById('tbl_to');
+      let checkAllData = document.getElementById('allDataTbl');
+      tbl_f.addEventListener('change', getTableRange);
+      tbl_t.addEventListener('change', getTableRange);
+      checkAllData.addEventListener('change', e => {
+        if (checkAllData.checked == true) {
+          tbl_f.disabled = true;
+          tbl_t.disabled = true;
+          renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
+        } else {
+          tbl_f.disabled = false;
+          tbl_t.disabled = false;
+          getTableRange();
+        }
+      })
     </script>
     
     <!-- Hide and Show -->

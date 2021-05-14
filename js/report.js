@@ -30,15 +30,20 @@ let first_samp;
 // }
 
 function initialLoad() {
-  let retrievedObject = JSON.parse(localStorage.getItem('testObject'));
-  deviceObj = retrievedObject[device];
-  n_sampling = Object.keys(deviceObj).length;
-  last_samp = Object.keys(deviceObj)[n_sampling-1];
-  first_samp = Object.keys(deviceObj)[0];
-  //console.log(typeof retrievedObject);
-  //console.log(retrievedObject[device]);
-  displayDeviceInfo();
-  firstLoad();
+  dbRef.child(db_devices).child(device).get().then((snapshot) => {
+    deviceObj = snapshot.val();
+
+    localStorage.setItem('deviceObject', JSON.stringify(deviceObj));
+    let retrievedObject = localStorage.getItem('deviceObject');
+
+    n_sampling = Object.keys(deviceObj).length;
+    last_samp = Object.keys(deviceObj)[n_sampling-1];
+    first_samp = Object.keys(deviceObj)[0];
+    //console.log(typeof retrievedObject);
+    //console.log(retrievedObject[device]);
+    displayDeviceInfo();
+    firstLoad();
+  });
 }
 
 function displayDeviceInfo() {
@@ -362,7 +367,9 @@ function secondLoad() {
   humi_data = humi_data30_D;
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
-  renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
+  document.getElementById('tbl_from').value = new Date().toLocaleDateString('en-CA');
+  document.getElementById('tbl_to').value = new Date().toLocaleDateString('en-CA');
+  getTableRange();
   mainChat();
   compareGraph();
   
@@ -541,7 +548,6 @@ function allData() {
   myChart.data.labels = date_data30_D;
   myChart.update();
 
-  renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
 }
 
 
@@ -567,7 +573,6 @@ function dayData() {
   myChart.data.labels = date_data1_D;
   myChart.update();
   console.log(date_data1_D_tranfer.length);
-  renderTable(device, date_data1_D_tranfer, temp_data1_D, humi_data1_D);
 }
 
 function weekData() {
@@ -593,7 +598,6 @@ function weekData() {
   myChart.data.labels = date_data7_D;
   myChart.update();
   
-  renderTable(device, date_data7_D_tranfer, temp_data7_D, humi_data7_D);
 }
 
 function monthData() {
@@ -617,7 +621,6 @@ function monthData() {
   myChart.data.labels = date_data30_D;
   myChart.update();
 
-  renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
 }
 
 function getRange() {
@@ -648,8 +651,29 @@ function getRange() {
     myChart.data.labels = date_carlendar_D;
     myChart.update();
 
-    renderTable(device, date_calendar_transfer, temp_carlendar_D, humi_carlendar_D);
   }
+}
+
+function getTableRange() {
+  let tbl_start = document.getElementById('tbl_from').value;
+  let tbl_end = document.getElementById('tbl_to').value;
+  let date_carlendar_tbl = [];
+  let date_carlendar_tbl_transfer = [];
+  let humi_carlendar_tbl = [];
+  let temp_carlendar_tbl = [];
+  if (tbl_start > tbl_end) {
+    console.log("Error: Wrong date input.")
+  } else {
+    for (let i = 0; i < date_data30_D.length; i++) {
+      if (tbl_start <= ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) <= tbl_end) {
+        date_carlendar_tbl.push(date_data30_D[i]);
+        humi_carlendar_tbl.push(humi_data30_D[i]);
+        temp_carlendar_tbl.push(temp_data30_D[i]);
+        date_carlendar_tbl_transfer.push(date_data30_D_tranfer[i]);
+      }
+    }
+  }
+  renderTable(date_carlendar_tbl_transfer, temp_carlendar_tbl, temp_carlendar_tbl);
 }
 
 // change / to -
@@ -779,63 +803,24 @@ function compareGraph() {
 }
 
 
-function renderTable(device_name, date_array, temp_array, humi_array) {
+function renderTable(date_array, temp_array, humi_array) {
   firstDateTime = date_array[0];
   lastDateTime = date_array[date_array.length - 1];
   let tbody = document.getElementById('tbl-body');
-  let col = 5; //column head number
-  let load_sector = 1500
-  let multiply = 1;
-  let shifter;
+  let col = 4; //column head number
   //reset old table
   tbody.innerText = '';
 
-  //init load
-    if (date_array.length <= load_sector) {
-        for (i = 0; i < date_array.length; i++) {
-            let row = document.createElement('tr');
-            let td_list = [i + 1, device_name, date_array[i], temp_array[i], humi_array[i]]
-            for (j = 0; j < col; j++) {
-            let td = document.createElement('td');
-            td.innerText = td_list[j];
-            row.appendChild(td);
-            tbody.appendChild(row);
-            }
-        };
-    } else {
-        for (i = 0; i < date_array.length; i++) {
-            let row = document.createElement('tr');
-            let td_list = [i + 1, device_name, date_array[i], temp_array[i], humi_array[i]]
-            for (j = 0; j < col; j++) {
-                let td = document.createElement('td');
-                td.innerText = td_list[j];
-                row.appendChild(td);
-                }
-                if (i >= load_sector) {
-                row.style.display = "none";
-            }
-            tbody.appendChild(row);
-        };
-        $('.tbl-con').on('scroll', function(e) {
-            let elem = $(e.currentTarget);
-            if (elem[0].scrollHeight - elem.scrollTop() == elem.outerHeight()) {
-                shifter = load_sector * multiply;
-                if (date_array.length-shifter <= load_sector) {
-                    console.log('last load');
-                    for (i = 0+shifter; i < date_array.length; i++) {
-                    tbody.childNodes[i].style.display = "";
-                    }
-                } else {
-                    console.log('more load');
-                    shifter = load_sector * multiply; 
-                    for (i = 0+shifter; i < load_sector+shifter; i++) {
-                    tbody.childNodes[i].style.display = "";
-                    }
-                    multiply++;
-                }
-            }
-        });
-    }
+  for (i = 0; i < date_array.length; i++) {
+      let row = document.createElement('tr');
+      let td_list = [i + 1, date_array[i], temp_array[i], humi_array[i]]
+      for (j = 0; j < col; j++) {
+          let td = document.createElement('td');
+          td.innerText = td_list[j];
+          row.appendChild(td);
+      }
+      tbody.appendChild(row);
+  };
 }
 
 // function addData(chart, label, data) {
