@@ -31,11 +31,11 @@ let  day_all_humi_data
 // }
 
 function initialLoad() {
-  dbRef.child(db_devices).child(device).get().then((snapshot) => {
-    deviceObj = snapshot.val();
+  //dbRef.child(db_devices).child(device).get().then((snapshot) => {
+  //  deviceObj = snapshot.val();
 
-    localStorage.setItem('deviceObject', JSON.stringify(deviceObj));
-    let retrievedObject = localStorage.getItem('deviceObject');
+//localStorage.setItem('deviceObject', JSON.stringify(deviceObj));
+  //  let retrievedObject = localStorage.getItem('deviceObject');
 
     n_sampling = Object.keys(deviceObj).length;
     last_samp = Object.keys(deviceObj)[n_sampling-1];
@@ -44,7 +44,7 @@ function initialLoad() {
     //console.log(retrievedObject[device]);
     displayDeviceInfo();
     firstLoad();
-  });
+//  });
 }
 
 function displayDeviceInfo() {
@@ -1017,10 +1017,11 @@ function compareGraphSet() {
 function initialCompareChart(){
   
   for(let i = 0 ;i < day_all_tem_data.length - 1; i++) {
-    compareChart.data.datasets.push({
+      let color = getPastelColor();
+      compareChart.data.datasets.push({
       label: day_compareGraph[i] ,
-      backgroundColor: getPastelColor(),
-      borderColor: getPastelColor(),
+      backgroundColor: color,
+      borderColor: color,
       indexLabelFontSize: 10,
       fill: false,
       data: day_all_tem_data[i+1],
