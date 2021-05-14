@@ -6,147 +6,66 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const device = urlParams.get('device');
 
-var allDeviceData;
-var deviceObj;
-var n_sampling;
-var last_samp;
-var first_samp;
-var num_of_devi;
+let deviceObj;
+let n_sampling;
+let last_samp;
+let first_samp;
+
+let  day_all_humi_data 
+// function initialLoad() {
+//     dbRef.child(db_devices).child(device).get().then((snapshot) => {
+//         if (snapshot.exists()) {
+//             deviceObj = snapshot.val();
+//             n_sampling = Object.keys(deviceObj).length;
+//             last_samp = Object.keys(deviceObj)[n_sampling-1];
+//             first_samp = Object.keys(deviceObj)[0];
+
+//             displayDeviceInfo();
+//             firstLoad();
+//         } else {
+//             console.log("No data available")
+//         }
+//     }).catch((error) => {
+//       console.error(error);
+//     });
+// }
 
 function initialLoad() {
-    dbRef.child(db_devices).get().then((snapshot) => {
-        if (snapshot.exists()) {
-            allDeviceData = snapshot.val();
-            if (device === null) {
-                displayLoaded();
-            } else {
-                deviceObj = allDeviceData[device];
-                n_sampling = Object.keys(deviceObj).length;
-                last_samp = Object.keys(deviceObj)[n_sampling-1];
-                first_samp = Object.keys(deviceObj)[0];
-                displayDeviceInfo();
-            }
-        } else {
-            console.log("No data available")
-        }
-    }).catch((error) => {
-      console.error(error);
-    });
-}
-function displayLoaded() {
-    // Get Number of device connected
-    num_of_devi = Object.keys(allDeviceData).length;
-    console.log('All Devices:' + num_of_devi);
-    document.getElementById('allDevices').innerText = num_of_devi + " devices";
-  
-    // Display current time
-    console.log(getLocalCurrentTime());
-    document.getElementById('lastTime').innerText = getLocalCurrentTime();
-  
-    // Get all devices info and display it
-    renderDevices();
-    
-    // Can delete device
-    deleteDevice();
-}
-  
-  function deleteDevice() {
-    // Add event listener to device-block
-    var deviName = document.querySelectorAll('.device-name');
-    for (clicked of deviName) {
-      clicked.addEventListener('click', function() {
-          let thisName = this.getAttribute("dname");
-          location.href=`/report.html?device=${thisName}`;
-      });
-    };
-    // Delete device
-    var delBtn = document.querySelectorAll('.delBtn');
-    for (clicked of delBtn) {
-      clicked.addEventListener('click', function() {
-          let dname = this.getAttribute("dname");
-          let conf = confirm(`Are you sure you want to remove ${dname}?`);
-          if (conf == true) {
-            dbRef.child("devices_sensor").child(dname).remove().catch((error) => {
-              console.error(error);
-            });
-            alert(`Remove ${dname} successfully`);
-            location.reload(true);;
-          }
-      });
-    };
-  }
-  
-  function renderDevices() {
-    let i = 0;
-    for (d in allDeviceData) {
-      console.log(i);
-      i++
-      n_sampling = Object.keys(allDeviceData[d]).length;
-      last_samp = Object.keys(allDeviceData[d])[n_sampling-1];
-      let d_name = allDeviceData[d][last_samp].deviceNameID;
-      let humi = allDeviceData[d][last_samp].humidity;
-      let temp = allDeviceData[d][last_samp].temperature;
-      console.log(d_name + ' sampling: ' + n_sampling);
-      console.log(d_name + ': ' + temp + ', ' + humi);
-  
-      let devi_info = document.createElement('div');
-      devi_info.setAttribute('class', 'devi-block');
-      devi_info.innerHTML = 
-                          `<div class="devi-head">
-                            <i class="fas fa-laptop-code"></i>
-                            <div class="device-name" dname="${d_name}">${d_name}</div>
-                            <i class="fas fa-trash-alt delBtn" dname="${d_name}"></i>
-                          </div>
-                          <div class="temp-con">
-                            <div class="temp-text">
-                              <p class="temp-title">Temperature</p>
-                              <p class="temp"><i class="fas fa-thermometer-half"></i>${temp} °C</p>
-                            </div>
-                          </div>
-                          <div class="humi-con">
-                            <div class="humi-text">
-                              <p class="humi-title">Humidity</p>
-                              <p class="humi"><i class="fas fa-tint"></i>${humi} %</p>
-                            </div>
-                          </div>`;
-      document.getElementById("devices-con").appendChild(devi_info);
-    };
-  }
-  
-  function getLocalCurrentTime() {
-  // Get now time
-    let date = new Date();
-    let currentDateTime = date.getDate().toString().padStart(2, "0")+
-        "/"+((date.getMonth()+1).toString().padStart(2, "0"))+
-        "/"+date.getFullYear()+
-        " "+date.getHours().toString().padStart(2, "0")+
-        ":"+date.getMinutes().toString().padStart(2, "0")+
-        ":"+date.getSeconds().toString().padStart(2, "0");
-    return currentDateTime;
-  }
+  dbRef.child(db_devices).child(device).get().then((snapshot) => {
+    deviceObj = snapshot.val();
 
-///////////////Report Part//////////////////////////////
+    localStorage.setItem('deviceObject', JSON.stringify(deviceObj));
+    let retrievedObject = localStorage.getItem('deviceObject');
+
+    n_sampling = Object.keys(deviceObj).length;
+    last_samp = Object.keys(deviceObj)[n_sampling-1];
+    first_samp = Object.keys(deviceObj)[0];
+    //console.log(typeof retrievedObject);
+    //console.log(retrievedObject[device]);
+    displayDeviceInfo();
+    firstLoad();
+  });
+}
+
 function displayDeviceInfo() {
     console.log("Number of sampling: " + n_sampling);
     console.log("Last sampling key: " + last_samp);
 
     // Display device info
-    document.getElementById("device").innerText = deviceObj[last_samp].deviceNameID;
-    document.getElementById("dName").innerText = deviceObj[last_samp].deviceNameID;
+    document.getElementById("device").innerText = device;
+    document.getElementById("dName").innerText = device;
 
     // Convert timestamp to readable
-    let timestamp = (deviceObj[last_samp].timestamp)/1000;
+    let timestamp = (deviceObj[last_samp].ti)/1000;
     let date = new Date(timestamp * 1000);
     lastDateTime = readableTime(date);
-    timestamp = (deviceObj[first_samp].timestamp)/1000;
+    timestamp = (deviceObj[first_samp].ti)/1000;
     date = new Date(timestamp * 1000);
     firstDateTime = readableTime(date);
 
     document.getElementById("lastTime").innerText = lastDateTime;
-    document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviceObj[last_samp].temperature} °C`;
-    document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviceObj[last_samp].humidity} %`;
-
-    firstLoad();
+    document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviceObj[last_samp].te} °C`;
+    document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviceObj[last_samp].h} %`;
 }
 
 // Convert timestamp to readable
@@ -245,6 +164,8 @@ function exportGraph2pdf() {
     // get size of report page
     let reportPageHeight = $('#reportPage').innerHeight();
     let reportPageWidth = $('#reportPage').innerWidth();
+
+    let checkChart2 = document.getElementById('compareChartCon');
     
     // create a new canvas object that we will populate with all other canvas objects
     let pdfCanvas = $('<canvas />').attr({
@@ -252,7 +173,13 @@ function exportGraph2pdf() {
       width: reportPageWidth,
       height: reportPageHeight
     });
+    let pdfCanvas2 = $('<canvas />').attr({
+      id: "canvaspdf",
+      width: reportPageWidth,
+      height: reportPageHeight
+    });
     
+    // Main chart canvas
     // keep track canvas position
     let pdfctx = $(pdfCanvas)[0].getContext('2d');
     let pdfctxX = 0;
@@ -261,9 +188,7 @@ function exportGraph2pdf() {
     // make canvas BG is white
     pdfctx.fillStyle = "white";
     pdfctx.fillRect(0, 0, 1200, 800);
-    
-    // for each chart.js chart
-    $("canvas").each(function(index) {
+    $("#temperatureChart").each(function(index) {
       // get the chart height/width
       let canvasHeight = $(this).innerHeight();
       let canvasWidth = $(this).innerWidth();
@@ -284,21 +209,55 @@ function exportGraph2pdf() {
         pdfctxY += canvasHeight + buffer;
       }
     });
+
+    if (checkChart2.style.display != "none") {
+      // Comparing chart canvas
+      // keep track canvas position
+      let pdfComctx = $(pdfCanvas2)[0].getContext('2d');
+      let pdfComctxX = 0;
+      let pdfComctxY = 0;
+      // make canvas BG is white
+      pdfComctx.fillStyle = "white";
+      pdfComctx.fillRect(0, 0, 1200, 800);
+      // for comparing chart
+      $("#compareChart").each(function(index) {
+        // get the chart height/width
+        let canvasHeight = $(this).innerHeight();
+        let canvasWidth = $(this).innerWidth();
+        
+        
+        // reduce size of img chart
+        canvasHeight = canvasHeight*89/100;
+        canvasWidth = canvasWidth*89/100;
+        
+        // draw the chart into the new canvas
+        
+        pdfComctx.drawImage($(this)[0], pdfComctxX, pdfComctxY, canvasWidth, canvasHeight);
+        pdfComctxX += canvasWidth + buffer;
+        
+        // our report page is in a grid pattern so replicate that in the new canvas
+        if (index % 2 === 1) {
+          pdfComctxX = 0;
+          pdfComctxY += canvasHeight + buffer;
+        }
+      });
+    }
     
     // create new pdf and add our new canvas as an image
     let pdf = new jsPDF('landscape');
     pdf.setFontSize(20)
     pdf.text(140, 15, `${device}`)
     pdf.addImage($(pdfCanvas)[0], 'PNG', 12, 25);
-    
+
+    if (checkChart2.style.display != "none") {
+      pdf.addPage();
+      pdf.addImage($(pdfCanvas2)[0], 'PNG', 12, 25);
+    }
     // download the pdf
     pdf.save('graph-report.pdf');
 }
 
-////////////////////////////// Chart Part ///////////////////////////////
-var presenceRef = firebase.database().ref("disconnectmessage");
-// // Write a string when this client loses connection
-presenceRef.onDisconnect().set("I disconnected!");
+
 
 var label;
 var humi_data;
@@ -358,21 +317,13 @@ if (document.documentElement.clientWidth < 900) {
 }
 
 function firstLoad() {
-//   dbRef.child(`devices_sensor/${device}`).get().then((snapshot) => {
-//     if (snapshot.exists()) {
-      let deObj = deviceObj;
-      //console.log(Object.values(deObj));
-      deviObj = Object.values(deObj);
-      //console.log(typeof deviObj);
-      //test_all.push(deviObj);
-      
-      secondLoad();
-//     } else {
-//       console.log("No data available");
-//     }
-//   }).catch((error) => {
-//     console.error(error);
-//   });
+    let deObj = deviceObj;
+    //console.log(Object.values(deObj));
+    deviObj = Object.values(deObj);
+    //console.log(typeof deviObj);
+    //test_all.push(deviObj);
+    
+    secondLoad();
 }
 
 function secondLoad() {
@@ -398,7 +349,7 @@ function secondLoad() {
   for (d in deviObj) {
     //console.log(test_all);
     //all_samp = deviObj[d].;
-    let timestamp = deviObj[d].timestamp;
+    let timestamp = deviObj[d].ti;
     //let timestamp = deviObj[device][all_samp].timestamp/1000;   
     let date = new Date(timestamp);
     let currentDateTimeDevice = date.getDate().toString().padStart(2, "0") +
@@ -410,39 +361,39 @@ function secondLoad() {
     i++
     if (i >= day_samling) {
 
-      temp_data1_D.push(deviObj[d].temperature);
+      temp_data1_D.push(deviObj[d].te);
       date_data1_D_tranfer.push(currentDateTimeDevice);
       date_data1_D.push(date);
-      humi_data1_D.push(deviObj[d].humidity);
+      humi_data1_D.push(deviObj[d].h);
 
-      temp_data7_D.push(deviObj[d].temperature);
+      temp_data7_D.push(deviObj[d].te);
       date_data7_D_tranfer.push(currentDateTimeDevice);
       date_data7_D.push(date);
-      humi_data7_D.push(deviObj[d].humidity);
+      humi_data7_D.push(deviObj[d].h);
 
-      temp_data30_D.push(deviObj[d].temperature);
+      temp_data30_D.push(deviObj[d].te);
       date_data30_D_tranfer.push(currentDateTimeDevice);
       date_data30_D.push(date);
-      humi_data30_D.push(deviObj[d].humidity);
+      humi_data30_D.push(deviObj[d].h);
 
     } else if (i >= week_sampling) {
-      temp_data7_D.push(deviObj[d].temperature);
+      temp_data7_D.push(deviObj[d].te);
       date_data7_D_tranfer.push(currentDateTimeDevice);
       date_data7_D.push(date);
-      humi_data7_D.push(deviObj[d].humidity);
+      humi_data7_D.push(deviObj[d].h);
 
-      temp_data30_D.push(deviObj[d].temperature);
+      temp_data30_D.push(deviObj[d].te);
       date_data30_D_tranfer.push(currentDateTimeDevice);
       date_data30_D.push(date);
-      humi_data30_D.push(deviObj[d].humidity);
+      humi_data30_D.push(deviObj[d].h);
 
 
 
     } else if (i >= month_sampling) {
-      temp_data30_D.push(deviObj[d].temperature);
+      temp_data30_D.push(deviObj[d].te);
       date_data30_D_tranfer.push(currentDateTimeDevice);
       date_data30_D.push(date);
-      humi_data30_D.push(deviObj[d].humidity);
+      humi_data30_D.push(deviObj[d].h);
     }
 
     /* if (i > 129600) {
@@ -457,25 +408,15 @@ function secondLoad() {
   humi_data = humi_data30_D;
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = new Date().toLocaleDateString('en-CA');
-  renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
+  document.getElementById('date_now').value = new Date(new Date().getTime() - 86400000).toLocaleDateString('en-CA');
+  document.getElementById('tbl_from').value = new Date().toLocaleDateString('en-CA');
+  document.getElementById('tbl_to').value = new Date().toLocaleDateString('en-CA');
+  getTableRange();
   mainChat();
   compareGraph();
-  
-  for(let i = 1 ;i < day_all_data.length; i++) {
-    compareChart.data.datasets.push({
-      label: day_compareGraph[i] ,
-      backgroundColor: color[i-1],
-      borderColor: color[i-1],
-      indexLabelFontSize: 10,
-      fill: false,
-      data: day_all_data[i],
-      pointRadius: 0,
-      borderWidth: 3,
-      tension: 0
-    });
-    compareChart.update();
-  }
-
+  initialCompareChart();
+  //compareChartHumi();
+  //compareChart.update();
 }
 
 
@@ -612,8 +553,11 @@ function mainChat() {
   });
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+function getPastelColor(){ 
+  return "hsl(" + 360 * Math.random() + ',' +
+              (35 + 50 * Math.random()) + '%,' + 
+              (65 + 10 * Math.random()) + '%)';
+}
 //click for change grapt
 function allData() {
 
@@ -636,7 +580,6 @@ function allData() {
   myChart.data.labels = date_data30_D;
   myChart.update();
 
-  renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
 }
 
 
@@ -661,8 +604,7 @@ function dayData() {
   myChart.data.datasets[1].data = humi_data1_D;
   myChart.data.labels = date_data1_D;
   myChart.update();
-
-  renderTable(device, date_data1_D_tranfer, temp_data1_D, humi_data1_D);
+  console.log(date_data1_D_tranfer.length);
 }
 
 function weekData() {
@@ -688,7 +630,6 @@ function weekData() {
   myChart.data.labels = date_data7_D;
   myChart.update();
   
-  renderTable(device, date_data7_D_tranfer, temp_data7_D, humi_data7_D);
 }
 
 function monthData() {
@@ -712,7 +653,6 @@ function monthData() {
   myChart.data.labels = date_data30_D;
   myChart.update();
 
-  renderTable(device, date_data30_D_tranfer, temp_data30_D, humi_data30_D);
 }
 
 function getRange() {
@@ -743,8 +683,29 @@ function getRange() {
     myChart.data.labels = date_carlendar_D;
     myChart.update();
 
-    renderTable(device, date_calendar_transfer, temp_carlendar_D, humi_carlendar_D);
   }
+}
+
+function getTableRange() {
+  let tbl_start = document.getElementById('tbl_from').value;
+  let tbl_end = document.getElementById('tbl_to').value;
+  let date_carlendar_tbl = [];
+  let date_carlendar_tbl_transfer = [];
+  let humi_carlendar_tbl = [];
+  let temp_carlendar_tbl = [];
+  if (tbl_start > tbl_end) {
+    console.log("Error: Wrong date input.")
+  } else {
+    for (let i = 0; i < date_data30_D.length; i++) {
+      if (tbl_start <= ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) <= tbl_end) {
+        date_carlendar_tbl.push(date_data30_D[i]);
+        humi_carlendar_tbl.push(humi_data30_D[i]);
+        temp_carlendar_tbl.push(temp_data30_D[i]);
+        date_carlendar_tbl_transfer.push(date_data30_D_tranfer[i]);
+      }
+    }
+  }
+  renderTable(date_carlendar_tbl_transfer, temp_carlendar_tbl, temp_carlendar_tbl);
 }
 
 // change / to -
@@ -756,7 +717,13 @@ function ChangeFormateDateV2(oldDate) {
   return oldDate.toString().split("/").reverse().join("-");
 }
 
+document.getElementById('resetZoom').addEventListener('click', function () {
+  myChart.resetZoom('none');
+});
 
+document.getElementById('resetZoom2').addEventListener('click', function () {
+  compareChart.resetZoom('none');
+});
 
 function compareGraph() {
   /*let yesterday = Date.now() - 86400000;
@@ -766,20 +733,31 @@ function compareGraph() {
       "/" + ((dateYesterday.getMonth() + 1).toString().padStart(2, "0")) +
       "/" + dateYesterday.getFullYear();*/
   date_label = [];
-  day_all_data = [];
+  day_all_tem_data = [];
+  day_all_humi_data = [];
   day_compareGraph = [];
-  let day_eve_day = [];
-  let lastest_day = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length-1].toString().substring(0, 10));
+  let day_tem_day = [];
+  let day_humi_day = [];
+  //let lastest_day = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length-1].toString().substring(0, 10));
   let lastest_week = ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10));
+  let get_select_date = document.getElementById('date_now').value;
+  //let lastest_week =
+  let day9 = new Date(new Date().getTime() - 777600000).toLocaleDateString('en-CA');
+  let lastest_day = (new Date(new Date(get_select_date).getTime() + 86400000).toLocaleDateString('en-CA'));
+  
+  //console.log(new Date().toLocaleDateString('en-CA'));
   //let day_count = lastest_week;
-  console.log(lastest_day);
-  console.log(lastest_week);
-  //console.log(date_data1_D_tranfer[0]);
-  let day_set = lastest_week;
+  // console.log(lastest_day);
+  // console.log(lastest_week);
+  
+ 
   let j = 0;
   for (let i = 0; i < date_data7_D.length; i++) {
     let day_count = ChangeFormateDateV2(date_data7_D_tranfer[i].toString().substring(0, 10));
     if (day_count == lastest_day) {
+        day_all_tem_data.push(day_tem_day);
+        day_all_humi_data.push(day_humi_day);
+        //day_compareGraph.push(ChangeFormateDateV2(date_data7_D_tranfer[i+10].toString().substring(0, 10)));
       break;
     } else if (day_count != lastest_week) {
       if (j < 1440) {
@@ -787,15 +765,20 @@ function compareGraph() {
       }
       if (0 == j % 1440) {
         day_compareGraph.push(ChangeFormateDateV2(date_data7_D_tranfer[i+10].toString().substring(0, 10)));
-        day_all_data.push(day_eve_day);
-        day_eve_day = [];
+        day_all_tem_data.push(day_tem_day);
+        day_all_humi_data.push(day_humi_day);
+        day_humi_day = [];
+        day_tem_day = [];
       }
-      day_eve_day.push(temp_data30_D[i]);
+      day_tem_day.push(temp_data7_D[i]);
+      day_humi_day.push(humi_data7_D[i]);
       j++
     } 
   }
-  //console.log(day_all_data);
-  //console.log(day_compareGraph);
+  // console.log(date_data7_D.length);
+  // console.log(temp_data30_D.length);
+  // //console.log(day_all_data);
+  // console.log(day_compareGraph);
   
   var ctx2 = document.getElementById('compareChart').getContext('2d');
   compareChart = new Chart(ctx2, {
@@ -825,15 +808,14 @@ function compareGraph() {
       responsive: true,
       scales: {
         yAxes: [{
-          id: 'A',
           type: 'linear',
           position: 'left',
           ticks: {
-            suggestedMin: 10,
+            suggestedMin: 20,
             suggestedMax: 45,
             maxTicksLimit: maxTicksLimitY,
             fontSize: font_y_size,
-            min: 10
+            min: 20
           },
           scaleLabel: {
             display: true,
@@ -846,7 +828,7 @@ function compareGraph() {
           time: {
             unit: 'hour',
             stepSize: 0.5,  //I'm using 3 hour intervals here
-            tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
+            tooltipFormat: 'HH:mm:ss',
             parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
             //: 'second', //I have tried minutes and hours too, same result
             displayFormats: {
@@ -856,7 +838,7 @@ function compareGraph() {
           ticks: {
             //source: 'auto',
             major: {
-              enabled: true, // <-- This is the key line
+              //enabled: true, // <-- This is the key line
               fontStyle: 'bold', //You can also style these values differently
               fontSize: 14 //You can also style these values differently
             },
@@ -867,75 +849,255 @@ function compareGraph() {
   });
 }
 
+function compareGraphSet() {
+  let temBtn = document.getElementById("tempCompare");
+  let humiBtn = document.getElementById("humiCompare");
+  temBtn.style.backgroundColor = "#E35F43";
+  temBtn.style.color = "white";
+  humiBtn.style.backgroundColor = "white";
+  humiBtn.style.color = "#E35F43";
 
-function renderTable(device_name, date_array, temp_array, humi_array) {
+  date_label = [];
+  day_all_tem_data = [];
+  day_all_humi_data = [];
+  day_compareGraph = [];
+  let day_tem_day = [];
+  let day_humi_day = [];
+  
+  let get_select_date = document.getElementById('date_now').value;
+  //let lastest_week =
+  let day7 = (new Date(new Date(get_select_date).getTime() - 604800000).toLocaleDateString('en-CA'));
+ // console.log(day9);
+  let start_mount = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
+  let lastest_day = (new Date(new Date(get_select_date).getTime() + 86400000).toLocaleDateString('en-CA'));
+  // console.log(lastest_day);
+
+  let lastest_week = ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10));
+  //let lastest_week =
+
+  let j = 0;
+  let start_count = false;
+  if (start_mount > day7) {
+    console.log("this not collect 7 day");
+    let j = 0;
+    for (let i = 0; i < date_data7_D.length; i++) {
+      let day_count = ChangeFormateDateV2(date_data7_D_tranfer[i].toString().substring(0, 10));
+      if (day_count == lastest_day) {
+          day_all_tem_data.push(day_tem_day);
+          day_all_humi_data.push(day_humi_day);
+
+        break;
+      } else if (day_count != lastest_week) {
+        if (j < 1440) {
+          date_label.push(date_data7_D[i]);
+        }
+        if (0 == j % 1440) {
+          day_compareGraph.push(ChangeFormateDateV2(date_data7_D_tranfer[i+10].toString().substring(0, 10)));
+          day_all_tem_data.push(day_tem_day);
+          day_all_humi_data.push(day_humi_day);
+          day_humi_day = [];
+          day_tem_day = [];
+        }
+        day_tem_day.push(temp_data7_D[i]);
+        day_humi_day.push(humi_data7_D[i]);
+        j++
+      } 
+    }
+  } else {
+    for (let i = 0; i < date_data30_D.length; i++) {
+      let day_count = ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10));
+      
+      if (day_count == lastest_day) {
+          day_all_tem_data.push(day_tem_day);
+          day_all_humi_data.push(day_humi_day);
+          day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i+10].toString().substring(0, 10)));
+        break;
+      } else if (day_count == day7) {
+        start_count = true;
+        
+      } 
+      if (start_count) {
+        if (j < 1440) {
+          date_label.push(date_data30_D[i]);
+        }
+        if (0 == j % 1440) {
+          day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i+10].toString().substring(0, 10)));
+          day_all_tem_data.push(day_tem_day);
+          day_all_humi_data.push(day_humi_day);
+          day_humi_day = [];
+          day_tem_day = [];
+          console.log(day_count);
+        }
+        day_tem_day.push(temp_data30_D[i]);
+        day_humi_day.push(humi_data30_D[i]);
+        j++
+      } 
+    }
+  }
+  // console.log(day_all_tem_data);
+  // console.log(day_all_humi_data);
+  /*for(let i = 0 ;i < day_all_tem_data.length; i++) {
+    compareChart.data.datasets[i].data = day_all_tem_data[i+1];
+  }*/
+  compareChart.destroy();
+  let ctx3 = document.getElementById('compareChart').getContext('2d');
+  compareChart = new Chart(ctx3, {
+    type: 'line',
+    data: {
+      labels: date_label,
+    },
+    options: {
+      zoom: {
+        enabled: true,
+        drag: {
+          borderColor: 'rgba(225,225,225,0.3)',
+          borderWidth: 5,
+          backgroundColor: 'rgb(225,225,225)',
+          animationDuration: 0
+        },
+        mode: 'x',
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false
+      },
+      hover: {
+        mode: 'index',
+        intersect: false
+      },
+      responsive: true,
+      scales: {
+        yAxes: [{
+          type: 'linear',
+          position: 'left',
+          ticks: {
+            suggestedMin: 20,
+            suggestedMax: 45,
+            maxTicksLimit: maxTicksLimitY,
+            fontSize: font_y_size,
+            min: 20
+          },
+          scaleLabel: {
+            display: true,
+            labelString: 'Temperature (°C)',
+            fontSize: font_y_size
+          },
+        }],
+        xAxes: [{
+          type: 'time',
+          time: {
+            unit: 'hour',
+            stepSize: 0.5,  //I'm using 3 hour intervals here
+            tooltipFormat: 'HH:mm:ss',
+            parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
+            //: 'second', //I have tried minutes and hours too, same result
+            displayFormats: {
+              hour: 'HH:mm'
+            }
+          },
+          ticks: {
+            //source: 'auto',
+            major: {
+              //enabled: true, // <-- This is the key line
+              fontStyle: 'bold', //You can also style these values differently
+              fontSize: 14 //You can also style these values differently
+            },
+          },
+        }]
+      },
+    }
+  });
+  initialCompareChart();
+}
+
+
+function initialCompareChart(){
+  
+  for(let i = 0 ;i < day_all_tem_data.length - 1; i++) {
+    compareChart.data.datasets.push({
+      label: day_compareGraph[i] ,
+      backgroundColor: getPastelColor(),
+      borderColor: getPastelColor(),
+      indexLabelFontSize: 10,
+      fill: false,
+      data: day_all_tem_data[i+1],
+      pointRadius: 0,
+      borderWidth: 3,
+      tension: 0
+    });
+  }
+  compareChart.update();
+}
+
+function compareChartTem() {
+  let temBtn = document.getElementById("tempCompare");
+  let humiBtn = document.getElementById("humiCompare");
+  temBtn.style.backgroundColor = "#E35F43";
+  temBtn.style.color = "white";
+  humiBtn.style.backgroundColor = "white";
+  humiBtn.style.color = "#E35F43";
+
+  //compareChart.destroy();
+  for(let i = 1 ;i < day_all_tem_data.length; i++) {
+    compareChart.data.datasets[i-1].data = day_all_tem_data[i];
+    //compareChart.data.datasets[i-1].label = day_compareGraph[i];
+    let color = getPastelColor();
+    compareChart.data.datasets[i-1].backgroundColor = color;
+    compareChart.data.datasets[i-1].borderColor = color;
+  }
+  
+  // compareChart.options.scales.yAxes[0].ticks.suggestedMin = 10;
+  // compareChart.options.scales.yAxes[0].ticks.suggestedMin = 50;
+  compareChart.options.scales.yAxes[0].scaleLabel.labelString = 'Temperature (°C)';
+  compareChart.update();
+}
+
+function compareChartHumi() {
+  let temBtn = document.getElementById("tempCompare");
+  let humiBtn = document.getElementById("humiCompare");
+  temBtn.style.backgroundColor = "white";
+  temBtn.style.color = "#E35F43";
+  humiBtn.style.backgroundColor = "#E35F43";
+  humiBtn.style.color = "white";
+
+  //compareChart.destroy();
+  for(let i = 1 ;i < day_all_humi_data.length; i++) {
+    compareChart.data.datasets[i-1].data = day_all_humi_data[i];
+    let color = getPastelColor();
+    compareChart.data.datasets[i-1].backgroundColor = color;
+    compareChart.data.datasets[i-1].borderColor = color;
+    //compareChart.data.datasets[i-1].label = day_compareGraph[i];
+    //myChart.data.datasets[1].data = humi_carlendar_D;
+    //myChart.data.labels = date_carlendar_D;
+    //compareChart.update();
+  }
+  compareChart.options.scales.yAxes[0].scaleLabel.labelString = 'Humidity (%RH)';
+  compareChart.update();
+}
+
+
+function renderTable(date_array, temp_array, humi_array) {
   firstDateTime = date_array[0];
   lastDateTime = date_array[date_array.length - 1];
   let tbody = document.getElementById('tbl-body');
-  let col = 5; //column head number
-  let load_sector = 1500
+  let col = 4; //column head number
+  let load_sector = 1500;
   let multiply = 1;
   let shifter;
-  let last_load = false;
   //reset old table
   tbody.innerText = '';
 
-  //init load
-  if (date_array.length <= 1500) {
-    last_load = true;
-    console.log('loading finished');
-  }
   for (i = 0; i < date_array.length; i++) {
-    let row = document.createElement('tr');
-    let td_list = [i + 1, device_name, date_array[i], temp_array[i], humi_array[i]]
-    for (j = 0; j < col; j++) {
-      let td = document.createElement('td');
-      td.innerText = td_list[j];
-      row.appendChild(td);
-    }
-    if (i >= load_sector) {
-      row.style.display = "none";
-    }
-    tbody.appendChild(row);
-  }
-  document.getElementById('table2excel').appendChild(tbody);
-  
-  //load more data when user scroll down to bottom
-  $(document).ready(function () {
-    $('.tbl-con').on('scroll', function(e) {
-      if (!last_load) {
-        let elem = $(e.currentTarget);
-        if (elem[0].scrollHeight - elem.scrollTop() == elem.outerHeight()) {
-          shifter = load_sector * multiply;
-          if (date_array.length-shifter <= load_sector) {
-            console.log('last load');
-            for (i = 0+shifter; i < date_array.length; i++) {
-              tbody.childNodes[i].style.display = "";
-            }
-            document.getElementById('table2excel').appendChild(tbody);
-            last_load = true;
-          } else {
-            console.log('more load');
-            shifter = load_sector * multiply; 
-            for (i = 0+shifter; i < load_sector+shifter; i++) {
-              tbody.childNodes[i].style.display = "";
-            }
-            multiply++;
-            document.getElementById('table2excel').appendChild(tbody);
-          }
-        }
+      let row = document.createElement('tr');
+      let td_list = [i + 1, date_array[i], temp_array[i], humi_array[i]]
+      for (j = 0; j < col; j++) {
+          let td = document.createElement('td');
+          td.innerText = td_list[j];
+          row.appendChild(td);
       }
-    });
-  });
+      tbody.appendChild(row);
+  };
 }
-
-// function addData(chart, label, data) {
-//   chart.data.labels.push(label);
-//   chart.data.datasets.forEach((dataset) => {
-//       dataset.data.push(data);
-//   });
-//   chart.update();
-// }
 
 function addData(chart, label, color, data) {
   chart.data.datasets.push({
@@ -947,6 +1109,10 @@ function addData(chart, label, color, data) {
   chart.update();
 }
 
+
 // อยู่ตรงนี้วัยรุ่น
 /////////////////////////////////////////////////// start function
+//////////////////////////////// Start Fucntion
 initialLoad();
+
+

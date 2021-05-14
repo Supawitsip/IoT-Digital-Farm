@@ -48,7 +48,7 @@
     <!-- Navigation Bar -->
     <div class="topnav" id="myTopnav">
       <a href="/" target="_blank" id="logoLink"><img src="img/leaf-icon.png" alt="Aero Group 1992 Logo" id="logo"></a>
-      <a href="/" id="digiFarming">IoT Digital Farming</a>
+      <a href="/" id="digiFarming">IoT Digital Farming<div class="vText">v2.0</div></a>
       <a href="#monitor" id="monitoring" class="active">Monitoring</a>
       <a href="#" class="angleLeft" style="float: right; margin: 26px 0;"><i class="fas fa-angle-left"></i></a>
       <a href="#device" id="device"></a>
@@ -129,15 +129,24 @@
         <div class="export-con">
           <i class="fas fa-table excel-icon"></i>
           <div class="ex-title">Data Collection Table</div>
-          <button class="sh-btn" id="showTable">Show</button>
+          <div class="tbl-range-con">
+            <div>
+              <label for="tbl_from">Start:</label>
+              <input id="tbl_from" type="date" name="task_date" />
+              <label for="tbl_to" id="label-tbl_to"> End:</label>
+              <input id="tbl_to" type="date" name="task_date" />
+              <input type="checkbox" id="allDataTbl" name="allDataTbl">
+              <label for="allDataTbl">All data</label>
+            </div>
+            <button class="sh-btn" id="showTable">Show</button>
+          </div>
         </div>
 
         <div class="tbl-con" style="display: none;">
-          <table class="table2excel" id="table2excel" style="display: none;" data-cols-width="10,20,50,20,20">
+          <table class="table2excel" id="table2excel" style="display: none;" data-cols-width="10,50,20,20">
             <thead>
               <tr>
                 <th>No.</th>
-                <th>Device Name</th>
                 <th>Date and Time</th>
                 <th>Temperature (°C)</th>
                 <th>Humidity (%RH)</th>
@@ -154,11 +163,18 @@
         <div class="ex-title">Graph Comparing</div>
         <button class="sh-btn" id="showChart">Show</button>
       </div>
-      <div id="compareChartCon" style="background-color: none; display: none;">
+      <div id="compareChartCon" style="display: none;">
+        <button onclick="compareChartTem()" class="timeDuration" id="tempCompare">Temperature</button> 
+        <button onclick="compareChartHumi()" class="timeDuration" id="humiCompare">Humidity</button> 
         <button id="resetZoom2" class="timeDuration"><i class="fas fa-redo-alt"></i></button>
+        <div class="calendarTime2">
+          <label for="date_now">Start:</label>
+          <input id="date_now" type="date" name="task_date" />
+          <!--Time:<input id="time" type="time" name="task_time" /> -->
+          <button onclick="compareGraphSet()" class="getTimeBtn">Get</button>
+        </div>
         <canvas id="compareChart"  width="800px" height="400px"></canvas>
       </div>
-
     </div>
    <!-- End of Main Container -->
 
@@ -166,14 +182,14 @@
     <script>
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
-      apiKey: "AIzaSyB5zraDdpuRbVhHC0pekc9hKrKfteX0ncE",
-      authDomain: "digital-farming-52edb.firebaseapp.com",
-      databaseURL: "https://digital-farming-52edb-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "digital-farming-52edb",
-      storageBucket: "digital-farming-52edb.appspot.com",
-      messagingSenderId: "1054001690174",
-      appId: "1:1054001690174:web:8a665041773bc078c1436f",
-      measurementId: "G-WYRKFCRBYV"
+      apiKey: "AIzaSyAr3ZGs6nEdPB3lC1TtqeEIfrhnK2XO060",
+      authDomain: "iot-digital.firebaseapp.com",
+      databaseURL: "https://iot-digital-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "iot-digital",
+      storageBucket: "iot-digital.appspot.com",
+      messagingSenderId: "629848329523",
+      appId: "1:629848329523:web:d965041a327a06ae3f4246",
+      measurementId: "G-PC06B29EVX"
     };
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
@@ -182,8 +198,7 @@
     </script>
     
     <script src="js/report.js"></script>
-    <!-- <script src="js/chart.js"></script>
-    <script src="js/test.js"></script> -->
+
     <!-- Responsive NavBar Script -->
     <script>
       function resNavBar() {
@@ -209,6 +224,22 @@
       document.getElementById('resetZoom2').addEventListener('click', function () {
         compareChart.resetZoom('none');
       });
+      let tbl_f = document.getElementById('tbl_from');
+      let tbl_t = document.getElementById('tbl_to');
+      let checkAllData = document.getElementById('allDataTbl');
+      tbl_f.addEventListener('change', getTableRange);
+      tbl_t.addEventListener('change', getTableRange);
+      checkAllData.addEventListener('change', e => {
+        if (checkAllData.checked == true) {
+          tbl_f.disabled = true;
+          tbl_t.disabled = true;
+          renderTable(date_data30_D_tranfer, temp_data30_D, humi_data30_D);
+        } else {
+          tbl_f.disabled = false;
+          tbl_t.disabled = false;
+          getTableRange();
+        }
+      })
     </script>
     
     <!-- Hide and Show -->

@@ -54,14 +54,14 @@ if (document.documentElement.clientWidth < 900) {
   font_x_size = 10;
   font_y_size = 10;
 }
-
+/*
 function firstLoad() {
   dbRef.child(`devices_sensor/${device}`).get().then((snapshot) => {
     if (snapshot.exists()) {
       let deObj = snapshot.val();
       //console.log(Object.values(deObj));
       deviObj = Object.values(deObj);
-      //console.log(typeof deviObj);
+      console.log(deObj);
       //test_all.push(deviObj);
       
       secondLoad();
@@ -71,6 +71,17 @@ function firstLoad() {
   }).catch((error) => {
     console.error(error);
   });
+}*/
+function firstLoad() {
+
+  let retrievedObject = JSON.parse(localStorage.getItem('testObject'));
+ // console.log('retrievedObject: ', JSON.parse(retrievedObject));
+  //deviObj = Object.values(retrievedObject.ABC);
+  console.log(typeof retrievedObject);
+  console.log(retrievedObject[device]);
+  //device
+  deviObj = retrievedObject[device];
+  secondLoad();
 }
 
 function secondLoad() {
