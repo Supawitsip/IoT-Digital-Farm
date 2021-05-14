@@ -36,12 +36,13 @@ function displayLoaded() {
 
   // Get all devices info and display it
   renderDevices();
-  
+  // Handler when click a device
+  deviceClickHandler()
   // Can delete device
   deleteDevice();
 }
 
-function deleteDevice() {
+function deviceClickHandler() {
   // Add event listener to device-block
   var deviName = document.querySelectorAll('.device-name');
   for (clicked of deviName) {
@@ -50,6 +51,10 @@ function deleteDevice() {
         location.href=`/report.html?device=${thisName}`;
     });
   };
+}
+  
+
+function deleteDevice() {
   // Delete device
   var delBtn = document.querySelectorAll('.delBtn');
   for (clicked of delBtn) {
@@ -57,6 +62,9 @@ function deleteDevice() {
         let dname = this.getAttribute("dname");
         let conf = confirm(`Are you sure you want to remove ${dname}?`);
         if (conf == true) {
+          dbRef.child("device_key").child(dname).remove().catch((error) => {
+            console.error(error);
+          });
           dbRef.child("devices_sensor").child(dname).remove().catch((error) => {
             console.error(error);
           });
