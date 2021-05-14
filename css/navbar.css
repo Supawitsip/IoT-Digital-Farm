@@ -64,6 +64,12 @@ body {
 .icon {
     padding: 6px;
 }
+.vText {
+    display: inline-block;
+    font-size: 14px;
+    text-align: center;
+    margin-left: 8px;
+}
   
 @media screen and (max-width: 600px) {
     .topnav a:not(:first-child) {display: none;}
