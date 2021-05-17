@@ -54,6 +54,7 @@ function displayDeviceInfo() {
     // Display device info
     document.getElementById("device").innerText = device;
     document.getElementById("dName").innerText = device;
+    document.getElementById("header-excel").innerText = device;
 
     // Convert timestamp to readable
     let timestamp = (deviceObj[last_samp].ti)/1000;
@@ -111,7 +112,7 @@ function exportTable2pdf() {
     doc.setFontSize(12);
     doc.text(150, y = y + 20, `Start: ${firstDateTime}, End: ${lastDateTime}`); 
     doc.autoTable({  
-        includeHiddenHtml: true,
+        // includeHiddenHtml: true,
         html: '#table2excel',  
         startY: 70,  
         theme: 'grid', 
@@ -124,11 +125,7 @@ function exportTable2pdf() {
             0: {  //No.
                 cellWidth: 60, 
                 halign: 'center', 
-            },  
-            1: {  //Device Name
-                cellWidth: 100,  
-                halign: 'center',
-            },  
+            },   
             2: {  //Date and Time
                 cellWidth: 150,  
             },
@@ -150,6 +147,7 @@ function exportTable2pdf() {
 
 // Export data table from HTML to excel (csv file) 
 function exportTable2excel() {
+  document.getElementById('time-excel').innerText = `Start: ${firstDateTime}, End: ${lastDateTime}`;
     let table = document.querySelector("#table2excel");
         TableToExcel.convert(table, {
         name: "data-report.xlsx",
