@@ -31,11 +31,13 @@ let  day_all_humi_data
 // }
 
 function initialLoad() {
-  //dbRef.child(db_devices).child(device).get().then((snapshot) => {
-  //  deviceObj = snapshot.val();
-
-//localStorage.setItem('deviceObject', JSON.stringify(deviceObj));
-  //  let retrievedObject = localStorage.getItem('deviceObject');
+    let retrievedObject = JSON.parse(localStorage.getItem('testObject'));
+    // console.log('retrievedObject: ', JSON.parse(retrievedObject));
+    //deviObj = Object.values(retrievedObject.ABC);
+    //console.log(typeof retrievedObject);
+    //console.log(retrievedObject[device]);
+    //device
+    deviceObj = retrievedObject[device];
 
     n_sampling = Object.keys(deviceObj).length;
     last_samp = Object.keys(deviceObj)[n_sampling-1];
@@ -45,6 +47,7 @@ function initialLoad() {
     displayDeviceInfo();
     firstLoad();
 //  });
+  
 }
 
 function displayDeviceInfo() {
@@ -489,7 +492,7 @@ function mainChat() {
           position: 'left',
           ticks: {
             suggestedMin: 10,
-            suggestedMax: 45,
+            suggestedMax: 50,
             maxTicksLimit: maxTicksLimitY,
             fontSize: font_y_size, //10
             min: 10
@@ -505,7 +508,7 @@ function mainChat() {
           position: 'right',
           ticks: {
             suggestedMin: 20,
-            suggestedMax: 90,
+            suggestedMax: 100,
             maxTicksLimit: maxTicksLimitY,
             fontSize: font_y_size,
             min: 20
@@ -788,6 +791,12 @@ function compareGraph() {
       labels: date_label,
     },
     options: {
+      
+      legend: {
+          display: true,
+          position: 'left'
+      
+      },
       zoom: {
         enabled: true,
         drag: {
@@ -810,7 +819,7 @@ function compareGraph() {
       scales: {
         yAxes: [{
           type: 'linear',
-          position: 'left',
+          position: 'right',
           ticks: {
             suggestedMin: 20,
             suggestedMax: 45,
@@ -950,6 +959,11 @@ function compareGraphSet() {
       labels: date_label,
     },
     options: {
+      legend: {
+          display: true,
+          position: 'left'
+      
+      },
       zoom: {
         enabled: true,
         drag: {
@@ -972,7 +986,7 @@ function compareGraphSet() {
       scales: {
         yAxes: [{
           type: 'linear',
-          position: 'left',
+          position: 'right',
           ticks: {
             suggestedMin: 20,
             suggestedMax: 45,
