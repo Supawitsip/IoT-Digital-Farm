@@ -46,7 +46,7 @@ function deviceClickHandler() {
     clicked.addEventListener('click', function() {
         let thisName = this.getAttribute("dname");
         //Save devices data to Local Storage
-        dbRef.child(db_devices_data).child(thisName).get().then((snapshot) => {
+        dbRef.child(db_devices_data).child(thisName).limitToLast(50000).get().then((snapshot) => {
           localStorage.setItem('deviceObject', JSON.stringify(snapshot.val()));
           location.href=`/report.html?device=${thisName}`;
         });
