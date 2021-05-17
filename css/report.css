@@ -111,6 +111,7 @@
 }
 
 .export-con {
+    display: inline-block;
     width: 100%;
     height: fit-content;
     padding: 4px;
@@ -206,6 +207,7 @@
 }
 
 .tbl-range-con {
+    display: inline;
     float: right;
 }
 .tbl-range-con div {

@@ -31,11 +31,8 @@ let  day_all_humi_data
 // }
 
 function initialLoad() {
-  dbRef.child(db_devices).child(device).get().then((snapshot) => {
-    deviceObj = snapshot.val();
-
-    localStorage.setItem('deviceObject', JSON.stringify(deviceObj));
-    let retrievedObject = localStorage.getItem('deviceObject');
+    deviceObj = JSON.parse(localStorage.getItem('deviceObject'));
+    console.log(deviceObj)
 
     n_sampling = Object.keys(deviceObj).length;
     last_samp = Object.keys(deviceObj)[n_sampling-1];
@@ -44,7 +41,6 @@ function initialLoad() {
     //console.log(retrievedObject[device]);
     displayDeviceInfo();
     firstLoad();
-  });
 }
 
 function displayDeviceInfo() {

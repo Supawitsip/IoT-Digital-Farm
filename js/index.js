@@ -1,5 +1,6 @@
 const dbRef = firebase.database().ref();
 const db_devices = "device_key";
+const db_devices_data = "devices_sensor";
 
 var deviObj;
 let num_of_devi;
@@ -9,10 +10,6 @@ function initialLoad() {
     if (snapshot.exists()) {
       deviObj = snapshot.val();
       console.log(deviObj);
-      
-      // localStorage.setItem('testObject', JSON.stringify(deviObj));
-      // let retrievedObject = localStorage.getItem('testObject');
-      // console.log('retrievedObject: ', JSON.parse(retrievedObject));
       
       displayLoaded();
     } else {
@@ -48,7 +45,11 @@ function deviceClickHandler() {
   for (clicked of deviName) {
     clicked.addEventListener('click', function() {
         let thisName = this.getAttribute("dname");
-        location.href=`/report.html?device=${thisName}`;
+        //Save devices data to Local Storage
+        dbRef.child(db_devices_data).child(thisName).get().then((snapshot) => {
+          localStorage.setItem('deviceObject', JSON.stringify(snapshot.val()));
+          location.href=`/report.html?device=${thisName}`;
+        });
     });
   };
 }
