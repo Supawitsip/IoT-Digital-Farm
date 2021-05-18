@@ -9,7 +9,7 @@ let deviceObj;
 let n_sampling;
 let last_samp;
 let first_samp;
-
+let all_tem_data;
 let  day_all_humi_data 
 
 function initialLoad() {
@@ -19,11 +19,12 @@ function initialLoad() {
     n_sampling = Object.keys(deviceObj).length;
     last_samp = Object.keys(deviceObj)[n_sampling-1];
     first_samp = Object.keys(deviceObj)[0];
-    //console.log(typeof retrievedObject);
-    //console.log(retrievedObject[device]);
+    console.log(n_sampling);
+    console.log(retrievedObject[device]);
     displayDeviceInfo();
     firstLoad();
 }
+
 
 function displayDeviceInfo() {
     console.log("Number of sampling: " + n_sampling);
@@ -680,12 +681,14 @@ function getRange() {
         date_calendar_transfer.push(date_data30_D_tranfer[i]);
         //testi = i;
       }
+      
     };
     myChart.data.datasets[0].data = temp_carlendar_D;
     myChart.data.datasets[1].data = humi_carlendar_D;
     myChart.data.labels = date_carlendar_D;
     myChart.update();
   }
+  
 }
 
 function getTableRange() {
