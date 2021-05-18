@@ -120,19 +120,21 @@ function exportTable2pdf() {
             minCellHeight: 10  
         }  
     })  
-    doc.save('data-report.pdf');  
+    doc.save('data-report.pdf'); 
+    counterDataPdfDownloaded(); 
 }  
 
-// Export data table from HTML to excel (csv file) 
+// Export data table from HTML to excel (xlsx file) 
 function exportTable2excel() {
   document.getElementById('time-excel').innerText = `Start: ${firstDateTime}, End: ${lastDateTime}`;
-    let table = document.querySelector("#table2excel");
-        TableToExcel.convert(table, {
-        name: "data-report.xlsx",
-        sheet: {
-            name: "Sheet 1"
-        }
-    });
+  let table = document.querySelector("#table2excel");
+      TableToExcel.convert(table, {
+      name: "data-report.xlsx",
+      sheet: {
+          name: "Sheet 1"
+      }
+  });
+  counterDataXlsxDownloaded();
 }
 
 // Export Graph to PDF file
@@ -231,8 +233,47 @@ function exportGraph2pdf() {
     }
     // download the pdf
     pdf.save('graph-report.pdf');
+    counterGraphDownloaded();
 }
 
+const firestore_db = firebase.firestore();
+
+function counterGraphDownloaded() {
+  let docRef = firestore_db.collection('view_counter').doc('DyePhHD4DbEQ6iQUFFdm');
+  docRef.get().then((doc) => {
+    let graph_downloaded = doc.data().graph_downloaded + 1;
+    let data_downloaded = doc.data().data_pdf_downloaded;
+    let excel_downloaded = doc.data().data_xlsx_downloaded;
+    docRef.update({
+      graph_downloaded: graph_downloaded
+    });
+    document.getElementById('view-counter').innerText = graph_downloaded + data_downloaded + excel_downloaded;
+  })
+}
+function counterDataPdfDownloaded() {
+  let docRef = firestore_db.collection('view_counter').doc('DyePhHD4DbEQ6iQUFFdm');
+  docRef.get().then((doc) => {
+    let graph_downloaded = doc.data().graph_downloaded;
+    let data_downloaded = doc.data().data_pdf_downloaded + 1;
+    let excel_downloaded = doc.data().data_xlsx_downloaded;
+    docRef.update({
+      data_pdf_downloaded: data_downloaded
+    });
+    document.getElementById('view-counter').innerText = graph_downloaded + data_downloaded + excel_downloaded;
+  })
+}
+function counterDataXlsxDownloaded() {
+  let docRef = firestore_db.collection('view_counter').doc('DyePhHD4DbEQ6iQUFFdm');
+  docRef.get().then((doc) => {
+    let graph_downloaded = doc.data().graph_downloaded;
+    let data_downloaded = doc.data().data_pdf_downloaded;
+    let excel_downloaded = doc.data().data_xlsx_downloaded + 1;
+    docRef.update({
+      data_xlsx_downloaded: excel_downloaded
+    });
+    document.getElementById('view-counter').innerText = graph_downloaded + data_downloaded + excel_downloaded;
+  })
+}
 
 
 var label;

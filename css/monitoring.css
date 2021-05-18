@@ -127,6 +127,17 @@
     color: #EBECFB;
 }
 
+.view-con {
+    padding: 0 10px;
+    font-size: 14px;
+    color: #7e7e7e;
+    display: inline;
+    float: right;
+}
+.view-con i, .view-con div {
+    display: inline-block;
+}
+
 @media screen and (max-width: 600px) {
     .head-con {
         margin: 4px 0;
