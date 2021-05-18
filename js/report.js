@@ -528,7 +528,7 @@ function mainChat() {
           type: 'time',
           time: {
             unit: 'hour',
-            stepSize: 0.5,  //I'm using 3 hour intervals here
+            stepSize: 1,  //I'm using 3 hour intervals here
             tooltipFormat: 'HH:mm:ss DD/MM/YYYY',
             parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
             //: 'second', //I have tried minutes and hours too, same result
@@ -546,7 +546,7 @@ function mainChat() {
             }
           },
           ticks: {
-            //source: 'auto',
+            source: 'auto',
             major: {
               enabled: true, // <-- This is the key line
               fontStyle: 'bold', //You can also style these values differently
