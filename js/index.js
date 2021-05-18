@@ -22,7 +22,7 @@ function initialLoad() {
 
 
 function displayLoaded() {
-  //viewCounter();
+  viewCounter();
   // Get Number of device connected
   num_of_devi = Object.keys(deviObj).length;
   console.log('All Devices:' + num_of_devi);
@@ -143,16 +143,27 @@ String.prototype.hashCode = function() {
 
 const firestore_db = firebase.firestore();
 function viewCounter() {
-  let docRef = firestore_db.collection('view_counter').doc('DyePhHD4DbEQ6iQUFFdm');
-  docRef.get().then((doc) => {
-    let viewed = doc.data().viewed + 1;
-    let downloaded = doc.data().data_pdf_downloaded + doc.data().data_xlsx_downloaded + doc.data().graph_downloaded;
-    docRef.update({
-      viewed: viewed
-    });
+  // for realtime database
+  dbRef.child("counter").get().then((snapshot) => {
+    let counter = snapshot.val();
+    let viewed = counter.view + 1;
+    let downloaded = counter.graph_download + counter.pdf_download + counter.excel_download;
+    dbRef.child("counter").update({ view: viewed });
     document.getElementById('view-counter').innerText = viewed;
     document.getElementById('download-counter').innerText = downloaded;
-  })
+  });
+  
+  // for firebase database
+  // let docRef = firestore_db.collection('view_counter').doc('DyePhHD4DbEQ6iQUFFdm');
+  // docRef.get().then((doc) => {
+  //   let viewed = doc.data().viewed + 1;
+  //   let downloaded = doc.data().data_pdf_downloaded + doc.data().data_xlsx_downloaded + doc.data().graph_downloaded;
+  //   docRef.update({
+  //     viewed: viewed
+  //   });
+  //   document.getElementById('view-counter').innerText = viewed;
+  //   document.getElementById('download-counter').innerText = downloaded;
+  // })
 }
 
 //////////////////////////////////Start Function
