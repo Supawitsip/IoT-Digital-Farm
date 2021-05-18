@@ -63,24 +63,20 @@ function deleteDevice() {
     clicked.addEventListener('click', function() {
         let dname = this.getAttribute("dname");
         let conf = prompt(`Please enter the password for confirming the removal of ${dname}.`);
+        let checking = 1026899268;
         if (conf != null) {
-          let docRef = firestore_db.collection('password').doc('deleting_device');
-          docRef.get().then((doc) => {
-            checking = (doc.data().password).hashCode();
-
-            if (conf.hashCode() == checking) {
-              dbRef.child("device_key").child(dname).remove().catch((error) => {
-                console.error(error);
-              });
-              dbRef.child("devices_sensor").child(dname).remove().catch((error) => {
-                console.error(error);
-              });
-              alert(`Remove ${dname} successfully`);
-              location.reload(true);;
-            } else {
-              alert(`Error: wrong password!`);
-            }
-          })
+          if (conf.hashCode() == checking) {
+            dbRef.child("device_key").child(dname).remove().catch((error) => {
+              console.error(error);
+            });
+            dbRef.child("devices_sensor").child(dname).remove().catch((error) => {
+              console.error(error);
+            });
+            alert(`Remove ${dname} successfully`);
+            location.reload(true);;
+          } else {
+            alert(`Error: wrong password!`);
+          }
         }
     });
   };
