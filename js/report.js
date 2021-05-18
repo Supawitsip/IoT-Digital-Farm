@@ -236,7 +236,7 @@ function exportGraph2pdf() {
     downloadedCounter(1, 0, 0);
 }
 
-const firestore_db = firebase.firestore();
+//const firestore_db = firebase.firestore();
 
 function downloadedCounter(graph, pdf, excel) {
   dbRef.child("counter").get().then((snapshot) => {

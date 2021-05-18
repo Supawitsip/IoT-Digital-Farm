@@ -141,7 +141,7 @@ String.prototype.hashCode = function() {
   return hash;
 };
 
-const firestore_db = firebase.firestore();
+//const firestore_db = firebase.firestore();
 function viewCounter() {
   // for realtime database
   dbRef.child("counter").get().then((snapshot) => {
