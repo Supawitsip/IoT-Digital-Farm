@@ -20,7 +20,6 @@ function initialLoad() {
     last_samp = Object.keys(deviceObj)[n_sampling-1];
     first_samp = Object.keys(deviceObj)[0];
     console.log(n_sampling);
-    console.log(retrievedObject[device]);
     displayDeviceInfo();
     firstLoad();
 }
