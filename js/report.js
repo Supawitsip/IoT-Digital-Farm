@@ -1,4 +1,4 @@
-
+const dbRef = firebase.database().ref();
 
 //Get url parameter (the device name)
 const queryString = window.location.search;
@@ -121,7 +121,7 @@ function exportTable2pdf() {
         }  
     })  
     doc.save('data-report.pdf'); 
-    counterDataPdfDownloaded(); 
+    downloadedCounter(0, 1, 0);
 }  
 
 // Export data table from HTML to excel (xlsx file) 
@@ -134,7 +134,7 @@ function exportTable2excel() {
           name: "Sheet 1"
       }
   });
-  counterDataXlsxDownloaded();
+  downloadedCounter(0, 0, 1)
 }
 
 // Export Graph to PDF file
@@ -233,23 +233,30 @@ function exportGraph2pdf() {
     }
     // download the pdf
     pdf.save('graph-report.pdf');
-    counterGraphDownloaded();
+    downloadedCounter(1, 0, 0);
 }
 
-const firestore_db = firebase.firestore();
+//const firestore_db = firebase.firestore();
 
 function downloadedCounter(graph, pdf, excel) {
-  let docRef = firestore_db.collection('view_counter').doc('DyePhHD4DbEQ6iQUFFdm');
-  docRef.get().then((doc) => {
-    let graph_downloaded = doc.data().graph_downloaded + graph;
-    let data_downloaded = doc.data().data_pdf_downloaded + pdf;
-    let excel_downloaded = doc.data().data_xlsx_downloaded + excel;
-    docRef.update({
-      graph_downloaded: graph_downloaded,
-      data_pdf_downloaded: data_downloaded,
-      data_xlsx_downloaded: excel_downloaded
-    });
+  dbRef.child("counter").get().then((snapshot) => {
+    let counter = snapshot.val();
+    let graph_downloaded = counter.graph_download + graph;
+    let data_downloaded = counter.pdf_download + pdf;
+    let excel_downloaded = counter.excel_download + excel;
+    dbRef.child("counter").update({ graph_download: graph_downloaded, pdf_download: data_downloaded, excel_download: excel_downloaded});
   });
+  // let docRef = firestore_db.collection('view_counter').doc('DyePhHD4DbEQ6iQUFFdm');
+  // docRef.get().then((doc) => {
+  //   let graph_downloaded = doc.data().graph_downloaded + graph;
+  //   let data_downloaded = doc.data().data_pdf_downloaded + pdf;
+  //   let excel_downloaded = doc.data().data_xlsx_downloaded + excel;
+  //   docRef.update({
+  //     graph_downloaded: graph_downloaded,
+  //     data_pdf_downloaded: data_downloaded,
+  //     data_xlsx_downloaded: excel_downloaded
+  //   });
+  // });
 }
 
 
