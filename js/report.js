@@ -9,21 +9,21 @@ let deviceObj;
 let n_sampling;
 let last_samp;
 let first_samp;
-
+let all_tem_data;
 let  day_all_humi_data 
 
 function initialLoad() {
     deviceObj = JSON.parse(localStorage.getItem('deviceObject'));
-    console.log(deviceObj)
+    //console.log(deviceObj)
 
     n_sampling = Object.keys(deviceObj).length;
     last_samp = Object.keys(deviceObj)[n_sampling-1];
     first_samp = Object.keys(deviceObj)[0];
-    //console.log(typeof retrievedObject);
-    //console.log(retrievedObject[device]);
+    console.log(n_sampling);
     displayDeviceInfo();
     firstLoad();
 }
+
 
 function displayDeviceInfo() {
     console.log("Number of sampling: " + n_sampling);
@@ -260,62 +260,57 @@ function downloadedCounter(graph, pdf, excel) {
 }
 
 
-var label;
-var humi_data;
-var tem_data;
-var myChart;
-var compareChart;
+let label;
+let humi_data;
+let tem_data;
+let myChart;
+let compareChart;
 
-var color = ["#615af0", "#4be47", "#2a3434", "#4a543f", "#79bca0"];
-var day_compareGraph = []; 
+let day_compareGraph = []; 
 
-var date_label;
-var day_all_data;
+let date_label;
+let day_all_data;
 
-var date_data1_D_tranfer;
-var date_data7_D_tranfer;
-var date_data30_D_tranfer;
+let date_data1_D_tranfer;
+let date_data7_D_tranfer;
+let date_data30_D_tranfer;
 
-var temp_data1_D;
-var date_data1_D;
-var humi_data1_D;
+let temp_data1_D;
+let date_data1_D;
+let humi_data1_D;
 
-var temp_data7_D;
-var date_data7_D;
-var humi_data7_D;
+let temp_data7_D;
+let date_data7_D;
+let humi_data7_D;
 
-var temp_data30_D;
-var date_data30_D;
-var humi_data30_D;
+let temp_data30_D;
+let date_data30_D;
+let humi_data30_D;
 
-var date_carlendar_D;
-var humi_carlendar_D;
-var temp_carlendar_D;
+let date_carlendar_D;
+let humi_carlendar_D;
+let temp_carlendar_D;
 
-var day_in_week;
-var day1440;
+let day_in_week;
+let day1440;
 
-var maxTicksLimitX = 24;
-var maxTicksLimitY = 12;
-var font_x_size = 16;
-var font_y_size = 16;
-var test;
+let maxTicksLimitX = 24;
+let maxTicksLimitY = 12;
+let font_x_size = 16;
+let font_y_size = 16;
+let test;
 
-var firstDateTime;
-var lastDateTime;
+let firstDateTime;
+let lastDateTime;
 
-var temp_data_all_D;
-var date_data_all_D;
-var humi_data_all_D;
-var date_data_all_D_tranfer;
+let test_all = [];
+let deviObj = {};
 
-var test_all = [];
-var deviObj = {};
-//console.log('name: ' + device);
+let corlor_7_day = ["#8342AF", "#03A9F4", "#FF5722", "#A0522D", "#7FFF00", "#4169E1", "#F50057"]
+
 if (document.documentElement.clientWidth < 900) {
   //myChart.options.scales.yAxes[0].ticks.maxTicksLimit = 6;
   //myChart.options.scales.yAxes[1].ticks.maxTicksLimit = 6;
-  //console.log("yees");
   maxTicksLimitX = 12;
   maxTicksLimitY = 5;
   font_x_size = 10;
@@ -324,16 +319,11 @@ if (document.documentElement.clientWidth < 900) {
 
 function firstLoad() {
     let deObj = deviceObj;
-    //console.log(Object.values(deObj));
     deviObj = Object.values(deObj);
-    //console.log(typeof deviObj);
-    //test_all.push(deviObj);
-    
     secondLoad();
 }
 
 function secondLoad() {
-  //console.log(deviObj);
   temp_data1_D = [];
   date_data1_D = [];
   humi_data1_D = [];
@@ -357,10 +347,7 @@ function secondLoad() {
   let week_sampling = n_sampling - 10080;
   let month_sampling = n_sampling - 43200;
   for (d in deviObj) {
-    //console.log(test_all);
-    //all_samp = deviObj[d].;
     let timestamp = deviObj[d].ti;
-    //let timestamp = deviObj[device][all_samp].timestamp/1000;   
     let date = new Date(timestamp);
     let currentDateTimeDevice = date.getDate().toString().padStart(2, "0") +
       "/" + ((date.getMonth() + 1).toString().padStart(2, "0")) +
@@ -429,8 +416,6 @@ function secondLoad() {
        dbRef.child("devices_sensor").child(device).child(d).remove();
      }*/
   }
-  //console.log(all_samp);
-  //console.log(Object.keys(deviObj)[1000]);
   label = date_data30_D;
   tem_data = temp_data30_D;
   humi_data = humi_data30_D;
@@ -605,7 +590,6 @@ function allData() {
   monthBtn.style.backgroundColor = "white";
   monthBtn.style.color = "#E35F43";
 
-  //console.log(date_data1_D);
   myChart.data.datasets[0].data = temp_data_all_D;
   myChart.data.datasets[1].data = humi_data_all_D;
   myChart.data.labels = date_data_all_D;
@@ -630,12 +614,11 @@ function dayData() {
 
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data1_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length - 1].toString().substring(0, 10));
-  //console.log(date_data1_D);
+
   myChart.data.datasets[0].data = temp_data1_D;
   myChart.data.datasets[1].data = humi_data1_D;
   myChart.data.labels = date_data1_D;
   myChart.update();
-  console.log(date_data1_D_tranfer.length);
 }
 
 function weekData() {
@@ -654,8 +637,7 @@ function weekData() {
 
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = ChangeFormateDateV2(date_data7_D_tranfer[date_data7_D_tranfer.length - 1].toString().substring(0, 10));
-  //console.log(ChangeFormateDateV2(date_data7_D_tranfer[0].toString().substring(0, 10)));
-  //console.log(ChangeFormateDateV2(date_data7_D_tranfer[date_data7_D_tranfer.length-1].toString().substring(0, 10)));
+
   myChart.data.datasets[0].data = temp_data7_D;
   myChart.data.datasets[1].data = humi_data7_D;
   myChart.data.labels = date_data7_D;
@@ -705,13 +687,14 @@ function getRange() {
         date_calendar_transfer.push(date_data30_D_tranfer[i]);
         //testi = i;
       }
+      
     };
     myChart.data.datasets[0].data = temp_carlendar_D;
     myChart.data.datasets[1].data = humi_carlendar_D;
     myChart.data.labels = date_carlendar_D;
     myChart.update();
-    console.log(temp_carlendar_D);
   }
+  
 }
 
 function getTableRange() {
@@ -764,14 +747,12 @@ function compareStart() {
     date_label.push(new Date(2018, 10, 1, 0, i));
   }
   console.log(new_date_1day.length);
- // console.log(new_date_1day);
   
   day_all_tem_data = [];
   day_all_humi_data = [];
   day_compareGraph = [];
   
   let get_select_date = document.getElementById('date_now').value;
-  //let lastest_week =
   let day7 = (new Date(new Date(get_select_date).getTime() - 604800000).toLocaleDateString('en-CA'));
   let day6 = (new Date(new Date(get_select_date).getTime() - 518400000).toLocaleDateString('en-CA'));
   let day5 = (new Date(new Date(get_select_date).getTime() - 432000000).toLocaleDateString('en-CA'));
@@ -808,129 +789,192 @@ function compareStart() {
   let day4_date = true;
   let day5_date = true;
   let day6_date = true;
-  let loop;
-  //let day7_tem = [];
-  console.log(lastest_day);
-  console.log(day0);
+  let obj_humi = {};
+  let obj_tem = {};
+  
   for (let i = 0; i < date_data30_D.length; i++) {
     let day_count_day = ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10));
     if (day7 < day_count_day && day_count_day < day5) {
-      day6_tem.push(temp_data30_D[i]);
-      day6_humi.push(humi_data30_D[i]);
+      obj_tem.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_tem.y = temp_data30_D[i];
+      day6_tem.push(obj_tem);
+      obj_tem = {};
+
+      obj_humi.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_humi.y = humi_data30_D[i];
+      day6_humi.push(obj_humi);
+      obj_humi = {};
+      // day6_tem.push(temp_data30_D[i]);
+      // day6_humi.push(humi_data30_D[i]);
       if (day6_date) {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day6_date = false;
+        console.log(date_data30_D_tranfer[i].toString().substring(10, 19));
       }
     } else if (day6 < day_count_day && day_count_day < day4) {
-      day5_tem.push(temp_data30_D[i]);
-      day5_humi.push(humi_data30_D[i]);
+      obj_tem.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_tem.y = temp_data30_D[i];
+      day5_tem.push(obj_tem);
+      obj_tem = {};
+
+      obj_humi.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_humi.y = humi_data30_D[i];
+      day5_humi.push(obj_humi);
+      obj_humi = {};
+      // day5_tem.push(temp_data30_D[i]);
+      // day5_humi.push(humi_data30_D[i]);
       if (day5_date) {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day5_date = false;
         if (day6_tem.length != 0){
-          loop = 1438 - day6_tem.length;
-          if (day6_tem.length < 1438) {
-            for(let start_i = 0; start_i < loop; start_i++)
-              day6_tem.push(undefined);
-              day6_humi.push(undefined);
-          }
+          // loop = 1438 - day6_tem.length;
+          // if (day6_tem.length < 1438) {
+          //   for(let start_i = 0; start_i < loop; start_i++)
+          //     day6_tem.push(undefined);
+          //     day6_humi.push(undefined);
+          // }
           day_all_tem_data.push(day6_tem);
           day_all_humi_data.push(day6_humi);
         }
       }
     } else if (day5 < day_count_day && day_count_day < day3) {
-      day4_tem.push(temp_data30_D[i]);
-      day4_humi.push(humi_data30_D[i]);
+      obj_tem.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_tem.y = temp_data30_D[i];
+      day4_tem.push(obj_tem);
+      obj_tem = {};
+
+      obj_humi.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_humi.y = humi_data30_D[i];
+      day4_humi.push(obj_humi);
+      obj_humi = {};
+      // day4_tem.push(temp_data30_D[i]);
+      // day4_humi.push(humi_data30_D[i]);
       if (day4_date) {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day4_date = false;
         if (day5_tem.length != 0){
-          if (day5_tem.length < 1438) {
-            loop = 1438 - day5_tem.length;
-            for(let start_i = 0; start_i < loop; start_i++)
-              day5_tem.push(undefined);
-              day5_humi.push(undefined);
-          }
+          // if (day5_tem.length < 1438) {
+          //   loop = 1438 - day5_tem.length;
+          //   for(let start_i = 0; start_i < loop; start_i++)
+          //     day5_tem.push(undefined);
+          //     day5_humi.push(undefined);
+          // }
           day_all_tem_data.push(day5_tem);
           day_all_humi_data.push(day5_humi);
         }
       }
     } else if (day4 < day_count_day && day_count_day < day2) {
-      day3_tem.push(temp_data30_D[i]);
-      day3_humi.push(humi_data30_D[i]);
+      // day3_tem.push(temp_data30_D[i]);
+      // day3_humi.push(humi_data30_D[i]);
+      obj_tem.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_tem.y = temp_data30_D[i];
+      day3_tem.push(obj_tem);
+      obj_tem = {};
+
+      obj_humi.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_humi.y = humi_data30_D[i];
+      day3_humi.push(obj_humi);
+      obj_humi = {};
       if (day3_date) {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day3_date = false;
         if (day4_tem.length != 0){
-          if (day4_tem.length < 1438) {
-            loop = 1438 - day4_tem.length;
-            for(let start_i = 0; start_i < loop; start_i++)
-              day4_tem.push(undefined);
-              day4_humi.push(undefined);
-          }
+          // if (day4_tem.length < 1438) {
+          //   loop = 1438 - day4_tem.length;
+          //   for(let start_i = 0; start_i < loop; start_i++)
+          //     day4_tem.push(undefined);
+          //     day4_humi.push(undefined);
+          // }
           day_all_tem_data.push(day4_tem);
           day_all_humi_data.push(day4_humi);
         }
       }
     } else if (day3 < day_count_day && day_count_day < day1) {
-      day2_tem.push(temp_data30_D[i]);
-      day2_humi.push(humi_data30_D[i]);
+      // day2_tem.push(temp_data30_D[i]);
+      // day2_humi.push(humi_data30_D[i]);
+      obj_tem.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_tem.y = temp_data30_D[i];
+      day2_tem.push(obj_tem);
+      obj_tem = {};
+
+      obj_humi.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_humi.y = humi_data30_D[i];
+      day2_humi.push(obj_humi);
+      obj_humi = {};
       if (day2_date) {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day2_date = false;
         if (day3_tem.length != 0){
-          if (day3_tem.length < 1438) {
-            loop = 1438 - day3_tem.length;
-            for(let start_i = 0; start_i < loop; start_i++)
-              day3_tem.push(undefined);
-              day3_humi.push(undefined);
-          }
+          // if (day3_tem.length < 1438) {
+          //   loop = 1438 - day3_tem.length;
+          //   for(let start_i = 0; start_i < loop; start_i++)
+          //     day3_tem.push(undefined);
+          //     day3_humi.push(undefined);
+          // }
           day_all_tem_data.push(day3_tem);
           day_all_humi_data.push(day3_humi);
         }
       }
     } else if (day2 < day_count_day && day_count_day < day0) {
-      day1_tem.push(temp_data30_D[i]);
-      day1_humi.push(humi_data30_D[i]);
+      // day1_tem.push(temp_data30_D[i]);
+      // day1_humi.push(humi_data30_D[i]);
+      obj_tem.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_tem.y = temp_data30_D[i];
+      day1_tem.push(obj_tem);
+      obj_tem = {};
+
+      obj_humi.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_humi.y = humi_data30_D[i];
+      day1_humi.push(obj_humi);
+      obj_humi = {};
       if (day1_date) {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day1_date = false;
         if (day2_tem.length != 0){
-          if (day2_tem.length < 1438) {
-            loop = 1438 - day2_tem.length;
-            for(let start_i = 0; start_i < loop; start_i++)
-              day2_tem.push(undefined);
-              day2_humi.push(undefined);
-          }
+          // if (day2_tem.length < 1438) {
+          //   loop = 1438 - day2_tem.length;
+          //   for(let start_i = 0; start_i < loop; start_i++)
+          //     day2_tem.push(undefined);
+          //     day2_humi.push(undefined);
+          // }
           day_all_tem_data.push(day2_tem);
           day_all_humi_data.push(day2_humi);
         }
       }
     } else if (day1 < day_count_day && day_count_day < lastest_day) {
-      day0_tem.push(temp_data30_D[i]);
-      day0_humi.push(humi_data30_D[i]);
+      // day0_tem.push(temp_data30_D[i]);
+      // day0_humi.push(humi_data30_D[i]);
+      obj_tem.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_tem.y = temp_data30_D[i];
+      day0_tem.push(obj_tem);
+      obj_tem = {};
+
+      obj_humi.x = date_data30_D_tranfer[i].toString().substring(10, 19);
+      obj_humi.y = humi_data30_D[i];
+      day0_humi.push(obj_humi);
+      obj_humi = {};
       if (day0_date) {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day0_date = false;
         if (day1_tem.length != 0){
-          if (day1_tem.length < 1438) {
-            loop = 1438 - day1_tem.length;
-            for(let start_i = 0; start_i < loop; start_i++)
-              day1_tem.push(undefined);
-              day1_humi.push(undefined);
-          }
+          // if (day1_tem.length < 1438) {
+          //   loop = 1438 - day1_tem.length;
+          //   for(let start_i = 0; start_i < loop; start_i++)
+          //     day1_tem.push(undefined);
+          //     day1_humi.push(undefined);
+          // }
           day_all_tem_data.push(day1_tem);
           day_all_humi_data.push(day1_humi);
         }
       }
     }  else if (day_count_day == lastest_day) {
       if (day0_tem.length != 0){
-        if (day0_tem.length < 1438) {
-          loop = 1438 - day0_tem.length;
-          for(let start_i = 0; start_i < loop; start_i++)
-            day0_tem.push(undefined);
-            day0_humi.push(undefined);
-        }
+        // if (day0_tem.length < 1438) {
+        //   loop = 1438 - day0_tem.length;
+        //   for(let start_i = 0; start_i < loop; start_i++)
+        //     day0_tem.push(undefined);
+        //     day0_humi.push(undefined);
+        // }
         day_all_tem_data.push(day0_tem);
         day_all_humi_data.push(day0_humi);
       }
@@ -938,22 +982,16 @@ function compareStart() {
     }
   }
 
-  // console.log(day6_tem);
   // console.log(day5_tem);
-  // console.log(day4_tem);
-  // console.log(day3_tem);
-  // console.log(day2_tem);
-  // console.log(day1_tem);
-  // console.log(day0_tem);
-  console.log(date_label.length);
   //compareChart.destroy();
   let ctx3 = document.getElementById('compareChart').getContext('2d');
   compareChart = new Chart(ctx3, {
     type: 'line',
     data: {
-      labels: date_label,
+      //labels: date_label,
     },
     options: {
+    
       legend: {
           display: true,
           position: 'left'
@@ -970,13 +1008,26 @@ function compareStart() {
         mode: 'x',
       },
       tooltips: {
-        mode: 'index',
-        intersect: false
+        mode: 'x',
+        intersect: false,
+        xAlign: 'center',
+        yAlign:'top',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)'
       },
       hover: {
-        mode: 'index',
+        mode: 'x',
         intersect: false
       },
+      elements: {
+        point: {
+            //radius: 0,
+            hitRadius: 0.2,
+            hoverRadius: 4
+        }
+     },
+     /* interaction: {
+        mode: 'index'
+      },*/
       responsive: true,
       scales: {
         yAxes: [{
@@ -997,23 +1048,23 @@ function compareStart() {
         }],
         xAxes: [{
           type: 'time',
-          time: {
-            unit: 'hour',
-            stepSize: 0.1,  //I'm using 3 hour intervals here
-            tooltipFormat: 'HH:mm:ss',
-            parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
-            //: 'second', //I have tried minutes and hours too, same result
-            displayFormats: {
-              hour: 'HH:mm'
-            }
-          },
-          ticks: {
-            //source: 'auto',
-            major: {
-              //enabled: true, // <-- This is the key line
-              fontStyle: 'bold', //You can also style these values differently
-              fontSize: 14 //You can also style these values differently
-            },
+           time: {
+             unit: 'hour',
+             stepSize: 0.5,  //I'm using 3 hour intervals here
+          //   tooltipFormat: 'HH:mm:ss',
+             parser: 'HH:mm:ss', //these formatting values do nothing, I've tried a few different ones
+          //   //: 'second', //I have tried minutes and hours too, same result
+             displayFormats: {
+               hour: 'HH:mm'
+             }
+           //},
+          // ticks: {
+          //   //source: 'auto',
+          //   major: {
+          //     //enabled: true, // <-- This is the key line
+          //     fontStyle: 'bold', //You can also style these values differently
+          //     fontSize: 14 //You can also style these values differently
+          //   },
           },
         }]
       },
@@ -1029,23 +1080,26 @@ function compareGraphSet() {
 
 function initialCompareChart(){
   //let color = getPastelColor()
-  console.log(day_compareGraph);
-  console.log(day_all_tem_data);
   for(let i = 0 ;i < day_compareGraph.length; i++) {
     let color = getPastelColor()
     compareChart.data.datasets.push({
       label: day_compareGraph[i] ,
-      backgroundColor: color,
-      borderColor: color,
-      indexLabelFontSize: 10,
+      backgroundColor: corlor_7_day[i],
+      borderColor: corlor_7_day[i],
+      //indexLabelFontSize: 10,
+      hoverBackgroundColor: corlor_7_day[i],
+      hoverBorderColor: corlor_7_day[i],
+      hoverBorderWidth : '0.01',
       fill: false,
       data: day_all_tem_data[i],
       pointRadius: 0,
       borderWidth: 3,
       tension: 0
+      
     });
+    compareChart.update();
   }
-  compareChart.update();
+  
 }
 
 function compareChartTem() {
@@ -1061,8 +1115,8 @@ function compareChartTem() {
     compareChart.data.datasets[i].data = day_all_tem_data[i];
     //compareChart.data.datasets[i-1].label = day_compareGraph[i];
     let color = getPastelColor();
-    compareChart.data.datasets[i].backgroundColor = color;
-    compareChart.data.datasets[i].borderColor = color;
+    compareChart.data.datasets[i].backgroundColor = corlor_7_day[i];
+    compareChart.data.datasets[i].borderColor = corlor_7_day[i];
   }
   
   // compareChart.options.scales.yAxes[0].ticks.suggestedMin = 10;
@@ -1083,8 +1137,8 @@ function compareChartHumi() {
   for(let i = 0 ;i < day_all_humi_data.length; i++) {
     compareChart.data.datasets[i].data = day_all_humi_data[i];
     let color = getPastelColor();
-    compareChart.data.datasets[i].backgroundColor = color;
-    compareChart.data.datasets[i].borderColor = color;
+    compareChart.data.datasets[i].backgroundColor = corlor_7_day[i];
+    compareChart.data.datasets[i].borderColor = corlor_7_day[i];
     //compareChart.data.datasets[i-1].label = day_compareGraph[i];
     //myChart.data.datasets[1].data = humi_carlendar_D;
     //myChart.data.labels = date_carlendar_D;
