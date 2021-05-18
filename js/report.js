@@ -14,7 +14,7 @@ let  day_all_humi_data
 
 function initialLoad() {
     deviceObj = JSON.parse(localStorage.getItem('deviceObject'));
-    console.log(deviceObj)
+    //console.log(deviceObj)
 
     n_sampling = Object.keys(deviceObj).length;
     last_samp = Object.keys(deviceObj)[n_sampling-1];
