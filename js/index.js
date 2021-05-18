@@ -146,10 +146,12 @@ function viewCounter() {
   let docRef = firestore_db.collection('view_counter').doc('DyePhHD4DbEQ6iQUFFdm');
   docRef.get().then((doc) => {
     let viewed = doc.data().viewed + 1;
+    let downloaded = doc.data().data_pdf_downloaded + doc.data().data_xlsx_downloaded + doc.data().graph_downloaded;
     docRef.update({
       viewed: viewed
     });
     document.getElementById('view-counter').innerText = viewed;
+    document.getElementById('download-counter').innerText = downloaded;
   })
 }
 

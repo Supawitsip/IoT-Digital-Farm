@@ -137,6 +137,9 @@
 .view-con i, .view-con div {
     display: inline-block;
 }
+#view-counter {
+    margin-right: 10px;
+}
 
 @media screen and (max-width: 600px) {
     .head-con {

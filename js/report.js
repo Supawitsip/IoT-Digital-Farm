@@ -238,41 +238,18 @@ function exportGraph2pdf() {
 
 const firestore_db = firebase.firestore();
 
-function counterGraphDownloaded() {
+function downloadedCounter(graph, pdf, excel) {
   let docRef = firestore_db.collection('view_counter').doc('DyePhHD4DbEQ6iQUFFdm');
   docRef.get().then((doc) => {
-    let graph_downloaded = doc.data().graph_downloaded + 1;
-    let data_downloaded = doc.data().data_pdf_downloaded;
-    let excel_downloaded = doc.data().data_xlsx_downloaded;
+    let graph_downloaded = doc.data().graph_downloaded + graph;
+    let data_downloaded = doc.data().data_pdf_downloaded + pdf;
+    let excel_downloaded = doc.data().data_xlsx_downloaded + excel;
     docRef.update({
-      graph_downloaded: graph_downloaded
-    });
-    document.getElementById('view-counter').innerText = graph_downloaded + data_downloaded + excel_downloaded;
-  })
-}
-function counterDataPdfDownloaded() {
-  let docRef = firestore_db.collection('view_counter').doc('DyePhHD4DbEQ6iQUFFdm');
-  docRef.get().then((doc) => {
-    let graph_downloaded = doc.data().graph_downloaded;
-    let data_downloaded = doc.data().data_pdf_downloaded + 1;
-    let excel_downloaded = doc.data().data_xlsx_downloaded;
-    docRef.update({
-      data_pdf_downloaded: data_downloaded
-    });
-    document.getElementById('view-counter').innerText = graph_downloaded + data_downloaded + excel_downloaded;
-  })
-}
-function counterDataXlsxDownloaded() {
-  let docRef = firestore_db.collection('view_counter').doc('DyePhHD4DbEQ6iQUFFdm');
-  docRef.get().then((doc) => {
-    let graph_downloaded = doc.data().graph_downloaded;
-    let data_downloaded = doc.data().data_pdf_downloaded;
-    let excel_downloaded = doc.data().data_xlsx_downloaded + 1;
-    docRef.update({
+      graph_downloaded: graph_downloaded,
+      data_pdf_downloaded: data_downloaded,
       data_xlsx_downloaded: excel_downloaded
     });
-    document.getElementById('view-counter').innerText = graph_downloaded + data_downloaded + excel_downloaded;
-  })
+  });
 }
 
 
