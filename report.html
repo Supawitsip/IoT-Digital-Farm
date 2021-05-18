@@ -39,7 +39,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script>
    <!-- <script src="path/to/chartjs-plugin-zoom/dist/chartjs-plugin-zoom.min.js"></script> -->
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    
+
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-firestore.js"></script>
 
     
   </head>
@@ -56,7 +57,7 @@
         <i class="fa fa-bars"></i>
       </a>
     </div>
-    
+
     <!-- Main Container -->
     <div class="container">
       <div class="head-con">
@@ -212,7 +213,6 @@
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       firebase.analytics();
-      const db = firebase.database();
     </script>
     
     <script src="js/report.js"></script>

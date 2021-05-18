@@ -22,6 +22,7 @@ function initialLoad() {
 
 
 function displayLoaded() {
+  //viewCounter();
   // Get Number of device connected
   num_of_devi = Object.keys(deviObj).length;
   console.log('All Devices:' + num_of_devi);
@@ -61,16 +62,21 @@ function deleteDevice() {
   for (clicked of delBtn) {
     clicked.addEventListener('click', function() {
         let dname = this.getAttribute("dname");
-        let conf = confirm(`Are you sure you want to remove ${dname}?`);
-        if (conf == true) {
-          dbRef.child("device_key").child(dname).remove().catch((error) => {
-            console.error(error);
-          });
-          dbRef.child("devices_sensor").child(dname).remove().catch((error) => {
-            console.error(error);
-          });
-          alert(`Remove ${dname} successfully`);
-          location.reload(true);;
+        let conf = prompt(`Please enter the password for confirming the removal of ${dname}.`);
+        let checking = 1026899268;
+        if (conf != null) {
+          if (conf.hashCode() == checking) {
+            dbRef.child("device_key").child(dname).remove().catch((error) => {
+              console.error(error);
+            });
+            dbRef.child("devices_sensor").child(dname).remove().catch((error) => {
+              console.error(error);
+            });
+            alert(`Remove ${dname} successfully`);
+            location.reload(true);
+          } else {
+            alert(`Error: wrong password!`);
+          }
         }
     });
   };
@@ -122,6 +128,31 @@ function getLocalCurrentTime() {
       ":"+date.getMinutes().toString().padStart(2, "0")+
       ":"+date.getSeconds().toString().padStart(2, "0");
   return currentDateTime;
+}
+
+String.prototype.hashCode = function() {
+  var hash = 0, i, chr;
+  if (this.length === 0) return hash;
+  for (i = 0; i < this.length; i++) {
+    chr   = this.charCodeAt(i);
+    hash  = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+};
+
+const firestore_db = firebase.firestore();
+function viewCounter() {
+  let docRef = firestore_db.collection('view_counter').doc('DyePhHD4DbEQ6iQUFFdm');
+  docRef.get().then((doc) => {
+    let viewed = doc.data().viewed + 1;
+    let downloaded = doc.data().data_pdf_downloaded + doc.data().data_xlsx_downloaded + doc.data().graph_downloaded;
+    docRef.update({
+      viewed: viewed
+    });
+    document.getElementById('view-counter').innerText = viewed;
+    document.getElementById('download-counter').innerText = downloaded;
+  })
 }
 
 //////////////////////////////////Start Function

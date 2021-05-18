@@ -127,6 +127,20 @@
     color: #EBECFB;
 }
 
+.view-con {
+    padding: 0 10px;
+    font-size: 14px;
+    color: #7e7e7e;
+    display: inline;
+    float: right;
+}
+.view-con i, .view-con div {
+    display: inline-block;
+}
+#view-counter {
+    margin-right: 10px;
+}
+
 @media screen and (max-width: 600px) {
     .head-con {
         margin: 4px 0;
@@ -136,7 +150,7 @@
         font-size: 18px;
     }
     #lastTime {
-        padding: 18px 10px;
+        padding: 8px 10px;
         font-size: 18px;
     }
     .clockIcon {
@@ -172,5 +186,8 @@
     .fa-trash-alt {
         font-size: 20px;
         padding: 16px 20px;
+    }
+    .view-con {
+        font-size: 11px;
     }
 }
