@@ -1001,7 +1001,7 @@ function compareStart() {
         mode: 'x',
       },
       tooltips: {
-        mode: 'index',
+        mode: 'x',
         intersect: false,
         xAlign: 'center',
         yAlign:'top',
@@ -1011,13 +1011,13 @@ function compareStart() {
         mode: 'x',
         intersect: false
       },
-     /* elements: {
+      elements: {
         point: {
             //radius: 0,
-            //hitRadius: 0.1,
-            //hoverRadius: 6
+            hitRadius: 0.2,
+            hoverRadius: 4
         }
-     },*/
+     },
      /* interaction: {
         mode: 'index'
       },*/
