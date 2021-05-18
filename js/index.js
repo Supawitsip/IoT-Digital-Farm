@@ -22,7 +22,7 @@ function initialLoad() {
 
 
 function displayLoaded() {
-  viewCounter();
+  //viewCounter();
   // Get Number of device connected
   num_of_devi = Object.keys(deviObj).length;
   console.log('All Devices:' + num_of_devi);
@@ -73,7 +73,7 @@ function deleteDevice() {
               console.error(error);
             });
             alert(`Remove ${dname} successfully`);
-            location.reload(true);;
+            location.reload(true);
           } else {
             alert(`Error: wrong password!`);
           }
