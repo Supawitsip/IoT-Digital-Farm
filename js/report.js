@@ -618,6 +618,8 @@ function allData() {
         myChart.data.datasets[1].data = humi_data_all_D;
         myChart.data.labels = date_data_all_D;
         myChart.update();
+      }).catch((error) => {
+        console.error(error);
       });
     } else {
       console.log('using already loaded data');
@@ -750,6 +752,8 @@ function getRange() {
           myChart.data.datasets[1].data = humi_carlendar_D;
           myChart.data.labels = date_carlendar_D;
           myChart.update();
+        }).catch((error) => {
+          console.error(error);
         });
       } else {
         console.log('using already loaded data');
@@ -794,19 +798,87 @@ function getTableRange() {
   let date_carlendar_tbl_transfer = [];
   let humi_carlendar_tbl = [];
   let temp_carlendar_tbl = [];
+  let timestamp_30_before = new Date().getTime() - (30 * 24 * 60 * 60 * 1000);
+
   if (tbl_start > tbl_end) {
     console.log("Error: Wrong date input.")
   } else {
-    for (let i = 0; i < date_data30_D.length; i++) {
-      if (tbl_start <= ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) <= tbl_end) {
-        date_carlendar_tbl.push(date_data30_D[i]);
-        humi_carlendar_tbl.push(humi_data30_D[i]);
-        temp_carlendar_tbl.push(temp_data30_D[i]);
-        date_carlendar_tbl_transfer.push(date_data30_D_tranfer[i]);
+    if (timestamp_30_before > new Date(tbl_start).getTime() && n_sampling > 43200) {
+      if (date_data_all_D.length === 0) {
+        console.log('getting all data');
+        dbRef.child("devices_sensor").child(device).get().then((snapshot) => {
+          let all = snapshot.val();
+          console.log("All sampling: " + Object.keys(all).length);
+          for (d in all) {
+            let timestamp = all[d].ti;
+            let date = new Date(timestamp);
+            let currentDateTimeDevice = readableTime(date);
+  
+            temp_data_all_D.push(all[d].te);
+            date_data_all_D_tranfer.push(currentDateTimeDevice);
+            date_data_all_D.push(date);
+            humi_data_all_D.push(all[d].h);
+          }
+          for (let i = 0; i < date_data_all_D.length; i++) {
+            if (tbl_start <= ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) <= tbl_end) {
+              date_carlendar_tbl.push(date_data_all_D[i]);
+              humi_carlendar_tbl.push(humi_data_all_D[i]);
+              temp_carlendar_tbl.push(temp_data_all_D[i]);
+              date_carlendar_tbl_transfer.push(date_data_all_D_tranfer[i]);
+            }
+          }
+        }).catch((error) => {
+          console.error(error);
+        });
+      } else {
+        console.log('using already loaded data');
+        for (let i = 0; i < date_data_all_D.length; i++) {
+          if (tbl_start <= ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) <= tbl_end) {
+            date_carlendar_tbl.push(date_data_all_D[i]);
+            humi_carlendar_tbl.push(humi_data_all_D[i]);
+            temp_carlendar_tbl.push(temp_data_all_D[i]);
+            date_carlendar_tbl_transfer.push(date_data_all_D_tranfer[i]);
+          }
+        }
+      }
+    } else {
+      console.log('still use 30day loaded data');
+      for (let i = 0; i < date_data30_D.length; i++) {
+        if (tbl_start <= ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) <= tbl_end) {
+          date_carlendar_tbl.push(date_data30_D[i]);
+          humi_carlendar_tbl.push(humi_data30_D[i]);
+          temp_carlendar_tbl.push(temp_data30_D[i]);
+          date_carlendar_tbl_transfer.push(date_data30_D_tranfer[i]);
+        }
       }
     }
   }
-  renderTable(date_carlendar_tbl_transfer, temp_carlendar_tbl, temp_carlendar_tbl);
+  renderTable(date_carlendar_tbl_transfer, temp_carlendar_tbl, humi_carlendar_tbl);
+}
+function getAllDataTable() {
+  if (date_data_all_D.length === 0 && n_sampling > 43200) {
+    console.log('getting all data');
+    dbRef.child("devices_sensor").child(device).get().then((snapshot) => {
+      let all = snapshot.val();
+      console.log("All sampling: " + Object.keys(all).length);
+      for (d in all) {
+        let timestamp = all[d].ti;
+        let date = new Date(timestamp);
+        let currentDateTimeDevice = readableTime(date);
+
+        temp_data_all_D.push(all[d].te);
+        date_data_all_D_tranfer.push(currentDateTimeDevice);
+        date_data_all_D.push(date);
+        humi_data_all_D.push(all[d].h);
+      }
+      renderTable(date_data_all_D_tranfer, temp_data_all_D, humi_data_all_D);
+    }).catch((error) => {
+      console.error(error);
+    });
+  } else {
+    console.log('using already loaded data');
+    renderTable(date_data_all_D_tranfer, temp_data_all_D, humi_data_all_D);
+  }
 }
 
 // change / to -
