@@ -251,7 +251,7 @@
         if (checkAllData.checked == true) {
           tbl_f.disabled = true;
           tbl_t.disabled = true;
-          renderTable(date_data30_D_tranfer, temp_data30_D, humi_data30_D);
+          getAllDataTable();
         } else {
           tbl_f.disabled = false;
           tbl_t.disabled = false;
@@ -270,6 +270,7 @@
           tblCon.style.display = "inline-block";
           tbl.style.display = "inline-block";
           show.innerText = "Hide";
+          //getTableRange();
         } else {
           tblCon.style.display = "none";
           tbl.style.display = "none";

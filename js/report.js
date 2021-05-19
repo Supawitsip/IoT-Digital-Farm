@@ -274,6 +274,7 @@ let day_all_data;
 let date_data1_D_tranfer;
 let date_data7_D_tranfer;
 let date_data30_D_tranfer;
+let date_data_all_D_tranfer;
 
 let temp_data1_D;
 let date_data1_D;
@@ -286,6 +287,10 @@ let humi_data7_D;
 let temp_data30_D;
 let date_data30_D;
 let humi_data30_D;
+
+let temp_data_all_D;
+let date_data_all_D;
+let humi_data_all_D;
 
 let date_carlendar_D;
 let humi_carlendar_D;
@@ -373,10 +378,10 @@ function secondLoad() {
       date_data30_D.push(date);
       humi_data30_D.push(deviObj[d].h);
 
-      temp_data_all_D.push(deviObj[d].te);
-      date_data_all_D_tranfer.push(currentDateTimeDevice);
-      date_data_all_D.push(date);
-      humi_data_all_D.push(deviObj[d].h);
+      // temp_data_all_D.push(deviObj[d].te);
+      // date_data_all_D_tranfer.push(currentDateTimeDevice);
+      // date_data_all_D.push(date);
+      // humi_data_all_D.push(deviObj[d].h);
 
     } else if (i >= week_sampling) {
       temp_data7_D.push(deviObj[d].te);
@@ -389,10 +394,10 @@ function secondLoad() {
       date_data30_D.push(date);
       humi_data30_D.push(deviObj[d].h);
 
-      temp_data_all_D.push(deviObj[d].te);
-      date_data_all_D_tranfer.push(currentDateTimeDevice);
-      date_data_all_D.push(date);
-      humi_data_all_D.push(deviObj[d].h);
+      // temp_data_all_D.push(deviObj[d].te);
+      // date_data_all_D_tranfer.push(currentDateTimeDevice);
+      // date_data_all_D.push(date);
+      // humi_data_all_D.push(deviObj[d].h);
 
     } else if (i >= month_sampling) {
       temp_data30_D.push(deviObj[d].te);
@@ -400,15 +405,15 @@ function secondLoad() {
       date_data30_D.push(date);
       humi_data30_D.push(deviObj[d].h);
 
-      temp_data_all_D.push(deviObj[d].te);
-      date_data_all_D_tranfer.push(currentDateTimeDevice);
-      date_data_all_D.push(date);
-      humi_data_all_D.push(deviObj[d].h);
+      // temp_data_all_D.push(deviObj[d].te);
+      // date_data_all_D_tranfer.push(currentDateTimeDevice);
+      // date_data_all_D.push(date);
+      // humi_data_all_D.push(deviObj[d].h);
     } else {
-      temp_data_all_D.push(deviObj[d].te);
-      date_data_all_D_tranfer.push(currentDateTimeDevice);
-      date_data_all_D.push(date);
-      humi_data_all_D.push(deviObj[d].h);
+      // temp_data_all_D.push(deviObj[d].te);
+      // date_data_all_D_tranfer.push(currentDateTimeDevice);
+      // date_data_all_D.push(date);
+      // humi_data_all_D.push(deviObj[d].h);
     }
 
     /* if (i > 129600) {
@@ -590,14 +595,47 @@ function allData() {
   monthBtn.style.backgroundColor = "white";
   monthBtn.style.color = "#E35F43";
 
-  document.getElementById('date_from').value = ChangeFormateDateV2(date_data_all_D_tranfer[0].toString().substring(0, 10));
-  document.getElementById('date_to').value = ChangeFormateDateV2(date_data_all_D_tranfer[date_data_all_D_tranfer.length - 1].toString().substring(0, 10));
+  //Check if data is more than 1 month sampling, get the data, if not, use the 1 month data instead
+  if (n_sampling > 43200) {
+    // Check if already get all data
+    if (date_data_all_D.length === 0) {
+      console.log('getting all data');
+      //Get all data from realtime database
+      dbRef.child("devices_sensor").child(device).get().then((snapshot) => {
+        let all = snapshot.val();
+        console.log("All sampling: " + Object.keys(all).length);
+        for (d in all) {
+          let timestamp = all[d].ti;
+          let date = new Date(timestamp);
+          let currentDateTimeDevice = readableTime(date);
 
-  myChart.data.datasets[0].data = temp_data_all_D;
-  myChart.data.datasets[1].data = humi_data_all_D;
-  myChart.data.labels = date_data_all_D;
-  myChart.update();
-
+          temp_data_all_D.push(all[d].te);
+          date_data_all_D_tranfer.push(currentDateTimeDevice);
+          date_data_all_D.push(date);
+          humi_data_all_D.push(all[d].h);
+        }
+        myChart.data.datasets[0].data = temp_data_all_D;
+        myChart.data.datasets[1].data = humi_data_all_D;
+        myChart.data.labels = date_data_all_D;
+        myChart.update();
+      }).catch((error) => {
+        console.error(error);
+      });
+    } else {
+      console.log('using already loaded data');
+      myChart.data.datasets[0].data = temp_data_all_D;
+      myChart.data.datasets[1].data = humi_data_all_D;
+      myChart.data.labels = date_data_all_D;
+      myChart.update();
+    }
+    
+  } else {
+    console.log('still use 30D loaded data');
+    myChart.data.datasets[0].data = temp_data30_D;
+    myChart.data.datasets[1].data = humi_data30_D;
+    myChart.data.labels = date_data30_D;
+    myChart.update();
+  }
 }
 
 
@@ -674,16 +712,17 @@ function monthData() {
 function getRange() {
   let date_start = document.getElementById("date_from").value;
   let date_end = document.getElementById("date_to").value;
+  
 
   let timestamp_30_before = new Date().getTime() - (30 * 24 * 60 * 60 * 1000);
   // console.log("30day: " + new Date(timestamp_30_before).toLocaleDateString('en-CA'));
   // console.log("start: " + new Date(date_start).toLocaleDateString('en-CA'));
   // console.log("end: " + new Date(date_end).toLocaleDateString('en-CA'));
-  if (timestamp_30_before > new Date(date_start).getTime()) { //old more than 30 day
-    console.log("load all date");
-  } else {
-    console.log("less than 30 day");
-  }
+  // if (timestamp_30_before > new Date(date_start).getTime()) { //old more than 30 day
+  //   console.log("load all date");
+  // } else {
+  //   console.log("less than 30 day");
+  // }
   
   date_calendar_transfer = [];
   date_carlendar_D = [];
@@ -691,23 +730,74 @@ function getRange() {
   temp_carlendar_D = [];
   
   if (date_start > date_end) {
-    console.log("worng");
+    console.log("Wrong input.");
   } else {
-    for (let i = 0; i < date_data_all_D.length; i++) {
-      if (date_start <= ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) <= date_end) {
-        date_carlendar_D.push(date_data_all_D[i]);
-        humi_carlendar_D.push(humi_data_all_D[i]);
-        temp_carlendar_D.push(temp_data_all_D[i]);
-        date_calendar_transfer.push(date_data_all_D_tranfer[i]);
-        //testi = i;
-      }
-    };
-    myChart.data.datasets[0].data = temp_carlendar_D;
-    myChart.data.datasets[1].data = humi_carlendar_D;
-    myChart.data.labels = date_carlendar_D;
-    myChart.update();
-  }
+    if (timestamp_30_before > new Date(date_start).getTime() && n_sampling > 43200) {
+      if (date_data_all_D.length === 0) {
+        console.log('getting all data');
+        dbRef.child("devices_sensor").child(device).get().then((snapshot) => {
+          let all = snapshot.val();
+          console.log("All sampling: " + Object.keys(all).length);
+          for (d in all) {
+            let timestamp = all[d].ti;
+            let date = new Date(timestamp);
+            let currentDateTimeDevice = readableTime(date);
   
+            temp_data_all_D.push(all[d].te);
+            date_data_all_D_tranfer.push(currentDateTimeDevice);
+            date_data_all_D.push(date);
+            humi_data_all_D.push(all[d].h);
+          }
+          for (let i = 0; i < date_data_all_D.length; i++) {
+            if (date_start <= ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) <= date_end) {
+              date_carlendar_D.push(date_data_all_D[i]);
+              humi_carlendar_D.push(humi_data_all_D[i]);
+              temp_carlendar_D.push(temp_data_all_D[i]);
+              date_calendar_transfer.push(date_data_all_D_tranfer[i]);
+              //testi = i;
+            }
+          };
+          myChart.data.datasets[0].data = temp_carlendar_D;
+          myChart.data.datasets[1].data = humi_carlendar_D;
+          myChart.data.labels = date_carlendar_D;
+          myChart.update();
+        }).catch((error) => {
+          console.error(error);
+        });
+      } else {
+        console.log('using already loaded data');
+        for (let i = 0; i < date_data_all_D.length; i++) {
+          if (date_start <= ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) <= date_end) {
+            date_carlendar_D.push(date_data_all_D[i]);
+            humi_carlendar_D.push(humi_data_all_D[i]);
+            temp_carlendar_D.push(temp_data_all_D[i]);
+            date_calendar_transfer.push(date_data_all_D_tranfer[i]);
+            //testi = i;
+          }
+        };
+        myChart.data.datasets[0].data = temp_carlendar_D;
+        myChart.data.datasets[1].data = humi_carlendar_D;
+        myChart.data.labels = date_carlendar_D;
+        myChart.update();
+      }
+     
+    } else {
+      console.log('still use 30day loaded data');
+      for (let i = 0; i < date_data30_D.length; i++) {
+        if (date_start <= ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) <= date_end) {
+          date_carlendar_D.push(date_data30_D[i]);
+          humi_carlendar_D.push(humi_data30_D[i]);
+          temp_carlendar_D.push(temp_data30_D[i]);
+          date_calendar_transfer.push(date_data30_D_tranfer[i]);
+          //testi = i;
+        }
+      };
+      myChart.data.datasets[0].data = temp_carlendar_D;
+      myChart.data.datasets[1].data = humi_carlendar_D;
+      myChart.data.labels = date_carlendar_D;
+      myChart.update();
+    }
+  }
 }
 
 function getTableRange() {
@@ -717,19 +807,87 @@ function getTableRange() {
   let date_carlendar_tbl_transfer = [];
   let humi_carlendar_tbl = [];
   let temp_carlendar_tbl = [];
+  let timestamp_30_before = new Date().getTime() - (30 * 24 * 60 * 60 * 1000);
+
   if (tbl_start > tbl_end) {
     console.log("Error: Wrong date input.")
   } else {
-    for (let i = 0; i < date_data30_D.length; i++) {
-      if (tbl_start <= ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) <= tbl_end) {
-        date_carlendar_tbl.push(date_data30_D[i]);
-        humi_carlendar_tbl.push(humi_data30_D[i]);
-        temp_carlendar_tbl.push(temp_data30_D[i]);
-        date_carlendar_tbl_transfer.push(date_data30_D_tranfer[i]);
+    if (timestamp_30_before > new Date(tbl_start).getTime() && n_sampling > 43200) {
+      if (date_data_all_D.length === 0) {
+        console.log('getting all data');
+        dbRef.child("devices_sensor").child(device).get().then((snapshot) => {
+          let all = snapshot.val();
+          console.log("All sampling: " + Object.keys(all).length);
+          for (d in all) {
+            let timestamp = all[d].ti;
+            let date = new Date(timestamp);
+            let currentDateTimeDevice = readableTime(date);
+  
+            temp_data_all_D.push(all[d].te);
+            date_data_all_D_tranfer.push(currentDateTimeDevice);
+            date_data_all_D.push(date);
+            humi_data_all_D.push(all[d].h);
+          }
+          for (let i = 0; i < date_data_all_D.length; i++) {
+            if (tbl_start <= ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) <= tbl_end) {
+              date_carlendar_tbl.push(date_data_all_D[i]);
+              humi_carlendar_tbl.push(humi_data_all_D[i]);
+              temp_carlendar_tbl.push(temp_data_all_D[i]);
+              date_carlendar_tbl_transfer.push(date_data_all_D_tranfer[i]);
+            }
+          }
+        }).catch((error) => {
+          console.error(error);
+        });
+      } else {
+        console.log('using already loaded data');
+        for (let i = 0; i < date_data_all_D.length; i++) {
+          if (tbl_start <= ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) <= tbl_end) {
+            date_carlendar_tbl.push(date_data_all_D[i]);
+            humi_carlendar_tbl.push(humi_data_all_D[i]);
+            temp_carlendar_tbl.push(temp_data_all_D[i]);
+            date_carlendar_tbl_transfer.push(date_data_all_D_tranfer[i]);
+          }
+        }
+      }
+    } else {
+      console.log('still use 30day loaded data');
+      for (let i = 0; i < date_data30_D.length; i++) {
+        if (tbl_start <= ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) <= tbl_end) {
+          date_carlendar_tbl.push(date_data30_D[i]);
+          humi_carlendar_tbl.push(humi_data30_D[i]);
+          temp_carlendar_tbl.push(temp_data30_D[i]);
+          date_carlendar_tbl_transfer.push(date_data30_D_tranfer[i]);
+        }
       }
     }
   }
-  renderTable(date_carlendar_tbl_transfer, temp_carlendar_tbl, temp_carlendar_tbl);
+  renderTable(date_carlendar_tbl_transfer, temp_carlendar_tbl, humi_carlendar_tbl);
+}
+function getAllDataTable() {
+  if (date_data_all_D.length === 0 && n_sampling > 43200) {
+    console.log('getting all data');
+    dbRef.child("devices_sensor").child(device).get().then((snapshot) => {
+      let all = snapshot.val();
+      console.log("All sampling: " + Object.keys(all).length);
+      for (d in all) {
+        let timestamp = all[d].ti;
+        let date = new Date(timestamp);
+        let currentDateTimeDevice = readableTime(date);
+
+        temp_data_all_D.push(all[d].te);
+        date_data_all_D_tranfer.push(currentDateTimeDevice);
+        date_data_all_D.push(date);
+        humi_data_all_D.push(all[d].h);
+      }
+      renderTable(date_data_all_D_tranfer, temp_data_all_D, humi_data_all_D);
+    }).catch((error) => {
+      console.error(error);
+    });
+  } else {
+    console.log('using already loaded data');
+    renderTable(date_data_all_D_tranfer, temp_data_all_D, humi_data_all_D);
+  }
 }
 
 // change / to -
