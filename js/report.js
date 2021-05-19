@@ -422,7 +422,7 @@ function secondLoad() {
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length - 1].toString().substring(0, 10));
   //new Date().toLocaleDateString('en-CA');
-  document.getElementById('date_now').value = ChangeFormateDateV2(date_data7_D_tranfer[date_data7_D_tranfer.length - 1].toString().substring(0, 10));
+  document.getElementById('date_now').value = ChangeFormateDateV2(date_data7_D_tranfer[date_data7_D_tranfer.length - 1440].toString().substring(0, 10));
   //new Date(new Date().getTime() - 86400000).toLocaleDateString('en-CA');
   document.getElementById('tbl_from').value = ChangeFormateDateV2(date_data7_D_tranfer[date_data7_D_tranfer.length - 1].toString().substring(0, 10));
   //new Date().toLocaleDateString('en-CA');
@@ -742,17 +742,12 @@ function compareGraph() {
 
 function compareStart() {
   date_label = [];
-  let new_date_1day = [];//new Date(2018, 10, 1, 0, 0);
-  for(let i = 0; i < 1440 ; i++) {
-    date_label.push(new Date(2018, 10, 1, 0, i));
-  }
-  console.log(new_date_1day.length);
-  
   day_all_tem_data = [];
   day_all_humi_data = [];
   day_compareGraph = [];
   
   let get_select_date = document.getElementById('date_now').value;
+  
   let day7 = (new Date(new Date(get_select_date).getTime() - 604800000).toLocaleDateString('en-CA'));
   let day6 = (new Date(new Date(get_select_date).getTime() - 518400000).toLocaleDateString('en-CA'));
   let day5 = (new Date(new Date(get_select_date).getTime() - 432000000).toLocaleDateString('en-CA'));
@@ -804,8 +799,6 @@ function compareStart() {
       obj_humi.y = humi_data30_D[i];
       day6_humi.push(obj_humi);
       obj_humi = {};
-      // day6_tem.push(temp_data30_D[i]);
-      // day6_humi.push(humi_data30_D[i]);
       if (day6_date) {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day6_date = false;
@@ -821,18 +814,10 @@ function compareStart() {
       obj_humi.y = humi_data30_D[i];
       day5_humi.push(obj_humi);
       obj_humi = {};
-      // day5_tem.push(temp_data30_D[i]);
-      // day5_humi.push(humi_data30_D[i]);
       if (day5_date) {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day5_date = false;
         if (day6_tem.length != 0){
-          // loop = 1438 - day6_tem.length;
-          // if (day6_tem.length < 1438) {
-          //   for(let start_i = 0; start_i < loop; start_i++)
-          //     day6_tem.push(undefined);
-          //     day6_humi.push(undefined);
-          // }
           day_all_tem_data.push(day6_tem);
           day_all_humi_data.push(day6_humi);
         }
@@ -847,25 +832,15 @@ function compareStart() {
       obj_humi.y = humi_data30_D[i];
       day4_humi.push(obj_humi);
       obj_humi = {};
-      // day4_tem.push(temp_data30_D[i]);
-      // day4_humi.push(humi_data30_D[i]);
       if (day4_date) {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day4_date = false;
         if (day5_tem.length != 0){
-          // if (day5_tem.length < 1438) {
-          //   loop = 1438 - day5_tem.length;
-          //   for(let start_i = 0; start_i < loop; start_i++)
-          //     day5_tem.push(undefined);
-          //     day5_humi.push(undefined);
-          // }
           day_all_tem_data.push(day5_tem);
           day_all_humi_data.push(day5_humi);
         }
       }
     } else if (day4 < day_count_day && day_count_day < day2) {
-      // day3_tem.push(temp_data30_D[i]);
-      // day3_humi.push(humi_data30_D[i]);
       obj_tem.x = date_data30_D_tranfer[i].toString().substring(10, 19);
       obj_tem.y = temp_data30_D[i];
       day3_tem.push(obj_tem);
@@ -879,19 +854,11 @@ function compareStart() {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day3_date = false;
         if (day4_tem.length != 0){
-          // if (day4_tem.length < 1438) {
-          //   loop = 1438 - day4_tem.length;
-          //   for(let start_i = 0; start_i < loop; start_i++)
-          //     day4_tem.push(undefined);
-          //     day4_humi.push(undefined);
-          // }
           day_all_tem_data.push(day4_tem);
           day_all_humi_data.push(day4_humi);
         }
       }
     } else if (day3 < day_count_day && day_count_day < day1) {
-      // day2_tem.push(temp_data30_D[i]);
-      // day2_humi.push(humi_data30_D[i]);
       obj_tem.x = date_data30_D_tranfer[i].toString().substring(10, 19);
       obj_tem.y = temp_data30_D[i];
       day2_tem.push(obj_tem);
@@ -905,19 +872,11 @@ function compareStart() {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day2_date = false;
         if (day3_tem.length != 0){
-          // if (day3_tem.length < 1438) {
-          //   loop = 1438 - day3_tem.length;
-          //   for(let start_i = 0; start_i < loop; start_i++)
-          //     day3_tem.push(undefined);
-          //     day3_humi.push(undefined);
-          // }
           day_all_tem_data.push(day3_tem);
           day_all_humi_data.push(day3_humi);
         }
       }
     } else if (day2 < day_count_day && day_count_day < day0) {
-      // day1_tem.push(temp_data30_D[i]);
-      // day1_humi.push(humi_data30_D[i]);
       obj_tem.x = date_data30_D_tranfer[i].toString().substring(10, 19);
       obj_tem.y = temp_data30_D[i];
       day1_tem.push(obj_tem);
@@ -931,19 +890,11 @@ function compareStart() {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day1_date = false;
         if (day2_tem.length != 0){
-          // if (day2_tem.length < 1438) {
-          //   loop = 1438 - day2_tem.length;
-          //   for(let start_i = 0; start_i < loop; start_i++)
-          //     day2_tem.push(undefined);
-          //     day2_humi.push(undefined);
-          // }
           day_all_tem_data.push(day2_tem);
           day_all_humi_data.push(day2_humi);
         }
       }
     } else if (day1 < day_count_day && day_count_day < lastest_day) {
-      // day0_tem.push(temp_data30_D[i]);
-      // day0_humi.push(humi_data30_D[i]);
       obj_tem.x = date_data30_D_tranfer[i].toString().substring(10, 19);
       obj_tem.y = temp_data30_D[i];
       day0_tem.push(obj_tem);
@@ -957,32 +908,24 @@ function compareStart() {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day0_date = false;
         if (day1_tem.length != 0){
-          // if (day1_tem.length < 1438) {
-          //   loop = 1438 - day1_tem.length;
-          //   for(let start_i = 0; start_i < loop; start_i++)
-          //     day1_tem.push(undefined);
-          //     day1_humi.push(undefined);
-          // }
           day_all_tem_data.push(day1_tem);
           day_all_humi_data.push(day1_humi);
         }
       }
     }  else if (day_count_day == lastest_day) {
       if (day0_tem.length != 0){
-        // if (day0_tem.length < 1438) {
-        //   loop = 1438 - day0_tem.length;
-        //   for(let start_i = 0; start_i < loop; start_i++)
-        //     day0_tem.push(undefined);
-        //     day0_humi.push(undefined);
-        // }
         day_all_tem_data.push(day0_tem);
         day_all_humi_data.push(day0_humi);
       }
         break;
     }
   }
-
-  // console.log(day5_tem);
+  //day_compareGraph.pop();
+  if (day_compareGraph.length != day_all_tem_data.length) {
+    day_compareGraph.pop();
+  }
+  // console.log(day_compareGraph.length);
+  // console.log(day_all_tem_data.length);
   //compareChart.destroy();
   let ctx3 = document.getElementById('compareChart').getContext('2d');
   compareChart = new Chart(ctx3, {
