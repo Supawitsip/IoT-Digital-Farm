@@ -675,7 +675,7 @@ function getRange() {
   let date_start = document.getElementById("date_from").value;
   let date_end = document.getElementById("date_to").value;
 
-  /*let timestamp_30_before = new Date().getTime() - (30 * 24 * 60 * 60 * 1000);
+  let timestamp_30_before = new Date().getTime() - (30 * 24 * 60 * 60 * 1000);
   console.log("30day: " + new Date(timestamp_30_before).toLocaleDateString('en-CA'));
   console.log("start: " + new Date(date_start).toLocaleDateString('en-CA'));
   console.log("end: " + new Date(date_end).toLocaleDateString('en-CA'));
@@ -683,7 +683,7 @@ function getRange() {
     console.log("load all date");
   } else {
     console.log("less than 30 day");
-  }*/
+  }
   
   date_calendar_transfer = [];
   date_carlendar_D = [];
@@ -693,17 +693,14 @@ function getRange() {
   if (date_start > date_end) {
     console.log("worng");
   } else {
-    for (let i = 0; i < date_data30_D.length; i++) {
-      if (date_start <= ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) <= date_end) {
-        date_carlendar_D.push(date_data30_D[i]);
-        humi_carlendar_D.push(humi_data30_D[i]);
-        temp_carlendar_D.push(temp_data30_D[i]);
-        date_calendar_transfer.push(date_data30_D_tranfer[i]);
+    for (let i = 0; i < date_data_all_D.length; i++) {
+      if (date_start <= ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) <= date_end) {
+        date_carlendar_D.push(date_data_all_D[i]);
+        humi_carlendar_D.push(humi_data_all_D[i]);
+        temp_carlendar_D.push(temp_data_all_D[i]);
+        date_calendar_transfer.push(date_data_all_D_tranfer[i]);
         //testi = i;
-      }temp_data_all_D;
-      myChart.data.datasets[1].data = humi_data_all_D;
-      myChart.data.labels = date_data_all_D;
-      
+      }
     };
     myChart.data.datasets[0].data = temp_carlendar_D;
     myChart.data.datasets[1].data = humi_carlendar_D;
