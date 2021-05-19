@@ -590,6 +590,9 @@ function allData() {
   monthBtn.style.backgroundColor = "white";
   monthBtn.style.color = "#E35F43";
 
+  document.getElementById('date_from').value = ChangeFormateDateV2(date_data_all_D_tranfer[0].toString().substring(0, 10));
+  document.getElementById('date_to').value = ChangeFormateDateV2(date_data_all_D_tranfer[date_data_all_D_tranfer.length - 1].toString().substring(0, 10));
+
   myChart.data.datasets[0].data = temp_data_all_D;
   myChart.data.datasets[1].data = humi_data_all_D;
   myChart.data.labels = date_data_all_D;
@@ -671,11 +674,22 @@ function monthData() {
 function getRange() {
   let date_start = document.getElementById("date_from").value;
   let date_end = document.getElementById("date_to").value;
+
+  /*let timestamp_30_before = new Date().getTime() - (30 * 24 * 60 * 60 * 1000);
+  console.log("30day: " + new Date(timestamp_30_before).toLocaleDateString('en-CA'));
+  console.log("start: " + new Date(date_start).toLocaleDateString('en-CA'));
+  console.log("end: " + new Date(date_end).toLocaleDateString('en-CA'));
+  if (timestamp_30_before > new Date(date_start).getTime()) { //old more than 30 day
+    console.log("load all date");
+  } else {
+    console.log("less than 30 day");
+  }*/
+  
   date_calendar_transfer = [];
   date_carlendar_D = [];
   humi_carlendar_D = [];
   temp_carlendar_D = [];
-  let testi = 0;
+  
   if (date_start > date_end) {
     console.log("worng");
   } else {
@@ -686,7 +700,9 @@ function getRange() {
         temp_carlendar_D.push(temp_data30_D[i]);
         date_calendar_transfer.push(date_data30_D_tranfer[i]);
         //testi = i;
-      }
+      }temp_data_all_D;
+      myChart.data.datasets[1].data = humi_data_all_D;
+      myChart.data.labels = date_data_all_D;
       
     };
     myChart.data.datasets[0].data = temp_carlendar_D;
@@ -1126,7 +1142,6 @@ function addData(chart, label, color, data) {
 }
 
 
-// อยู่ตรงนี้วัยรุ่น
 /////////////////////////////////////////////////// start function
 //////////////////////////////// Start Fucntion
 initialLoad();
