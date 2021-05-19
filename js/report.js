@@ -676,9 +676,9 @@ function getRange() {
   let date_end = document.getElementById("date_to").value;
 
   let timestamp_30_before = new Date().getTime() - (30 * 24 * 60 * 60 * 1000);
-  console.log("30day: " + new Date(timestamp_30_before).toLocaleDateString('en-CA'));
-  console.log("start: " + new Date(date_start).toLocaleDateString('en-CA'));
-  console.log("end: " + new Date(date_end).toLocaleDateString('en-CA'));
+  // console.log("30day: " + new Date(timestamp_30_before).toLocaleDateString('en-CA'));
+  // console.log("start: " + new Date(date_start).toLocaleDateString('en-CA'));
+  // console.log("end: " + new Date(date_end).toLocaleDateString('en-CA'));
   if (timestamp_30_before > new Date(date_start).getTime()) { //old more than 30 day
     console.log("load all date");
   } else {
@@ -772,6 +772,15 @@ function compareStart() {
 
   let lastest_day = (new Date(new Date(get_select_date).getTime() + 86400000).toLocaleDateString('en-CA'));
 
+  let timestamp_30_before = new Date(new Date(date_data_all_D[date_data_all_D.length - 1]).getTime() - (30 * 24 * 60 * 60 * 1000)).toLocaleDateString('en-CA') ;
+   console.log(timestamp_30_before);
+  // console.log(new Date(day7));
+  if (new Date(timestamp_30_before).getTime() > new Date(day7).getTime()) { //old more than 30 day
+    console.log("load all date");
+  } else {
+    console.log("less than 30 day");
+  }
+  
   all_tem_data = [];
 
   let day0_tem = [];
@@ -815,7 +824,6 @@ function compareStart() {
       if (day6_date) {
         day_compareGraph.push(ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)));
         day6_date = false;
-        console.log(date_data30_D_tranfer[i].toString().substring(10, 19));
       }
     } else if (day6 < day_count_day && day_count_day < day4) {
       obj_tem.x = date_data30_D_tranfer[i].toString().substring(10, 19);
