@@ -614,6 +614,8 @@ function allData() {
           date_data_all_D.push(date);
           humi_data_all_D.push(all[d].h);
         }
+        document.getElementById('date_from').value = ChangeFormateDateV2(date_data_all_D_tranfer[0].toString().substring(0, 10));
+    document.getElementById('date_to').value = ChangeFormateDateV2(date_data_all_D_tranfer[date_data_all_D_tranfer.length - 1].toString().substring(0, 10));
         myChart.data.datasets[0].data = temp_data_all_D;
         myChart.data.datasets[1].data = humi_data_all_D;
         myChart.data.labels = date_data_all_D;
@@ -623,6 +625,8 @@ function allData() {
       });
     } else {
       console.log('using already loaded data');
+      document.getElementById('date_from').value = ChangeFormateDateV2(date_data_all_D_tranfer[0].toString().substring(0, 10));
+      document.getElementById('date_to').value = ChangeFormateDateV2(date_data_all_D_tranfer[date_data_all_D_tranfer.length - 1].toString().substring(0, 10));
       myChart.data.datasets[0].data = temp_data_all_D;
       myChart.data.datasets[1].data = humi_data_all_D;
       myChart.data.labels = date_data_all_D;
@@ -631,6 +635,8 @@ function allData() {
     
   } else {
     console.log('still use 30D loaded data');
+    document.getElementById('date_from').value = ChangeFormateDateV2(date_data_all_D_tranfer[0].toString().substring(0, 10));
+    document.getElementById('date_to').value = ChangeFormateDateV2(date_data_all_D_tranfer[date_data_all_D_tranfer.length - 1].toString().substring(0, 10));
     myChart.data.datasets[0].data = temp_data30_D;
     myChart.data.datasets[1].data = humi_data30_D;
     myChart.data.labels = date_data30_D;
