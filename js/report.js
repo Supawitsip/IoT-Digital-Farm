@@ -597,13 +597,13 @@ function allData() {
 
   //Check if data is more than 1 month sampling, get the data, if not, use the 1 month data instead
   if (n_sampling > 43200) {
-    console.log('> month');
     // Check if already get all data
     if (date_data_all_D.length === 0) {
       console.log('getting all data');
       //Get all data from realtime database
       dbRef.child("devices_sensor").child(device).get().then((snapshot) => {
         let all = snapshot.val();
+        console.log("All sampling: " + Object.keys(all).length);
         for (d in all) {
           let timestamp = all[d].ti;
           let date = new Date(timestamp);
@@ -620,7 +620,7 @@ function allData() {
         myChart.update();
       });
     } else {
-      console.log('already get');
+      console.log('using already loaded data');
       myChart.data.datasets[0].data = temp_data_all_D;
       myChart.data.datasets[1].data = humi_data_all_D;
       myChart.data.labels = date_data_all_D;
@@ -628,6 +628,7 @@ function allData() {
     }
     
   } else {
+    console.log('still use 30D loaded data');
     myChart.data.datasets[0].data = temp_data30_D;
     myChart.data.datasets[1].data = humi_data30_D;
     myChart.data.labels = date_data30_D;
@@ -712,9 +713,6 @@ function getRange() {
   
 
   let timestamp_30_before = new Date().getTime() - (30 * 24 * 60 * 60 * 1000);
-  console.log("30day: " + new Date(timestamp_30_before).toLocaleDateString('en-CA'));
-  console.log("start: " + new Date(date_start).toLocaleDateString('en-CA'));
-  console.log("end: " + new Date(date_end).toLocaleDateString('en-CA'));
   date_calendar_transfer = [];
   date_carlendar_D = [];
   humi_carlendar_D = [];
@@ -723,10 +721,12 @@ function getRange() {
   if (date_start > date_end) {
     console.log("Wrong input.");
   } else {
-    if (timestamp_30_before > new Date(date_start).getTime()) {
+    if (timestamp_30_before > new Date(date_start).getTime() && n_sampling > 43200) {
       if (date_data_all_D.length === 0) {
+        console.log('getting all data');
         dbRef.child("devices_sensor").child(device).get().then((snapshot) => {
           let all = snapshot.val();
+          console.log("All sampling: " + Object.keys(all).length);
           for (d in all) {
             let timestamp = all[d].ti;
             let date = new Date(timestamp);
@@ -740,8 +740,8 @@ function getRange() {
           for (let i = 0; i < date_data_all_D.length; i++) {
             if (date_start <= ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) <= date_end) {
               date_carlendar_D.push(date_data_all_D[i]);
-              humi_carlendar_D.push(date_data_all_D[i]);
-              temp_carlendar_D.push(date_data_all_D[i]);
+              humi_carlendar_D.push(humi_data_all_D[i]);
+              temp_carlendar_D.push(temp_data_all_D[i]);
               date_calendar_transfer.push(date_data_all_D_tranfer[i]);
               //testi = i;
             }
@@ -752,11 +752,12 @@ function getRange() {
           myChart.update();
         });
       } else {
+        console.log('using already loaded data');
         for (let i = 0; i < date_data_all_D.length; i++) {
           if (date_start <= ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data_all_D_tranfer[i].toString().substring(0, 10)) <= date_end) {
             date_carlendar_D.push(date_data_all_D[i]);
-            humi_carlendar_D.push(date_data_all_D[i]);
-            temp_carlendar_D.push(date_data_all_D[i]);
+            humi_carlendar_D.push(humi_data_all_D[i]);
+            temp_carlendar_D.push(temp_data_all_D[i]);
             date_calendar_transfer.push(date_data_all_D_tranfer[i]);
             //testi = i;
           }
@@ -768,6 +769,7 @@ function getRange() {
       }
      
     } else {
+      console.log('still use 30day loaded data');
       for (let i = 0; i < date_data30_D.length; i++) {
         if (date_start <= ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) <= date_end) {
           date_carlendar_D.push(date_data30_D[i]);
@@ -777,11 +779,11 @@ function getRange() {
           //testi = i;
         }
       };
+      myChart.data.datasets[0].data = temp_carlendar_D;
+      myChart.data.datasets[1].data = humi_carlendar_D;
+      myChart.data.labels = date_carlendar_D;
+      myChart.update();
     }
-    myChart.data.datasets[0].data = temp_carlendar_D;
-    myChart.data.datasets[1].data = humi_carlendar_D;
-    myChart.data.labels = date_carlendar_D;
-    myChart.update();
   }
 }
 
