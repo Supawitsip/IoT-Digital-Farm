@@ -603,23 +603,46 @@ function allData() {
       //Get all data from realtime database
       dbRef.child("devices_sensor").child(device).get().then((snapshot) => {
         let all = snapshot.val();
-        console.log("All sampling: " + Object.keys(all).length);
-        for (d in all) {
-          let timestamp = all[d].ti;
-          let date = new Date(timestamp);
-          let currentDateTimeDevice = readableTime(date);
-
-          temp_data_all_D.push(all[d].te);
-          date_data_all_D_tranfer.push(currentDateTimeDevice);
-          date_data_all_D.push(date);
-          humi_data_all_D.push(all[d].h);
+        let all_sampling = Object.keys(all).length;
+        console.log("All sampling: " + all_sampling);
+        if (all_sampling > 129600) {
+          console.log('There are some data that are older than 3 months which will be deleted.');
+          let i = 0;
+          let del_limit_first = all_sampling - 129600;
+          for (d in all) {
+            if (i < del_limit_first) {
+              dbRef.child("devices_sensor").child(device).child(d).remove();
+              i++;
+            } else {
+              let timestamp = all[d].ti;
+              let date = new Date(timestamp);
+              let currentDateTimeDevice = readableTime(date);
+    
+              temp_data_all_D.push(all[d].te);
+              date_data_all_D_tranfer.push(currentDateTimeDevice);
+              date_data_all_D.push(date);
+              humi_data_all_D.push(all[d].h);
+            }
+          }
+        } else {
+          for (d in all) {
+            let timestamp = all[d].ti;
+            let date = new Date(timestamp);
+            let currentDateTimeDevice = readableTime(date);
+  
+            temp_data_all_D.push(all[d].te);
+            date_data_all_D_tranfer.push(currentDateTimeDevice);
+            date_data_all_D.push(date);
+            humi_data_all_D.push(all[d].h);
+          }
         }
         document.getElementById('date_from').value = ChangeFormateDateV2(date_data_all_D_tranfer[0].toString().substring(0, 10));
-    document.getElementById('date_to').value = ChangeFormateDateV2(date_data_all_D_tranfer[date_data_all_D_tranfer.length - 1].toString().substring(0, 10));
+        document.getElementById('date_to').value = ChangeFormateDateV2(date_data_all_D_tranfer[date_data_all_D_tranfer.length - 1].toString().substring(0, 10));
         myChart.data.datasets[0].data = temp_data_all_D;
         myChart.data.datasets[1].data = humi_data_all_D;
         myChart.data.labels = date_data_all_D;
         myChart.update();
+        
       }).catch((error) => {
         console.error(error);
       });
