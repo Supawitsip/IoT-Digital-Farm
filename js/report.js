@@ -427,7 +427,8 @@ function secondLoad() {
   document.getElementById('date_from').value = ChangeFormateDateV2(date_data30_D_tranfer[0].toString().substring(0, 10));
   document.getElementById('date_to').value = ChangeFormateDateV2(date_data1_D_tranfer[date_data1_D_tranfer.length - 1].toString().substring(0, 10));
   //new Date().toLocaleDateString('en-CA');
-  document.getElementById('date_now').value = ChangeFormateDateV2(date_data7_D_tranfer[date_data7_D_tranfer.length - 1440].toString().substring(0, 10));
+  document.getElementById('date_now').value = ChangeFormateDateV2(date_data7_D_tranfer[date_data7_D_tranfer.length - 1].toString().substring(0, 10));
+  //document.getElementById('date_now').value = ChangeFormateDateV2(date_data7_D_tranfer[date_data7_D_tranfer.length - 1440].toString().substring(0, 10));
   //new Date(new Date().getTime() - 86400000).toLocaleDateString('en-CA');
   document.getElementById('tbl_from').value = ChangeFormateDateV2(date_data7_D_tranfer[date_data7_D_tranfer.length - 1].toString().substring(0, 10));
   //new Date().toLocaleDateString('en-CA');
