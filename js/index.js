@@ -23,7 +23,6 @@ function initialLoad() {
       deviObj = snapshot.val();
       console.log(deviObj);
 
-      //viewCounter();
       displayLoaded();
     } else {
       console.log("No data available");
@@ -35,6 +34,7 @@ function initialLoad() {
 
 
 function displayLoaded() {
+  viewCounter();
   // Get Number of device connected
   num_of_devi = Object.keys(deviObj).length;
   console.log('All Devices:' + num_of_devi);
