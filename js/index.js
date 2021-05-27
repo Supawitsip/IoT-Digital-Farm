@@ -6,11 +6,15 @@ var deviObj;
 let num_of_devi;
 
 // when database update this code will be triggered 
-dbRef.child("device_key").on('child_changed', (snapshot) => {
-  const changedData = snapshot.val();
-  console.log('humi ' + changedData.key);
-  console.log('humi ' + changedData.h);
-  console.log('tem ' + changedData.te);
+dbRef.child(db_devices).on('child_changed', (snapshot) => {
+  let deviceInfo = snapshot.val();
+  // check if the device is exist 
+  if (document.getElementById(`dtemp_${deviceInfo.key}`)) {
+    document.getElementById(`dtemp_${deviceInfo.key}`).innerHTML = `<i class="fas fa-thermometer-half"></i>${deviceInfo.te} °C`;
+    document.getElementById(`dhumi_${deviceInfo.key}`).innerHTML = `<i class="fas fa-tint"></i>${deviceInfo.h} %`;
+  } else {
+    location.reload(true);
+  }
 });
 
 function initialLoad() {
@@ -18,7 +22,8 @@ function initialLoad() {
     if (snapshot.exists()) {
       deviObj = snapshot.val();
       console.log(deviObj);
-      
+
+      //viewCounter();
       displayLoaded();
     } else {
       console.log("No data available");
@@ -30,7 +35,6 @@ function initialLoad() {
 
 
 function displayLoaded() {
-  viewCounter();
   // Get Number of device connected
   num_of_devi = Object.keys(deviObj).length;
   console.log('All Devices:' + num_of_devi);
@@ -113,13 +117,13 @@ function renderDevices() {
                         <div class="temp-con">
                           <div class="temp-text">
                             <p class="temp-title">Temperature</p>
-                            <p class="temp"><i class="fas fa-thermometer-half"></i>${temp} °C</p>
+                            <p class="temp" id="dtemp_${d_name}"><i class="fas fa-thermometer-half"></i>${temp} °C</p>
                           </div>
                         </div>
                         <div class="humi-con">
                           <div class="humi-text">
                             <p class="humi-title">Humidity</p>
-                            <p class="humi"><i class="fas fa-tint"></i>${humi} %</p>
+                            <p class="humi" id="dhumi_${d_name}"><i class="fas fa-tint"></i>${humi} %</p>
                           </div>
                         </div>`;
     document.getElementById("devices-con").appendChild(devi_info);
