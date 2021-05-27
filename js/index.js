@@ -5,6 +5,14 @@ const db_devices_data = "devices_sensor";
 var deviObj;
 let num_of_devi;
 
+// when database update this code will be triggered 
+dbRef.child("device_key").on('child_changed', (snapshot) => {
+  const changedData = snapshot.val();
+  console.log('humi ' + changedData.key);
+  console.log('humi ' + changedData.h);
+  console.log('tem ' + changedData.te);
+});
+
 function initialLoad() {
   dbRef.child(db_devices).get().then((snapshot) => {
     if (snapshot.exists()) {
