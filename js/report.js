@@ -26,24 +26,30 @@ function initialLoad() {
 }
 
 // when database update this code will be triggered 
-dbRef.child("device_key").child("test 1").on('child_changed', (snapshot) => {
-  let deviceInfo = snapshot.val();
- // console.log(snapshot.ref.parent.key + ": " + snapshot.key + ": " + deviceInfo);
-  if (deviceInfo.key === device) {
-    let date = new Date();
+// dbRef.child("device_key").child("test 1").on('child_changed', (snapshot) => {
+//   let deviceInfo = snapshot.val();
+//  // console.log(snapshot.ref.parent.key + ": " + snapshot.key + ": " + deviceInfo);
+//   if (deviceInfo.key === device) {
+//     let date = new Date();
+let firstAdded = false;
+dbRef.child("devices_sensor").child(device).limitToLast(1).on('child_added', (snapshot) => {
+  if (firstAdded) {
+    let deviceInfo = snapshot.val();
+    let date = new Date(deviceInfo.ti);
     lastDateTime = readableTime(date);
     document.getElementById("lastTime").innerText = lastDateTime;
     document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviceInfo.te} °C`;
     document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviceInfo.h} %`;
-    let update = [lastDateTime, date.getTime(), deviceInfo.te, deviceInfo.h];
-    localStorage.setItem('updatingDevice', Array.from(update));
+    let update = [lastDateTime, deviceInfo.ti, deviceInfo.te, deviceInfo.h];
+    localStorage.setItem('updatingDevice', update);
 
-    let key = Date.now();
-    deviceObj[key] = {h: deviceInfo.h,te: deviceInfo.te,ti: key};
+    deviceObj[deviceInfo.ti] = {h: deviceInfo.h, te: deviceInfo.te, ti: deviceInfo.ti};
     localStorage.setItem('deviceObject', JSON.stringify(deviceObj));
-    console.log(deviceObj[key]);
+    console.log(deviceObj[deviceInfo.ti]);
     //myChart.update();
     //chart.update();
+  } else {
+    firstAdded = true;
   }
 });
 

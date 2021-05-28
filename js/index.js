@@ -24,6 +24,8 @@ function initialLoad() {
       console.log(deviObj);
 
       displayLoaded();
+      // clear updating data storage
+      window.localStorage.removeItem('updatingDevice');
     } else {
       console.log("No data available");
     }
