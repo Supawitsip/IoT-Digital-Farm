@@ -12,6 +12,21 @@ let first_samp;
 let all_tem_data;
 let  day_all_humi_data 
 
+
+
+function initialLoad() {
+    deviceObj = JSON.parse(localStorage.getItem('deviceObject'));
+    //console.log(deviceObj)
+
+    n_sampling = Object.keys(deviceObj).length;
+    last_samp = Object.keys(deviceObj)[n_sampling-1];
+    first_samp = Object.keys(deviceObj)[0];
+    console.log(n_sampling);
+
+    displayDeviceInfo();
+    firstLoad();
+}
+
 // when database update this code will be triggered 
 dbRef.child("device_key").on('child_changed', (snapshot) => {
   let deviceInfo = snapshot.val();
@@ -23,30 +38,15 @@ dbRef.child("device_key").on('child_changed', (snapshot) => {
     document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviceInfo.h} %`;
     let update = [lastDateTime, date.getTime(), deviceInfo.te, deviceInfo.h];
     localStorage.setItem('updatingDevice', Array.from(update));
+
+    let key = Date.now();
+    deviceObj[key] = {h: deviceInfo.h,te: deviceInfo.te,ti: key};
+    localStorage.setItem('deviceObject', JSON.stringify(deviceObj));
+    console.log(deviceObj[key]);
+    //myChart.update();
+    //chart.update();
   }
 });
-
-function initialLoad() {
-    deviceObj = JSON.parse(localStorage.getItem('deviceObject'));
-    //console.log(deviceObj)
-
-    n_sampling = Object.keys(deviceObj).length;
-    last_samp = Object.keys(deviceObj)[n_sampling-1];
-    first_samp = Object.keys(deviceObj)[0];
-    console.log(deviceObj);
-    // let key = Date.now();
-    // let obj = `{ 
-    //   ${key}: {
-    //     h: 10,
-    //     te: 10,
-    //     ti: ${key}}
-    // };`
-    // obj.nationality = "English";
-    // console.log(obj);
-    displayDeviceInfo();
-    firstLoad();
-}
-
 
 function displayDeviceInfo() {
     console.log("Number of sampling: " + n_sampling);
@@ -767,7 +767,6 @@ function monthData() {
   myChart.data.datasets[1].data = humi_data30_D;
   myChart.data.labels = date_data30_D;
   myChart.update();
-
 }
 
 function getRange() {
