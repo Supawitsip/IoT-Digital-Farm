@@ -42,8 +42,10 @@ function displayLoaded() {
 
   // Display current time
   console.log(getLocalCurrentTime());
-  document.getElementById('lastTime').innerText = getLocalCurrentTime();
-
+  //document.getElementById('lastTime').innerText = getLocalCurrentTime();
+  setInterval(function(){
+    document.getElementById("lastTime").innerHTML = getLocalCurrentTime();
+  }, 1000);
   // Get all devices info and display it
   renderDevices();
   // Handler when click a device
