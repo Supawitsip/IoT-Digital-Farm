@@ -12,8 +12,6 @@ let first_samp;
 let all_tem_data;
 let  day_all_humi_data 
 
-
-
 function initialLoad() {
     deviceObj = JSON.parse(localStorage.getItem('deviceObject'));
     //console.log(deviceObj)
@@ -28,8 +26,9 @@ function initialLoad() {
 }
 
 // when database update this code will be triggered 
-dbRef.child("device_key").on('child_changed', (snapshot) => {
+dbRef.child("device_key").child("test 1").on('child_changed', (snapshot) => {
   let deviceInfo = snapshot.val();
+ // console.log(snapshot.ref.parent.key + ": " + snapshot.key + ": " + deviceInfo);
   if (deviceInfo.key === device) {
     let date = new Date();
     lastDateTime = readableTime(date);
