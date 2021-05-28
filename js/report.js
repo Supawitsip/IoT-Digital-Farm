@@ -12,6 +12,20 @@ let first_samp;
 let all_tem_data;
 let  day_all_humi_data 
 
+// when database update this code will be triggered 
+dbRef.child("device_key").on('child_changed', (snapshot) => {
+  let deviceInfo = snapshot.val();
+  if (deviceInfo.key === device) {
+    let date = new Date();
+    lastDateTime = readableTime(date);
+    document.getElementById("lastTime").innerText = lastDateTime;
+    document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviceInfo.te} °C`;
+    document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviceInfo.h} %`;
+    let update = [lastDateTime, date.getTime(), deviceInfo.te, deviceInfo.h];
+    localStorage.setItem('updatingDevice', Array.from(update));
+  }
+});
+
 function initialLoad() {
     deviceObj = JSON.parse(localStorage.getItem('deviceObject'));
     //console.log(deviceObj)
@@ -36,15 +50,25 @@ function displayDeviceInfo() {
 
     // Convert timestamp to readable
     let timestamp = (deviceObj[last_samp].ti)/1000;
+    let ltimestamp = timestamp;
     let date = new Date(timestamp * 1000);
     lastDateTime = readableTime(date);
     timestamp = (deviceObj[first_samp].ti)/1000;
     date = new Date(timestamp * 1000);
     firstDateTime = readableTime(date);
 
-    document.getElementById("lastTime").innerText = lastDateTime;
-    document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviceObj[last_samp].te} °C`;
-    document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviceObj[last_samp].h} %`;
+    // check the latest time's data  
+    let update = localStorage.getItem('updatingDevice');
+    if (update != null && parseInt(update.split(',')[1]) > (ltimestamp*1000)) {
+      update = update.split(',');
+      document.getElementById("lastTime").innerText = update[0];
+      document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${update[2]} °C`;
+      document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${update[3]} %`;
+    } else {
+      document.getElementById("lastTime").innerText = lastDateTime;
+      document.querySelector(".temp").innerHTML = `<i class="fas fa-thermometer-half"></i>${deviceObj[last_samp].te} °C`;
+      document.querySelector(".humi").innerHTML = `<i class="fas fa-tint"></i>${deviceObj[last_samp].h} %`;
+    }
 }
 
 // Convert timestamp to readable
