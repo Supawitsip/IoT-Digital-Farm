@@ -19,7 +19,16 @@ function initialLoad() {
     n_sampling = Object.keys(deviceObj).length;
     last_samp = Object.keys(deviceObj)[n_sampling-1];
     first_samp = Object.keys(deviceObj)[0];
-    console.log(n_sampling);
+    console.log(deviceObj);
+    // let key = Date.now();
+    // let obj = `{ 
+    //   ${key}: {
+    //     h: 10,
+    //     te: 10,
+    //     ti: ${key}}
+    // };`
+    // obj.nationality = "English";
+    // console.log(obj);
     displayDeviceInfo();
     firstLoad();
 }
