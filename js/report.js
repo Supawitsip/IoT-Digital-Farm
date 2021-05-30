@@ -421,44 +421,49 @@ function secondLoad() {
      // console.log("loop number : " + loop_number);
       for (j = 1; j < loop_number-1; j++) {
        // console.log(new Date(last_timestamp + j*1000*60));
+       let date_for_null = new Date(last_timestamp + j*1000*60);
+       let currentDateTimeDevice_null = date_for_null.getDate().toString().padStart(2, "0") +
+          "/" + ((date_for_null.getMonth() + 1).toString().padStart(2, "0")) +
+          "/" + date_for_null.getFullYear() +
+          " " + date_for_null.getHours().toString().padStart(2, "0") +
+          ":" + date_for_null.getMinutes().toString().padStart(2, "0") +
+          ":" + date_for_null.getSeconds().toString().padStart(2, "0");
         i++;
         if (i >= day_samling) {
 
           temp_data1_D.push(undefined);
-          date_data1_D_tranfer.push(currentDateTimeDevice);
-          date_data1_D.push(date);
+          date_data1_D_tranfer.push(currentDateTimeDevice_null);
+          date_data1_D.push(date_for_null);
           humi_data1_D.push(undefined);
     
           temp_data7_D.push(undefined);
-          date_data7_D_tranfer.push(currentDateTimeDevice);
-          date_data7_D.push(date);
+          date_data7_D_tranfer.push(currentDateTimeDevice_null);
+          date_data7_D.push(date_for_null);
           humi_data7_D.push(undefined);
     
           temp_data30_D.push(undefined);
-          date_data30_D_tranfer.push(currentDateTimeDevice);
-          date_data30_D.push(date);
+          date_data30_D_tranfer.push(currentDateTimeDevice_null);
+          date_data30_D.push(date_for_null);
           humi_data30_D.push(undefined);
 
         } else if (i >= week_sampling) {
           temp_data7_D.push(undefined);
-          date_data7_D_tranfer.push(currentDateTimeDevice);
-          date_data7_D.push(date);
+          date_data7_D_tranfer.push(currentDateTimeDevice_null);
+          date_data7_D.push(date_for_null);
           humi_data7_D.push(undefined);
     
           temp_data30_D.push(undefined);
-          date_data30_D_tranfer.push(currentDateTimeDevice);
-          date_data30_D.push(date);
+          date_data30_D_tranfer.push(currentDateTimeDevice_null);
+          date_data30_D.push(date_for_null);
           humi_data30_D.push(undefined);
     
         } else if (i >= month_sampling) {
           temp_data30_D.push(undefined);
-          date_data30_D_tranfer.push(currentDateTimeDevice);
-          date_data30_D.push(date);
+          date_data30_D_tranfer.push(currentDateTimeDevice_null);
+          date_data30_D.push(date_for_null);
           humi_data30_D.push(undefined);
         }
-      
       }
-
     }
 
     last_timestamp = timestamp;
@@ -956,6 +961,7 @@ function getTableRange() {
       }
     } else {
       console.log('still use 30day loaded data');
+      console.log('this');
       for (let i = 0; i < date_data30_D.length; i++) {
         if (tbl_start <= ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) && ChangeFormateDateV2(date_data30_D_tranfer[i].toString().substring(0, 10)) <= tbl_end) {
           date_carlendar_tbl.push(date_data30_D[i]);
