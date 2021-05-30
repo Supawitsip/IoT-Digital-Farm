@@ -386,11 +386,28 @@ function secondLoad() {
   let i = 0;
   console.log('name: ' + device);
   n_sampling = Object.keys(deviObj).length;
-  let day_samling = n_sampling - 1440;
-  let week_sampling = n_sampling - 10080;
-  let month_sampling = n_sampling - 43200;
+  
+  let last_timestamp;
+  let real_sampling = n_sampling;
   for (d in deviObj) {
     let timestamp = deviObj[d].ti;
+    if (timestamp - last_timestamp > 70000) { //600 sec
+      let loop_number = (timestamp - last_timestamp)/(1000*60); // min
+      for (j = 1; j < loop_number-1; j++) {
+        real_sampling +=1;
+      }
+    }
+    last_timestamp = timestamp;
+
+  }
+  let day_samling = real_sampling - 1440;
+  let week_sampling = real_sampling - 10080;
+  let month_sampling = real_sampling - 43200;
+  console.log("n_sampling " + n_sampling);
+  console.log("real_sampling " + real_sampling);
+  for (d in deviObj) {
+    let timestamp = deviObj[d].ti;
+    
     let date = new Date(timestamp);
     let currentDateTimeDevice = date.getDate().toString().padStart(2, "0") +
       "/" + ((date.getMonth() + 1).toString().padStart(2, "0")) +
@@ -398,6 +415,53 @@ function secondLoad() {
       " " + date.getHours().toString().padStart(2, "0") +
       ":" + date.getMinutes().toString().padStart(2, "0") +
       ":" + date.getSeconds().toString().padStart(2, "0");
+
+    if (timestamp - last_timestamp > 70000) { //600 sec
+      let loop_number = (timestamp - last_timestamp)/(1000*60); // min
+     // console.log("loop number : " + loop_number);
+      for (j = 1; j < loop_number-1; j++) {
+       // console.log(new Date(last_timestamp + j*1000*60));
+        i++;
+        if (i >= day_samling) {
+
+          temp_data1_D.push(undefined);
+          date_data1_D_tranfer.push(currentDateTimeDevice);
+          date_data1_D.push(date);
+          humi_data1_D.push(undefined);
+    
+          temp_data7_D.push(undefined);
+          date_data7_D_tranfer.push(currentDateTimeDevice);
+          date_data7_D.push(date);
+          humi_data7_D.push(undefined);
+    
+          temp_data30_D.push(undefined);
+          date_data30_D_tranfer.push(currentDateTimeDevice);
+          date_data30_D.push(date);
+          humi_data30_D.push(undefined);
+
+        } else if (i >= week_sampling) {
+          temp_data7_D.push(undefined);
+          date_data7_D_tranfer.push(currentDateTimeDevice);
+          date_data7_D.push(date);
+          humi_data7_D.push(undefined);
+    
+          temp_data30_D.push(undefined);
+          date_data30_D_tranfer.push(currentDateTimeDevice);
+          date_data30_D.push(date);
+          humi_data30_D.push(undefined);
+    
+        } else if (i >= month_sampling) {
+          temp_data30_D.push(undefined);
+          date_data30_D_tranfer.push(currentDateTimeDevice);
+          date_data30_D.push(date);
+          humi_data30_D.push(undefined);
+        }
+      
+      }
+
+    }
+
+    last_timestamp = timestamp;
     i++
     if (i >= day_samling) {
 
@@ -416,11 +480,6 @@ function secondLoad() {
       date_data30_D.push(date);
       humi_data30_D.push(deviObj[d].h);
 
-      // temp_data_all_D.push(deviObj[d].te);
-      // date_data_all_D_tranfer.push(currentDateTimeDevice);
-      // date_data_all_D.push(date);
-      // humi_data_all_D.push(deviObj[d].h);
-
     } else if (i >= week_sampling) {
       temp_data7_D.push(deviObj[d].te);
       date_data7_D_tranfer.push(currentDateTimeDevice);
@@ -432,10 +491,6 @@ function secondLoad() {
       date_data30_D.push(date);
       humi_data30_D.push(deviObj[d].h);
 
-      // temp_data_all_D.push(deviObj[d].te);
-      // date_data_all_D_tranfer.push(currentDateTimeDevice);
-      // date_data_all_D.push(date);
-      // humi_data_all_D.push(deviObj[d].h);
 
     } else if (i >= month_sampling) {
       temp_data30_D.push(deviObj[d].te);
@@ -443,22 +498,12 @@ function secondLoad() {
       date_data30_D.push(date);
       humi_data30_D.push(deviObj[d].h);
 
-      // temp_data_all_D.push(deviObj[d].te);
-      // date_data_all_D_tranfer.push(currentDateTimeDevice);
-      // date_data_all_D.push(date);
-      // humi_data_all_D.push(deviObj[d].h);
     } else {
-      // temp_data_all_D.push(deviObj[d].te);
-      // date_data_all_D_tranfer.push(currentDateTimeDevice);
-      // date_data_all_D.push(date);
-      // humi_data_all_D.push(deviObj[d].h);
+
     }
 
-    /* if (i > 129600) {
-       console.log("Some of the data was older than 3 months, so it has been deleted.");
-       dbRef.child("devices_sensor").child(device).child(d).remove();
-     }*/
   }
+
   label = date_data30_D;
   tem_data = temp_data30_D;
   humi_data = humi_data30_D;
@@ -498,7 +543,8 @@ function mainChat() {
         yAxisID: 'A',
         pointRadius: 0,
         borderWidth: 3,
-        tension: 0
+        tension: 0,
+        spanGaps: true //data that miss will join
       }, {
         data: humi_data,
         label: 'Humidity',
@@ -508,7 +554,8 @@ function mainChat() {
         yAxisID: 'B',
         pointRadius: 0,
         borderWidth: 3,
-        tension: 0
+        tension: 0,
+        spanGaps: true
         //borderWidth: .00001
       }]
     },
