@@ -1617,8 +1617,8 @@ function initialCompareChart(){
       data: day_all_tem_data[i],
       pointRadius: 0,
       borderWidth: 2,
-      tension: 0
-      
+      tension: 0,
+      spanGaps: true
     });
     compareChart.update();
   }
