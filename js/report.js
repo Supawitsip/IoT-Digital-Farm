@@ -547,7 +547,7 @@ function mainChat() {
         fill: false,
         yAxisID: 'A',
         pointRadius: 0,
-        borderWidth: 3,
+        borderWidth: 1, //3
         tension: 0,
         //spanGaps: true //data that miss will join
       }, {
@@ -558,7 +558,7 @@ function mainChat() {
         fill: false,
         yAxisID: 'B',
         pointRadius: 0,
-        borderWidth: 3,
+        borderWidth: 1,
         tension: 0,
         //spanGaps: true
         //borderWidth: .00001
