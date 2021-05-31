@@ -547,7 +547,7 @@ function mainChat() {
         fill: false,
         yAxisID: 'A',
         pointRadius: 0,
-        borderWidth: 1, //3
+        borderWidth: 2, //3
         tension: 0,
         //spanGaps: true //data that miss will join
       }, {
@@ -1604,7 +1604,7 @@ function compareGraphSet() {
 function initialCompareChart(){
   //let color = getPastelColor()
   for(let i = 0 ;i < day_compareGraph.length; i++) {
-    let color = getPastelColor()
+    //let color = getPastelColor()
     compareChart.data.datasets.push({
       label: day_compareGraph[i] ,
       backgroundColor: corlor_7_day[i],
@@ -1616,7 +1616,7 @@ function initialCompareChart(){
       fill: false,
       data: day_all_tem_data[i],
       pointRadius: 0,
-      borderWidth: 3,
+      borderWidth: 2,
       tension: 0
       
     });
