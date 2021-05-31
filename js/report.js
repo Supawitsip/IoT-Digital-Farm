@@ -549,7 +549,7 @@ function mainChat() {
         pointRadius: 0,
         borderWidth: 3,
         tension: 0,
-        spanGaps: true //data that miss will join
+        //spanGaps: true //data that miss will join
       }, {
         data: humi_data,
         label: 'Humidity',
@@ -560,7 +560,7 @@ function mainChat() {
         pointRadius: 0,
         borderWidth: 3,
         tension: 0,
-        spanGaps: true
+        //spanGaps: true
         //borderWidth: .00001
       }]
     },
