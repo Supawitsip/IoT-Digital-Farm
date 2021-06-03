@@ -139,18 +139,19 @@ function exportTable2pdf() {
         },
         columnStyles: {  
             0: {  //No.
-                cellWidth: 60, 
+                cellWidth: 80, 
                 halign: 'center', 
             },   
-            2: {  //Date and Time
-                cellWidth: 150,  
-            },
-            3: {  //Temperature
-                cellWidth: 100,  
+            1: {  //Date and Time
+                cellWidth: 180, 
                 halign: 'center', 
             },
-            4: {  //Humidity
-                cellWidth: 100,  
+            2: {  //Temperature
+                cellWidth: 125,  
+                halign: 'center', 
+            },
+            3: {  //Humidity
+                cellWidth: 125,  
                 halign: 'center', 
             }   
         },  
